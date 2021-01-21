@@ -1,0 +1,34 @@
+<% content_for "headscripts" do %>
+  <script type="text/javascript" src="/dict.js"></script>
+<% end %>
+<% content_for "header" do %>Solerian Language<% end %>
+<% content_for "title" do %>Solerian<% end %>
+<main>
+  <h2>Navigate using the menu in the top left corner.</h2>
+  <p>This site works without JavaScript, except for the dictionary window shown below. <br/></p>
+  <p>To display the entire dictionary at once without JavaScript, visit the <a class="visible" href="/dict">dictionary page.</a></p>
+  <noscript>
+  <h3>JavaScript disabled. Table below will not load.</h3>
+  <p>If you have been linked here with a hash <strong>fragment in your url</strong>, the relevant dictionary entry will not open.<br/></p>
+  <p>Try adding the fragment to the dictionary page instead to see the relevant entry.</p>
+  </noscript>
+  <table border="2" id="dictTable">
+    <tbody id="jsdict">
+    <tr class="hl persistent">
+      <th colspan="6">
+        <button class="left" onclick="setPage(-1);">←</button>
+        <p id="pageswitcher">Loading...</p>
+        <button class="right" onclick="setPage(1);">→</button>
+      </th>
+    </tr>
+    <tr class="hl db persistent">
+      <th>#</th>
+      <th>English</th>
+      <th>Transliteration</th>
+      <th>Solerian</th>
+      <th>Extra</th>
+      <th>Pronunciation</th>
+    </tr>
+    </tbody>
+  </table>
+</main>

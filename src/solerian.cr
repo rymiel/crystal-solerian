@@ -1,0 +1,126 @@
+require "db"
+require "sqlite3"
+require "json"
+require "solhttp"
+require "./solerian/*"
+
+get "/" do |ctx|
+  templ "index"
+end
+
+get "/login" do |ctx|
+  templ "login"
+end
+
+get "/user" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+  templ "user"
+end
+
+get "/logout" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+  ctx.session.destroy
+  ctx.redirect "/"
+end
+
+get "/api/jsemb/v2/dict" do |ctx|
+  ctx.response.content_type = "application/json"
+  ctx.response.status_code = 500
+  error = "Unknown error"
+  begin
+    start = (ctx.params.query["s"]? || 0).to_i
+    amount = (ctx.params.query["l"]? || 25).to_i
+    raise ArgumentError.new "Parameters can't be negative" if start < 0 || amount < 0
+    raise ArgumentError.new "Too many results requested per page" if amount > 100
+    dict = [] of Solerian::JSDictEntry
+    i = start
+    d = Solerian::Dict.get.offset(start)
+    d = d.limit(amount) if amount > 0
+    d.each do |j|
+      i += 1
+      dict << Solerian::Dict.fill(j, i)
+    end
+  rescue ex : ArgumentError
+    ctx.response.status_code = 400
+    error = ex.message
+  rescue ex
+    error = "Unknown #{ex}"
+  else
+    ctx.response.status_code = 200
+    next {
+      "status" => "ok",
+      "response" => {
+        "start": start,
+        "max": Solerian::Dict.get.count.run,
+        "limit": amount,
+        "dict": dict
+      }
+    }.to_json
+  end
+  next {
+    "status" => "error",
+    "response" => error
+  }.to_json
+end
+
+macro entries_common(render)
+  entries = Solerian::Dict.get(lusarian: true)
+  templ {{render}}, "entries"
+end
+
+get "/user/entries" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+
+  include_input = true
+  edit = nil
+  entries_common "make_entry"
+end
+
+get "/user/entries/edit" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+  
+  include_input = false
+  edit = ctx.params.query["s"]
+  entries_common "edit_entry"
+end
+
+post "/user/entries" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+
+  lusarian = ctx.params.body.has_key?("lusarian")
+  entry = Solerian::Entry.create! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
+  
+  ctx.redirect "/user/entries##{entry.hash}", 303
+end
+
+post "/user/entries/edit" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+
+  lusarian = ctx.params.body.has_key?("lusarian")
+  edit = ctx.params.query["s"]
+  entry = Solerian::Entry.find! edit
+  entry.update! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
+  
+  ctx.redirect "/user/entries##{entry.hash}", 303
+end
+
+get "/user/entries/import" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+
+  templ "import"
+end
+
+post "/user/entries/import" do |ctx|
+  next unless SolHTTP::Auth.assert_auth ctx
+
+  lines = ctx.params.body["s"]
+  lines.split("\n").each do |i|
+    next if i.strip.empty?
+    fields = i.strip.split("\t")
+    Solerian::Entry.create! eng: fields[0], sol: fields[1], extra: fields[2], l: false
+  end
+  ctx.redirect "/user/entries", 303
+end
+
+::Log.setup(:debug)
+SolHTTP.run

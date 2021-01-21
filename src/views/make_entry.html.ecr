@@ -1,0 +1,19 @@
+<% content_for "header" do %>Add Entries<% end %>
+<% content_for "title" do %>Add entries | Control panel<% end %>
+<% content_for "form" do %>
+  <form method="post">
+    <label>English:
+      <input name="en" type="text">
+    </label>
+    <label>Solerian:
+      <input name="sol" type="text">
+    </label>
+    <label>Extra:
+      <input name="ex" type="text">
+    </label>
+    <label>Lusarian:
+      <input name="lusarian" value="yes" type="checkbox">
+    </label>
+    <input type=submit value="Create new">
+  </form>
+<% end %>

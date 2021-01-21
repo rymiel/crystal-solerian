@@ -1,0 +1,487 @@
+/* <editor-fold desc="font declaration"> */
+@font-face {
+    font-family: "Solera";
+    src: url('soleraOrigin3.ttf') format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Andika";
+    src: url("AndikaNewBasic-Custom-R.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Andika";
+    src: url("AndikaNewBasic-Custom-B.ttf") format("truetype");
+    font-weight: bold;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Andika";
+    src: url("AndikaNewBasic-Custom-I.ttf") format("truetype");
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Andika";
+    src: url("AndikaNewBasic-Custom-BI.ttf") format("truetype");
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+/* </editor-fold> */
+
+/* <editor-fold desc="primary tags"> */
+body {
+    color: #eee;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Andika', sans-serif;
+    height: 100vh;
+    margin: 0;
+}
+
+header,
+nav,
+footer,
+main {
+    padding: 12px;
+    scroll-behavior: smooth;
+}
+
+main {
+    flex: 1;
+    font-size: 18px;
+    line-height: 30px;
+    text-align: center;
+    overflow: auto;
+}
+
+p {
+    margin: 2px;
+    font-family: Andika, Solera, sans-serif;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: -300px;
+    transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    width: 300px;
+    z-index: 2;
+    flex: 1;
+    padding: 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+footer {
+    text-align: center;
+}
+
+h1, h2, h3, #sidebar {
+    text-align: center;
+}
+
+h1 {
+    margin-block-start: 0.3em;
+}
+
+/* </editor-fold> */
+
+/* <editor-fold desc="secondary tags"> */
+a,
+a:visited,
+h1 a:active,
+h1 a:hover {
+    transition: all 180ms;
+    color: #eee;
+    text-decoration: none;
+}
+
+nav ul li a,
+nav ul li a:visited {
+    display: inline-block;
+    padding: 16px 22px;
+}
+
+hr {
+    border-color: #eee;
+}
+
+input {
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    font-size: 14px;
+    padding: 5px;
+}
+
+table {
+    text-align: left;
+    border-collapse: collapse;
+    border-color: #aaa;
+    margin: 16px auto 24px;
+}
+
+th,
+td {
+    padding: 4px 12px 8px;
+}
+
+tr:target,
+li:target {
+    background-color: #50503e;
+}
+
+/* </editor-fold> */
+
+/* <editor-fold desc="structuring"> */
+#center,
+#rightBar,
+#sidebar {
+    display: flex;
+    overflow: auto;
+}
+
+#center {
+    flex-direction: row;
+    flex: 1;
+}
+
+#sidebar {
+    flex-direction: column;
+    min-width: 175px;
+}
+
+#rightBar {
+    flex-direction: column;
+    flex: 1;
+}
+
+.search-box {
+    padding: 16px;
+    text-align: center;
+}
+
+.sol {
+    font-family: Andika, Solera, sans-serif;
+    text-align: right;
+    font-size: 22px
+}
+
+/* UNUSED (formerly in script)
+.sol-big {
+    font-size: 40px;
+    font-family: Solera, sans-serif;
+    text-align: right;
+    width: inherit;
+    height: inherit;
+    margin-right: 10vw;
+    margin-left: 5vw;
+    margin-top: 10vh;
+    line-height: 175%;
+}
+
+#word-entry[contenteditable=true] {
+    min-height: 30px;
+}*/
+
+#usertext,
+#usertext:visited {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 8px 22px;
+}
+
+/* </editor-fold> */
+
+/* <editor-fold desc="documentation"> */
+#docs,
+#docs h3,
+#docs h4,
+#docs h5 {
+    text-align: left;
+}
+
+#docs {
+    font-size: 16px;
+    padding: 0 10vw;
+    line-height: 25px;
+}
+
+#docs table {
+    margin: 0 16px;
+    border: 1px solid #aaa;
+}
+
+#docs p {
+    margin-bottom: 10px;
+}
+
+#docs h2 {
+    font-size: 2em;
+    margin-bottom: 35px;
+}
+
+#docs h3 {
+    font-size: 1.7em;
+}
+
+#docs h4 {
+    font-size: 1.3em;
+}
+
+#docs h5 {
+    font-size: 1em;
+}
+
+#docs ul {
+    list-style-image: none;
+    list-style-type: none;
+}
+
+#docs li a {
+    padding: 0;
+}
+
+#docs .center,
+#docs th {
+    text-align: center;
+}
+
+.linear td,
+.linear th {
+    border-right: 1px solid #606060;
+}
+
+#docs .floated {
+    float: left;
+}
+
+#docs .rb {
+    border-right: 2px solid #eeeeee;
+}
+
+#docs .db {
+    border-bottom: 2px solid #eeeeee;
+}
+
+#menu {
+    content: "";
+    display: block;
+    width: 32px;
+    height: 0;
+    box-shadow: 6px 30px 0 2px #eeeeee, 6px 44px 0 2px #eeeeee, 6px 58px 0 2px #eeeeee;
+}
+
+/* <editor-fold desc="table of contents"> */
+#toc {
+    border: 1px solid #aaa;
+    margin-top: 15px;
+    padding: 2px 2vw 7px;
+    display: table;
+}
+
+#toc h2 {
+    font-size: 100%;
+    margin: 0;
+    display: inline;
+}
+
+:not(:checked) > .toctogglecheckbox {
+    display: inline !important;
+    position: absolute;
+    opacity: 0;
+    z-index: -1
+}
+
+:not(:checked) > .toctogglespan:before {
+    content: ' ['
+}
+
+:not(:checked) > .toctogglespan:after {
+    content: ']'
+}
+
+.toctogglelabel {
+    cursor: pointer;
+    color: #d6636c
+}
+
+.toctogglelabel:hover {
+    text-decoration: underline
+}
+
+.toctogglecheckbox:focus + .toctitle .toctogglelabel {
+    text-decoration: underline;
+    outline: dotted 1px;
+    outline: auto -webkit-focus-ring-color
+}
+
+.toctogglecheckbox:checked + .toctitle .toctogglelabel:after {
+    content: 'show'
+}
+
+.toctogglecheckbox:not(:checked) + .toctitle .toctogglelabel:after {
+    content: 'hide'
+}
+
+.toctogglecheckbox:checked ~ ul {
+    display: none
+}
+
+/* </editor-fold> */
+/* </editor-fold> */
+
+/* <editor-fold desc="helper classes"> */
+.hl {
+    font-weight: bold;
+    text-align: center;
+}
+
+.rb {
+    border-right: 3px solid;
+}
+
+.db {
+    border-bottom: 3px solid;
+}
+
+.ub {
+    border-top: 3px solid;
+}
+
+.alert {
+    padding: 12px 18px 20px;
+    color: white;
+    margin-bottom: 15px;
+    border: 1px solid transparent;
+    border-radius: 6px;
+    font-size: 18px;
+}
+
+.error-alert {
+    color: #f2dede;
+    background-color: #b94a48;
+    border-color: #973c3b;
+}
+
+.success-alert {
+    color: #dff0d8;
+    background-color: #458a45;
+    border-color: #346635;
+}
+
+.message-alert {
+    color: #d9edf7;
+    background-color: #387fa2;
+    border-color: #2a607b;
+}
+
+.close-button {
+    margin-left: 10px;
+    color: inherit;
+    font-weight: bold;
+    float: right;
+    font-size: 24px;
+    line-height: 32px;
+    cursor: pointer;
+}
+
+.alert-container {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 8px 22px;
+}
+
+tr.lusarian {
+    background-color: #561656; 
+}
+
+.footnotes-list {
+    margin: 20px 5vw;
+}
+
+.toggle,
+#menu {
+    text-decoration: none;
+    font-size: 3em;
+    transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+    position: fixed;
+    top: 0;
+    left: 25px;
+    z-index: 2;
+    cursor: pointer;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    transition: all 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+#slide:checked + .container nav {
+    left: 0;
+}
+
+#slide:checked + .container .toggle,
+#slide:checked + .container #menu {
+    left: 325px;
+}
+
+#slide:checked + .container .overlay {
+    background-color: #000;
+    opacity: 0.6;
+    z-index: 1;
+}
+
+#slide {
+    display: none;
+}
+
+#about a,
+a.visible {
+    color: #d6636c;
+}
+
+#jsdict tr {
+    transition: background-color 500ms cubic-bezier(.19,1,.22,1), filter 500ms cubic-bezier(.19,1,.22,1);
+}
+
+#jsdict button,
+#jsdict p {
+    display: inline;
+    margin-left: 1em;
+    margin-right: 1em;
+}
+
+#jsdict button {
+    padding-left: 1em;
+    padding-right: 1em;
+}
+
+#jsdict.dark tr:not(.persistent) {
+    background-color: #222;
+    filter: blur(5px) brightness(50%);
+    border: 0;
+}
+
+/*#jsdict .left {
+    text-align: left;
+}*/
+/* </editor-fold> */

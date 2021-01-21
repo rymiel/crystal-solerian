@@ -1,0 +1,28 @@
+body {
+    background-color: #1a1a1a;
+}
+
+header {
+    background-color: #7e3c78;
+}
+
+#sidebar {
+    background-color: #918151;
+}
+
+a:active,
+a:hover {
+    color: #7179d6;
+    text-decoration: underline;
+}
+
+.search-box {
+    background-color: #9b8bb2;
+}
+
+button,
+input[type=button],
+input[type=submit] {
+    background-color: #d6546e;
+    color: #fff;
+}

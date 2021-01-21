@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title><%= (yield_content "title") || "Solerian" %></title>
+  <meta name="description"
+        content="Online automated tools to aid managing and translating into the conlang Solerian, created by rymiel.">
+  <meta property="og:title" content="Solerian language">
+  <meta property="og:description"
+        content="Online automated tools to aid managing and translating into the conlang Solerian, created by rymiel.">
+  <link rel="shortcut icon" href="/favicon.ico">
+  <link href="/styles/style.css" rel="stylesheet"/>
+  <%- if ctx.user? -%>
+    <link href="/styles/user.css" rel="stylesheet"/>
+  <%- else -%>
+    <link href="/styles/common.css" rel="stylesheet"/>
+  <%- end -%>
+  <%= yield_content "headscripts" %>
+</head>
+<body>
+<header>
+  <h1><a href="/"><%= (yield_content "header") || "Solerian Language" %></a></h1>
+  <%- if ctx.user? -%>
+    <a id="usertext" href="/user">Logged in as <%= ctx.user.username %>.</a>
+  <%- else -%>
+    <a id="usertext" href="/login">Not logged in.</a>
+  <%- end -%>
+</header>
+<input type="checkbox" id="slide" name="" value=""/>
+  <div id="sidebar" class="container">
+    <div id="menu"></div>
+    <label for="slide" class="toggle">&nbsp;&nbsp;&nbsp;&nbsp;</label>
+    <div class="overlay"></div>
+    <nav>
+      <ul>
+        <li><a href="/" title="Home">Home</a>
+          <hr/>
+        </li>
+        <%- if false -%>
+        <li><a href="/about" title="About">About</a></li>
+        <li><a href="/dict" title="Dictionary">Dictionary</a></li>
+        <li><a href="/verb" title="Verb Conjugation">Verb Conjugation</a></li>
+        <li><a href="/noun" title="Noun Declension">Noun Declension</a></li>
+        <li><a href="/poss" title="Possessive Suffixes">Possessive Suffixes</a></li>
+        <li><a href="/docs" title="Documentation">Documentation</a>
+          <hr/>
+        </li>
+        <%- end -%>
+        <%- if ctx.user? -%>
+          <li><a href="/user/entries" title="Manage Entries">Manage Entries</a>
+            <hr/>
+          </li>
+        <%- end -%>
+      </ul>
+    <footer>
+      <small id="copywrite">&copy; 2019-2021</small>
+    </footer>
+    </nav>
+
+  </div>
+<div id="center">
+  <div id="rightBar">
+    <%= content %>
+  </div>
+
+  <%- if ctx.has_messages -%>
+    <div class="alert-container">
+      <%- ctx.messages do |message, category| -%>
+        <div class="alert <%= category %>-alert">
+        <span class="close-button" onclick="this.parentElement.style.display='none';">&times;</span>
+          <%= message %>
+        </div>
+      <%- end -%>
+    </div>
+  <%- end -%>
+</div>
+</body>
+</html>

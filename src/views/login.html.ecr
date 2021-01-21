@@ -1,0 +1,19 @@
+<% content_for "header" do %>Log In<% end %>
+<% content_for "title" do %>Login | Control panel<% end %>
+<main>
+  <!-- {% if next %}
+    <p style="color: red"><b>That action requires you to be logged in</b></p>
+  {% endif %} -->
+  <b>Logged in users can edit and manage this page's information. There is no registration.</b>
+  <div class="search-box">
+    <form method="post">
+      <label>Username:
+        <input type=text name=username>
+      </label>
+      <label>Secret:
+        <input type=password name=secret>
+      </label>
+      <input type=submit value="Login">
+    </form>
+  </div>
+</main>

@@ -1,0 +1,32 @@
+body {
+    background-color: #1e1e1e;
+}
+
+header {
+    background-color: #452798;
+}
+
+nav {
+    background-color: #212121;
+}
+
+table {
+    background-color: #212121;
+}
+
+a:active,
+a:hover {
+    color: #ed89a9;
+    text-decoration: underline;
+}
+
+.search-box {
+    background-color: #6950bf;
+}
+
+button,
+input[type=button],
+input[type=submit] {
+    background-color: #b9474e;
+    color: #fff;
+}

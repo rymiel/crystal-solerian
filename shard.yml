@@ -1,0 +1,21 @@
+name: crystal-solerian
+version: 0.1.0
+
+authors:
+  - rymiel <emilia@rymiel.space>
+
+targets:
+  crystal-solerian:
+    main: src/crystal-solerian.cr
+
+dependencies:
+  solhttp:
+    gitlab: rymiel/solhttp
+  nanoid:
+    github: mamantoha/nanoid.cr
+  micrate:
+    github: juanedi/micrate
+
+crystal: 0.35.1
+
+license: MIT

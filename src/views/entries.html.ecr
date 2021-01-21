@@ -1,0 +1,41 @@
+<%- if include_input -%>
+  <div class="search-box">
+    <%= yield_content "form" %>
+  </div>
+<%- end -%>
+<main>
+  <table border="2">
+    <tbody>
+    <tr class="hl db">
+      <th>Hash</th>
+      <th>English</th>
+      <th>Solerian</th>
+      <th>Extra</th>
+      <th>Lusarian</th>
+      <th>Actions</th>
+    </tr>
+    <%- entries.each do |e| -%>
+      <tr id="<%= e.hash! %>" <% if e.l %>class="lusarian"<% end %>>
+        <% if e.hash! == edit %>
+          <form method="post">
+            <td><%= e.hash! %></td>
+            <td><input name="en" type="text" value="<%= e.eng %>" style="width: auto"></td>
+            <td><input name="sol" type="text" value="<%= e.sol %>" style="width: auto"></td>
+            <td><input name="ex" type="text" value="<%= e.extra %>" style="width: auto"></td>
+            <td><input name="lusarian" type="checkbox" <% if e.l %>checked<% end %> value="yes"></td>
+            <td><input type=submit value="Make change"></td>
+          </form>
+        <% else %>
+          <td><a href="/#<%= e.hash! %>"><%= e.hash! %></a></td>
+          <td><%= e.eng %></td>
+          <td><%= e.sol %></td>
+          <td><%= e.extra %></td>
+          <td><% if e.l %>yes<% else %>no<% end %></td>
+          <td><a href="/user/entries/delete?s=<%= e.hash! %>"><i>DEL</i></a>
+            <a href="/user/entries/edit?s=<%= e.hash! %>#<%= e.hash! %>"><i>EDIT</i></a></td>
+        <% end %>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+</main>
