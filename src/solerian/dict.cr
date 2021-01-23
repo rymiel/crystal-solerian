@@ -6,7 +6,7 @@ module Solerian
   alias JSDictEntry = {num: Int32, eng: String, sol: String, hash: String, extra: String, script: String, ipa: String, l: Bool}
 
   class Entry < Granite::Base
-    connection dict
+    connection solhttp
     table dict
 
     before_save :auto_hash

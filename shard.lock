@@ -46,7 +46,7 @@ shards:
 
   solhttp:
     git: https://gitlab.com/rymiel/solhttp.git
-    version: 0.1.0+git.commit.3d69c7d0710e7ff08525e84e74350ff282d0d571
+    version: 0.2.1+git.commit.ef7fef9beb9313166416d1383b846f24ed974d0a
 
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
