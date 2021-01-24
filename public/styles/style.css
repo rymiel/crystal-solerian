@@ -88,7 +88,7 @@ footer {
     text-align: center;
 }
 
-h1, h2, h3, #sidebar {
+h1, h2, h3, .container {
     text-align: center;
 }
 
@@ -99,19 +99,30 @@ h1 {
 /* </editor-fold> */
 
 /* <editor-fold desc="secondary tags"> */
-a,
-a:visited,
+a {
+    color: rgb(181, 243, 224);
+    transition: all 180ms;
+}
+
+h1 a,
+h1 a:visited,
 h1 a:active,
 h1 a:hover {
-    transition: all 180ms;
-    color: #eee;
     text-decoration: none;
+    color: #eee;
 }
 
 nav ul li a,
 nav ul li a:visited {
     display: inline-block;
+    text-decoration: none;
+    color: #eee;
     padding: 16px 22px;
+}
+
+nav ul li a:active,
+nav ul li a:hover {
+    color: #7179d6;
 }
 
 hr {
@@ -146,8 +157,7 @@ li:target {
 
 /* <editor-fold desc="structuring"> */
 #center,
-#rightBar,
-#sidebar {
+#rightBar {
     display: flex;
     overflow: auto;
 }
@@ -155,11 +165,6 @@ li:target {
 #center {
     flex-direction: row;
     flex: 1;
-}
-
-#sidebar {
-    flex-direction: column;
-    min-width: 175px;
 }
 
 #rightBar {

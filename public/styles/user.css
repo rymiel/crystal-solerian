@@ -6,8 +6,12 @@ header {
     background-color: #7e3c78;
 }
 
-#sidebar {
-    background-color: #918151;
+nav {
+    background-color: #21183a; 
+}
+
+table {
+    background-color: #171222;
 }
 
 a:active,
