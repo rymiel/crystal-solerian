@@ -6,7 +6,7 @@ authors:
 
 targets:
   crystal-solerian:
-    main: src/crystal-solerian.cr
+    main: src/solerian.cr
 
 dependencies:
   solhttp:
