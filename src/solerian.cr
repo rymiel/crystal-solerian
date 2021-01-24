@@ -6,6 +6,8 @@ require "./solerian/*"
 
 module Solerian
   VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
+  FOX_IDENT = ENV["FOX_IDENT"]?
+  FOX_HREF = ENV["FOX_HREF"]?
   
   get "/" do |ctx|
     templ "index"

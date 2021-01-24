@@ -5,7 +5,7 @@ authors:
   - rymiel <emilia@rymiel.space>
 
 targets:
-  crystal-solerian:
+  solerian:
     main: src/solerian.cr
 
 dependencies:
