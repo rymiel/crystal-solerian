@@ -8,6 +8,7 @@ module Solerian
   VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
   FOX_IDENT = ENV["FOX_IDENT"]?
   FOX_HREF = ENV["FOX_HREF"]?
+  Log = ::Log.for self
   
   get "/" do |ctx|
     templ "index"
@@ -62,13 +63,37 @@ module Solerian
         }
       }.to_json
     end
-    next {
+    Log.error {error} if ctx.response.status_code == 500
+    {
       "status" => "error",
       "response" => error
     }.to_json
   end
 
-
+  get "/api/jsemb/v2/locate/:hash" do |ctx|
+    ctx.response.content_type = "application/json"
+    ctx.response.status_code = 500
+    error = "Unknown error"
+    begin
+      index = Entry.raw_nonmodel(num: Int64) { |table| {"select num from ( select row_number () over ( order by extra ASC, eng ASC ) num, hash from #{table} ) where hash = ?;", [ctx.params.url["hash"]]} }.first?
+      raise (ArgumentError.new "Hash not found") unless index
+    rescue ex : ArgumentError
+      ctx.response.status_code = 400
+      error = ex.message
+    rescue ex
+      error = "Unknown #{ex}"
+    else
+      ctx.response.status_code = 200
+      next {
+        "status" => "ok",
+        "response" => index[:num]
+      }.to_json
+    end
+    {
+      "status" => "error",
+      "response" => error
+    }.to_json
+  end
 
   macro entries_common(render)
     entries = Dict.get(lusarian: true)
