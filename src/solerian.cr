@@ -5,11 +5,11 @@ require "solhttp"
 require "./solerian/*"
 
 module Solerian
-  VERSION = {{ `shards version #{__DIR__}`.chomp.stringify }}
+  VERSION   = {{ `shards version #{__DIR__}`.chomp.stringify }}
   FOX_IDENT = ENV["FOX_IDENT"]?
-  FOX_HREF = ENV["FOX_HREF"]?
-  Log = ::Log.for self
-  
+  FOX_HREF  = ENV["FOX_HREF"]?
+  Log       = ::Log.for self
+
   get "/" do |ctx|
     templ "index"
   end
@@ -49,7 +49,7 @@ module Solerian
       amount = (ctx.params.query["l"]? || 25).to_i
       raise ArgumentError.new "Parameters can't be negative" if start < 0 || amount < 0
       raise ArgumentError.new "Too many results requested per page" if amount > 100
-      dict = [] of JSDictEntry
+      dict = [] of FullDictEntry
       i = start
       d = Dict.get.offset(start)
       d = d.limit(amount) if amount > 0
@@ -65,19 +65,19 @@ module Solerian
     else
       ctx.response.status_code = 200
       next {
-        "status" => "ok",
+        "status"   => "ok",
         "response" => {
           "start": start,
-          "max": Dict.get.count.run,
+          "max":   Dict.get.count.run,
           "limit": amount,
-          "dict": dict
-        }
+          "dict":  dict,
+        },
       }.to_json
     end
-    Log.error {error} if ctx.response.status_code == 500
+    Log.error { error } if ctx.response.status_code == 500
     {
-      "status" => "error",
-      "response" => error
+      "status"   => "error",
+      "response" => error,
     }.to_json
   end
 
@@ -96,13 +96,13 @@ module Solerian
     else
       ctx.response.status_code = 200
       next {
-        "status" => "ok",
-        "response" => index[:num]
+        "status"   => "ok",
+        "response" => index[:num],
       }.to_json
     end
     {
-      "status" => "error",
-      "response" => error
+      "status"   => "error",
+      "response" => error,
     }.to_json
   end
 
@@ -121,7 +121,7 @@ module Solerian
 
   get "/user/entries/edit" do |ctx|
     next unless SolHTTP::Auth.assert_auth ctx
-    
+
     include_input = false
     edit = ctx.params.query["s"]
     entries_common "edit_entry"
@@ -132,7 +132,7 @@ module Solerian
 
     lusarian = ctx.params.body.has_key?("lusarian")
     entry = Entry.create! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
-    
+
     ctx.redirect "/user/entries##{entry.hash}", 303
   end
 
@@ -143,7 +143,7 @@ module Solerian
     edit = ctx.params.query["s"]
     entry = Entry.find! edit
     entry.update! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
-    
+
     ctx.redirect "/user/entries##{entry.hash}", 303
   end
 
