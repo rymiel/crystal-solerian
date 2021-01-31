@@ -3,7 +3,7 @@ require "nanoid"
 require "./script"
 
 module Solerian
-  alias JSDictEntry = {num: Int32, eng: String, sol: String, hash: String, extra: String, script: String, ipa: String, l: Bool}
+  alias FullDictEntry = {num: Int32, eng: String, sol: String, hash: String, extra: String, script: String, ipa: String, l: Bool, link: String?}
 
   class Entry < Granite::Base
     connection solhttp
@@ -34,16 +34,17 @@ module Solerian
       d
     end
 
-    def fill(e : Entry, num : Int32) : JSDictEntry
+    def fill(e : Entry, num : Int32) : FullDictEntry
       {
-        num: num,
-        eng: e.eng,
-        sol: e.sol,
-        hash: e.hash!,
+        num:    num,
+        eng:    e.eng,
+        sol:    e.sol,
+        hash:   e.hash!,
         script: Script.multi(e.sol),
-        ipa: e.sol,
-        l: e.l,
-        extra: e.extra
+        ipa:    e.sol,
+        l:      e.l,
+        extra:  e.extra,
+        link:   nil, # temporary
       }
     end
   end

@@ -29,6 +29,17 @@ module Solerian
     ctx.redirect "/"
   end
 
+  get "/dict" do |ctx|
+    entries = [] of FullDictEntry
+    d = Dict.get
+    i = 0
+    d.each do |j|
+      i += 1
+      entries << Dict.fill(j, i)
+    end
+    templ "dict"
+  end
+
   get "/api/jsemb/v2/dict" do |ctx|
     ctx.response.content_type = "application/json"
     ctx.response.status_code = 500
