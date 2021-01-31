@@ -3,6 +3,7 @@ require "sqlite3"
 require "json"
 require "solhttp"
 require "./solerian/*"
+require "./etor-log"
 
 module Solerian
   VERSION   = {{ `shards version #{__DIR__}`.chomp.stringify }}
@@ -166,5 +167,5 @@ module Solerian
   end
 end
 
-::Log.setup(:debug)
+::Log.setup(:trace, Log::IOBackend.new(formatter: Etor::Formatter))
 SolHTTP.run
