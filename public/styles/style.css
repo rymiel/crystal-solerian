@@ -180,6 +180,7 @@ li:target {
 #footer-message {
   align-self: center;
   flex: 1;
+  display: flex;
 }
 
 #stack {
