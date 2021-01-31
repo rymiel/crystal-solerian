@@ -1,32 +1,32 @@
 body {
-    background-color: #1a1a1a;
+  background-color: #1a1a1a;
 }
 
 header {
-    background-color: #7e3c78;
+  background-color: #7e3c78;
 }
 
 nav {
-    background-color: #21183a; 
+  background-color: #21183a;
 }
 
 table {
-    background-color: #171222;
+  background-color: #171222;
 }
 
 a:active,
 a:hover {
-    color: #7179d6;
-    text-decoration: underline;
+  color: #7179d6;
+  text-decoration: underline;
 }
 
 .search-box {
-    background-color: #9b8bb2;
+  background-color: #9b8bb2;
 }
 
 button,
-input[type=button],
-input[type=submit] {
-    background-color: #d6546e;
-    color: #fff;
+input[type="button"],
+input[type="submit"] {
+  background-color: #d6546e;
+  color: #fff;
 }
