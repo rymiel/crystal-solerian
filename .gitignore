@@ -2,3 +2,6 @@ old/
 lib/
 sess/
 data.db
+
+bin/
+!bin/micrate
