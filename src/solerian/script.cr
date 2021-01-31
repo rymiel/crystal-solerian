@@ -69,7 +69,7 @@ module Solerian::Script
     return "" if words.empty?
     String.build { |s|
       (words.split " ").each do |w|
-        s << html(w) + " "
+        s << html(to_suffixed w) + " "
       end
     }.strip
   end
