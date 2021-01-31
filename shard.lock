@@ -12,6 +12,10 @@ shards:
     git: https://github.com/bcardiff/granite.git
     version: 0.21.1+git.commit.72fb43da5c43147450bb87106545e411074f772f
 
+  json_mapping:
+    git: https://github.com/crystal-lang/json_mapping.cr.git
+    version: 0.1.0
+
   kemal:
     git: https://github.com/kemalcr/kemal.git
     version: 0.27.0
@@ -38,7 +42,7 @@ shards:
 
   solhttp:
     git: https://gitlab.com/rymiel/solhttp.git
-    version: 0.2.3+git.commit.68a18b116b2af67e9d3aba2c36a7745a01f47bff
+    version: 0.2.4+git.commit.619a4a6ab1e6c682ad44f0e5cd56aa5508a66fb7
 
   sqlite3:
     git: https://github.com/crystal-lang/crystal-sqlite3.git
