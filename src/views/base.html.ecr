@@ -53,11 +53,16 @@
         <%- end -%>
       </ul>
     <footer>
-      <small id="copywrite"><a href="//rymiel.space">&copy; rymiel 2019-2021</a><br/></small>
-      <small id="copywrite"><a href="//gitlab.com/rymiel/crystal-solerian">crystal-solerian <%= VERSION %></a><br/></small>
-      <small id="copywrite"><a href="//gitlab.com/rymiel/solhttp">solhttp <%= SolHTTP::VERSION %></a><br/></small>
-      <small id="copywrite"><a href="//github.com/kemalcr/kemal">kemal <%= Kemal::VERSION %></a><br/></small>
-      <%- if FOX_IDENT %><small id="copywrite"><a href="//<%= FOX_HREF %>"><%= FOX_IDENT %></a><br/></small><% end -%>
+      <small><a href="//rymiel.space">&copy; rymiel 2019-2021</a><br/></small>
+      <div id="footer-message">
+        <div><small id="powered">powered by</small> </div>
+        <div id="stack">
+          <small><a href="//gitlab.com/rymiel/crystal-solerian">crystal-solerian <%= VERSION %></a><br/></small>
+          <small><a href="//gitlab.com/rymiel/solhttp">solhttp <%= SolHTTP::VERSION %></a><br/></small>
+          <small><a href="//github.com/kemalcr/kemal">kemal <%= Kemal::VERSION %></a><br/></small>
+          <%- if FOX_IDENT %><small id="copywrite"><a href="//<%= FOX_HREF %>"><%= FOX_IDENT %></a><br/></small><% end -%>
+        </div>
+      </div>
     </footer>
     </nav>
 
