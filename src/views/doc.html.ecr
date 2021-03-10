@@ -1,0 +1,1584 @@
+<% content_for "header" do %>Documentation<% end %>
+<% content_for "title" do %>Documentation | Solerian<% end %>
+  <main id="docs">
+    <div id="toc"><input type="checkbox" role="button" id="toctogglecheckbox" class="toctogglecheckbox"
+                         style="display:none" checked="checked">
+      <div class="toctitle" lang="en" dir="ltr"><h2>Contents</h2><span class="toctogglespan"><label
+              class="toctogglelabel" for="toctogglecheckbox"></label></span></div>
+      <ul>
+        <li><a href="#introduction">1 Introduction</a></li>
+        <li><a href="#phonology">2 Phonology</a>
+          <ul>
+            <li><a href="#consonants">2.1 Consonants</a></li>
+            <li><a href="#vowels">2.2 Vowels</a></li>
+            <li><a href="#stress">2.3 Stress</a></li>
+            <li><a href="#phonotactics">2.4 Phonotactics</a></li>
+          </ul>
+        </li>
+        <li><a href="#morphology">3 Morphology</a>
+          <ul>
+            <li><a href="#verbs">3.1 Verbs</a>
+              <ul>
+                <li><a href="#type-0-verbs">3.1.1 Type 0 verbs (<code>-lus</code>)</a></li>
+                <li><a href="#type-i-verbs">3.1.2 Type I verbs (<code>-élus</code>)</a></li>
+                <li><a href="#type-ii-verbs">3.1.3 Type II verbs (<code>-las</code>)</a></li>
+                <li><a href="#type-iii-verbs">3.1.4 Type III verbs (<code>-lud</code>)</a></li>
+                <li><a href="#type-iv-verbs">3.1.5 Type IV verbs (<code>-nú</code> or <code>-mú</code>)</a></li>
+    <li><a href="#negation">3.1.6 Negation</a></li>
+              </ul>
+            </li>
+            <li><a href="#nouns">3.2 Nouns</a>
+              <ul>
+                <li><a href="#feminine-type-1t-nouns">3.2.1 Feminine type 1t nouns (<code>-àt</code>)</a></li>
+                <li><a href="#feminine-type-1d-nouns">3.2.2 Feminine type 1d nouns (<code>-àd</code>)</a></li>
+                <li><a href="#feminine-type-2-nouns">3.2.3 Feminine type 2 nouns (<code>-à</code>)</a></li>
+                <li><a href="#feminine-type-2i-special-case-nouns">3.2.4 Feminine type 2i special case nouns
+                  (<code>-ià</code>)</a></li>
+                <li><a href="#feminine-type-2x-special-case-nouns">3.2.5 Feminine type 2x special case nouns
+                  (<code>-àx</code>)</a></li>
+                <li><a href="#masculine-type-1-nouns">3.2.6 Masculine type 1 nouns (<code>-en</code>)</a></li>
+                <li><a href="#masculine-type-2-nouns">3.2.7 Masculine type 2 nouns (<code>-m</code>)</a></li>
+                <li><a href="#neuter-type-1-nouns">3.2.8 Neuter type 1 nouns (<code>-el</code>)</a></li>
+                <li><a href="#neuter-type-2-nouns">3.2.9 Neuter type 2 nouns (<code>-r</code>)</a></li>
+              </ul>
+            </li>
+            <li><a href="#possessive-suffixes">3.3 Possessive suffixes</a></li>
+            <li><a href="#postpositions">3.4 Postpositions</a></li>
+          </ul>
+        </li>
+        <li><a href="#syntax">4 Syntax</a>
+          <ul>
+            <li><a href="#word-order">4.1 Word order</a></li>
+            <li><a href="#noun-syntax">4.2 Noun syntax</a>
+              <ul>
+                <li><a href="#noun-phrases">4.2.1 Noun phrases</a></li>
+                <li><a href="#compound-nouns">4.2.2 Compound nouns</a></li>
+                <li><a href="#nominative-and-accusative-cases">4.2.3 Nominative and accusative cases</a></li>
+              </ul>
+            </li>
+      <li><a href="#transformations">4.3 (Transformations) WIP</a>
+              <ul>
+                <li><a href="#conditionals">4.3.1 Conditionals (<code>des</code>)</a></li>
+              </ul>
+            </li>
+      <li><a href="#pronouns">4.4 Pronouns</a>
+          </ul>
+        </li>
+        <li><a href="#derivational-morphology">5 Derivational morphology</a></li>
+        <li><a href="#semantics-and-pragmatics">6 Semantics and pragmatics (?)</a></li>
+        <li><a href="#writing-system">7 Writing system</a></li>
+        <li><a href="#examples">8 Examples</a></li>
+      </ul>
+    </div>
+    <h2><a></a>Solerian</h2>
+    <h3><a id="introduction"></a>1 Introduction</h3>
+    <p>it’s a language</p>
+    <h3><a id="phonology"></a>2 Phonology</h3> <h4><a id="consonants"></a>2.1 Consonants</h4>
+    <table>
+      <thead>
+      <tr>
+        <th>Consonants</th>
+        <th><strong>Labial</strong></th>
+        <th><strong>Alveolar</strong></th>
+        <th><strong>Palatal</strong></th>
+        <th><strong>Guttural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Plosive</td>
+        <td class="center"></td>
+        <td class="center">t d</td>
+        <td class="center"></td>
+        <td class="center">k g</td>
+      </tr>
+      <tr>
+        <td>Nasal</td>
+        <td class="center">m</td>
+        <td class="center">n</td>
+        <td class="center">ɲ &lt;ǹ&gt;</td>
+        <td class="center"></td>
+      </tr>
+      <tr>
+        <td>Trill</td>
+        <td class="center"></td>
+        <td class="center">r</td>
+        <td class="center"></td>
+        <td class="center"></td>
+      </tr>
+      <tr>
+        <td>Fricative</td>
+        <td class="center">f</td>
+        <td class="center">s</td>
+        <td class="center"></td>
+        <td class="center">(x)<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></td>
+      </tr>
+      <tr>
+        <td>Approximant</td>
+        <td class="center"></td>
+        <td class="center">l</td>
+        <td class="center">j</td>
+        <td class="center"></td>
+      </tr>
+      </tbody>
+    </table>
+    <h4><a id="vowels"></a>2.2 Vowels</h4>
+    <table>
+      <thead>
+      <tr>
+        <th><strong>Vowels</strong></th>
+        <th><strong>Front</strong></th>
+        <th><strong>Central</strong></th>
+        <th><strong>Back</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Close</td>
+        <td class="center">i</td>
+        <td class="center">ɨ &lt;y&gt;</td>
+        <td class="center">u</td>
+      </tr>
+      <tr>
+        <td>Mid</td>
+        <td class="center">e</td>
+        <td class="center">ə &lt;a&gt;</td>
+        <td class="center">o</td>
+      </tr>
+      <tr>
+        <td>Open</td>
+        <td class="center"></td>
+        <td class="center">a &lt;à&gt;</td>
+        <td class="center"></td>
+      </tr>
+      </tbody>
+    </table>
+    <h4><a id="stress"></a>2.3 Stress</h4>
+    <p>All Solerian words, except for postpositions, have stress on any syllable that must be marked, with a few
+      exceptions:</p>
+    <p>Stress can never<sup class="footnote-ref"><a href="#fn2" id="fnref2">[2]</a></sup> fall on /ə/ (&lt;a&gt;) </p>
+    <p>Stress must not be marked if the word contains only a single syllable that can take stress at all </p>
+    <p>This means that words with only /ə/ except for one vowel of a syllable are unambiguously stressed.<br>In the
+      romanization, stress is marked on the vowel of the stressed syllable with an acute accent (é). The letter &lt;à&gt;
+      stressed is written as &lt;á&gt;.</p><h4><a id="phonotactics"></a>2.4 Phonotactics</h4>
+    <p>( C )( C )V( C )( C )<br>No further details at this point.</p>
+    <h3><a id="morphology"></a>3 Morphology</h3>
+    <p>The morphology of Solerian contains a wide gender and class system, for both verbs and nouns.</p><h4><a
+          id="verbs"></a>3.1 Verbs</h4>
+    <p>Verbs are categorized into 5 classes, depending on the function of the verb itself. The class of the verb is
+      reflected by the suffix in the supine, which is then conjugated.</p>
+    <table>
+      <thead>
+      <tr>
+        <th><strong>Class name</strong></th>
+        <th><strong>Suffix</strong></th>
+        <th><strong>Function</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Type 0 verb <em>or</em> 0-class <em>or</em> T CONT class</td>
+        <td>-lus</td>
+        <td>Transitive continuous actions</td>
+      </tr>
+      <tr>
+        <td>Type I verb <em>or</em> e-class <em>or</em> IT CONT class</td>
+        <td>-élus</td>
+        <td>Intransitive continuous actions</td>
+      </tr>
+      <tr>
+        <td>Type II verb <em>or</em> a-class <em>or</em> TRANS class</td>
+        <td>-las</td>
+        <td>Transformations (to become)</td>
+      </tr>
+      <tr>
+        <td>Type III verb <em>or</em> d-class <em>or</em> ONCE class</td>
+        <td>-lud</td>
+        <td>One-time actions, regardless of transitivity</td>
+      </tr>
+      <tr>
+        <td>Type IV verb <em>or</em> n-class <em>or</em> ADJ class</td>
+        <td>-nú <em>or</em> -mú</td>
+        <td>Verbs describing state or quality (adjectives)</td>
+      </tr>
+      </tbody>
+    </table>
+    <p>Verbs of higher specificity take precedence, meaning a verb ending with <code>-élus</code> with always be of Type
+      I, despite also matching the suffix of Type 0 </p>
+    <p>For a verb to match with a class it has to also match the stress of the suffix, as it is listed above.</p>
+    <p>All Solerian verbs have 15 conjugation forms, classified as 3 untensed forms (<em>supine</em>,
+      <em>infinitive</em>, <em>imperative</em>) and 12 tensed forms (<em>nonpast</em> and <em>past</em> forms of all of <em>1sg</em>,
+      <em>2sg</em>, <em>3sg</em>, <em>1pl</em>, <em>2pl</em>, <em>3pl</em>).</p>
+    <p>The infinitive (inf 2) form is used when two verbs are used in conjunction. Only the first verb is conjugated and the
+      following one stays in the infinitive.</p>
+    <p>The supine form (inf 1) is actually used as a special case of the above. The supine must be used for the second verb when the
+      first verb is a verb of movement, such as “to go”. The movement verb may be omitted, given that the second verb
+      stays in the supine. The supine is also the form listed in the dictionary</p>
+    <h5><a id="type-0-verbs"></a>3.1.1 Type 0 verbs (<code>-lus</code>)</h5>
+    <p>Verbs of type 0 describe actions that take a direct object and that take time from beginning to completion.</p>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Suffix</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">-lus</td>
+        <td>1sg</td>
+        <td>-r</td>
+        <td>-ret</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">-là</td>
+        <td>2sg</td>
+        <td>-lék<sup class="footnote-ref"><a href="#fn3" id="fnref3:1">[3]</a></sup></td>
+        <td>-reg</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">-lí<sup class="footnote-ref"><a href="#fn3" id="fnref3">[3]</a></sup></td>
+        <td>3sg</td>
+        <td>-léts<sup class="footnote-ref"><a href="#fn3" id="fnref3:2">[3]</a></sup></td>
+        <td>-ras</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>-lát<sup class="footnote-ref"><a href="#fn3" id="fnref3:3">[3]</a></sup></td>
+        <td>-làmo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>-lág<sup class="footnote-ref"><a href="#fn3" id="fnref3:4">[3]</a></sup></td>
+        <td>-lànà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>-lás<sup class="footnote-ref"><a href="#fn3" id="fnref3:5">[3]</a></sup></td>
+        <td>-lona</td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="5" class="db">Conjugation of <code>ásylus</code> - to begin. (Root <em>ásy</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Conjugated</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">ásylus</td>
+        <td>1sg</td>
+        <td>ásyr</td>
+        <td>ásyret</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">ásylà</td>
+        <td>2sg</td>
+        <td>àsylék</td>
+        <td>ásyreg</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">àsylí</td>
+        <td>3sg</td>
+        <td>àsuléts</td>
+        <td>ásyras</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>àsylát</td>
+        <td>ásylàmo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>àsylág</td>
+        <td>ásylànà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>àsulás</td>
+        <td>ásylona</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="type-i-verbs"></a>3.1.2 Type I verbs (<code>-élus</code>)</h5>
+    <p>Verbs of type I describe actions that <em>do not</em> take a direct object and that take time from beginning to
+      completion.</p>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Suffix</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">-élus</td>
+        <td>1sg</td>
+        <td>-à<sup class="footnote-ref"><a href="#fn4" id="fnref4">[4]</a></sup></td>
+        <td>-ét</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">-érà</td>
+        <td>2sg</td>
+        <td>-eké</td>
+        <td>-ég</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">-í</td>
+        <td>3sg</td>
+        <td>-ités</td>
+        <td>-ésa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>-amét</td>
+        <td>-ámo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>-anég</td>
+        <td>-ánà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>-anés</td>
+        <td>-ánà</td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="5" class="db">Conjugation of <code>mimàélus</code> - to dance. (Root <em>mimà</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Conjugated</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">mimàélus</td>
+        <td>1sg</td>
+        <td>mímàà</td>
+        <td>mimàét</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">mimàérà</td>
+        <td>2sg</td>
+        <td>mimàeké</td>
+        <td>mimàég</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">mimàí</td>
+        <td>3sg</td>
+        <td>mimàités</td>
+        <td>mimàésa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>mimàamét</td>
+        <td>mimàámo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>mimàanég</td>
+        <td>mimàánà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>mimàanés</td>
+        <td>mimàánà</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="type-ii-verbs"></a>3.1.3 Type II verbs (<code>-las</code>)</h5>
+    <p>Verbs of type II describe continuous, transformative changes to a state or quality of a subject, usually, but not
+      always, equal to the construction “to become &lt;adjective&gt;”</p>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Suffix</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">-las</td>
+        <td>1sg</td>
+        <td>-lý<sup class="footnote-ref"><a href="#fn3" id="fnref3:6">[3]</a></sup></td>
+        <td>-ld</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">-lar</td>
+        <td>2sg</td>
+        <td>-laké<sup class="footnote-ref"><a href="#fn3" id="fnref3:7">[3]</a></sup></td>
+        <td>-leg</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">-li</td>
+        <td>3sg</td>
+        <td>-lités<sup class="footnote-ref"><a href="#fn3" id="fnref3:8">[3]</a></sup></td>
+        <td>-lsa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>-làté<sup class="footnote-ref"><a href="#fn3" id="fnref3:9">[3]</a></sup></td>
+        <td>-làmo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>-lànég<sup class="footnote-ref"><a href="#fn3" id="fnref3:10">[3]</a></sup></td>
+        <td>-lànà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>-láns<sup class="footnote-ref"><a href="#fn3" id="fnref3:11">[3]</a></sup></td>
+        <td>-lànà</td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="5" class="db">Conjugation of <code>tojélas</code> - to arrive (to become present). (Root
+          <em>tojé</em>)
+        </th>
+      </tr>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Conjugated</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">tojélas</td>
+        <td>1sg</td>
+        <td>tojelý</td>
+        <td>tojéld</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">tojélar</td>
+        <td>2sg</td>
+        <td>tojelaké</td>
+        <td>tojéleg</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">tojéli</td>
+        <td>3sg</td>
+        <td>tojelités</td>
+        <td>tojélsa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>tojelàté</td>
+        <td>tojélàmo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>tojelànég</td>
+        <td>tojélànà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>tojeláns</td>
+        <td>tojélànà</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="type-iii-verbs"></a>3.1.4 Type III verbs (<code>-lud</code>)</h5>
+    <p>Verbs of type III describe instantaneous or one-time, quick actions, regardless of whether or not there is a
+      direct object.</p>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Suffix</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">-lud</td>
+        <td>1sg</td>
+        <td>-d</td>
+        <td>-lut</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">-rad</td>
+        <td>2sg</td>
+        <td>-lék<sup class="footnote-ref"><a href="#fn3" id="fnref3:12">[3]</a></sup></td>
+        <td>-lek</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">-Ø</td>
+        <td>3sg</td>
+        <td>-ld</td>
+        <td>-lusa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>-deté<sup class="footnote-ref"><a href="#fn3" id="fnref3:13">[3]</a></sup></td>
+        <td>-lomà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>-dég<sup class="footnote-ref"><a href="#fn3" id="fnref3:14">[3]</a></sup></td>
+        <td>-lonà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>-dés<sup class="footnote-ref"><a href="#fn3" id="fnref3:15">[3]</a></sup></td>
+        <td>-lonà</td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="5" class="db">Conjugation of <code>ratílud</code> - to purchase. (Root <em>ratí</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Conjugated</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">ratílud</td>
+        <td>1sg</td>
+        <td>ratíd</td>
+        <td>ratílut</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">ratírad</td>
+        <td>2sg</td>
+        <td>ratilék</td>
+        <td>ratílek</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">ratí</td>
+        <td>3sg</td>
+        <td>ratíld</td>
+        <td>ratílusa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>ratideté</td>
+        <td>ratílomà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>ratidég</td>
+        <td>ratílonà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>ratidés</td>
+        <td>ratílonà</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="type-iv-verbs"></a>3.1.5 Type IV verbs (<code>-nú</code> or <code>-mú</code>)</h5>
+    <p>Verbs of type IV desribe the state or quality of a subject, corresponding to adjectives.</p>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Suffix</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">-Nú<sup class="footnote-ref"><a href="#fn5" id="fnref5">[5]</a></sup></td>
+        <td>1sg</td>
+        <td>-ǹý</td>
+        <td>-Nút<sup class="footnote-ref"><a href="#fn5" id="fnref5:3">[5]</a></sup></td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">-Nár<sup class="footnote-ref"><a href="#fn5" id="fnref5:1">[5]</a></sup></td>
+        <td>2sg</td>
+        <td>-ǹék</td>
+        <td>-Núek<sup class="footnote-ref"><a href="#fn5" id="fnref5:4">[5]</a></sup></td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">-N<sup class="footnote-ref"><a href="#fn4" id="fnref4:1">[4]</a></sup><sup
+                class="footnote-ref"><a
+                href="#fn5" id="fnref5:2">[5]</a></sup></td>
+        <td>3sg</td>
+        <td>-n<sup class="footnote-ref"><a href="#fn6" id="fnref6">[6]</a></sup></td>
+        <td>-Núsa<sup class="footnote-ref"><a href="#fn5" id="fnref5:5">[5]</a></sup></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>-ǹám</td>
+        <td>-Námo<sup class="footnote-ref"><a href="#fn5" id="fnref5:6">[5]</a></sup></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>-ǹág</td>
+        <td>-Nánà<sup class="footnote-ref"><a href="#fn5" id="fnref5:7">[5]</a></sup></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>-ǹán</td>
+        <td>-Nánà<sup class="footnote-ref"><a href="#fn5" id="fnref5:8">[5]</a></sup></td>
+      </tr>
+      </tbody>
+    </table>
+    <br/>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="5" class="db">Conjugation of <code>tegàmú</code> - to be old. (Root <em>tegà</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Untensed</strong></th>
+        <th class="rb"><strong>Conjugated</strong></th>
+        <th><strong>Tensed</strong></th>
+        <th><strong>Nonpast</strong></th>
+        <th><strong>Past</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>supine</td>
+        <td class="rb">tegàmú</td>
+        <td>1sg</td>
+        <td>tegàǹý</td>
+        <td>tegàmút</td>
+      </tr>
+      <tr>
+        <td>infinitive</td>
+        <td class="rb">tegàmár</td>
+        <td>2sg</td>
+        <td>tegàǹék</td>
+        <td>tegàmúek</td>
+      </tr>
+      <tr>
+        <td>imperative</td>
+        <td class="rb">tégàm</td>
+        <td>3sg</td>
+        <td>tegán</td>
+        <td>tegàmúsa</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>1pl</td>
+        <td>tegàǹám</td>
+        <td>tegàmámo</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>2pl</td>
+        <td>tegàǹág</td>
+        <td>tegàmánà</td>
+      </tr>
+      <tr>
+        <td></td>
+        <td class="rb"></td>
+        <td>3pl</td>
+        <td>tegàǹán</td>
+        <td>tegàmánà</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="negation"></a>3.1.6 Negation</h5>
+    <p>Negating verbs is done with the prefix <code>ad</code> placed on the verb. In the case of multiple verbs it is only put on the first verb </p>
+    <blockquote><p><em>lúrà mimàérà</em> - I can dance<br/><em>ad-lúrà mimàérà</em> - I can't dance</p></blockquote>
+    <h4><a id="nouns"></a>3.2 Nouns</h4>
+    <p>Nouns are categorized into 3 genders: <em>feminine</em>, <em>masculine</em> and <em>neuter</em>, which are then
+      also subsequently classified into subtypes, resulting in 7 types and 2 additional special cases. The gender of a
+      noun does not always add any particular meaning to the word. The type of a noun is determined from its suffix in
+      the nominative singular.</p>
+    <table>
+      <thead>
+      <tr>
+        <th><strong>Type name</strong></th>
+        <th><strong>Suffix</strong></th>
+        <th><strong>Extra</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>Feminine type 1t</td>
+        <td>-àt</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Feminine type 1d</td>
+        <td>-àd</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Feminine type 2</td>
+        <td>-à</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Feminine type 2i</td>
+        <td>-ià</td>
+        <td>Special case of feminine type 2</td>
+      </tr>
+      <tr>
+        <td>Feminine type 2x</td>
+        <td>-àx</td>
+        <td>Special case of feminine type 2</td>
+      </tr>
+      <tr>
+        <td>Masculine type 1</td>
+        <td>-en</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Masculine type 2</td>
+        <td>-m</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Neuter type 1</td>
+        <td>-el</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Neuter type 2</td>
+        <td>-r</td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+    <p>Special cases take precedence, as they have higher specificity.</p>
+    <p>Unlike verbs, the noun suffix does not have to match the stress of the suffix as listed above, meaning that the
+      stress is kept on declined forms.</p>
+    <p>Solerian nouns have 3 cases: <em>nominative</em>, <em>accusative</em> and <em>genitive</em>. Thus all nouns have
+      6 forms, corresponding to singular and plural forms of the three cases.</p><h5><a id="feminine-type-1t-nouns"></a>3.2.1
+    Feminine type 1t nouns (<code>-àt</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-àt</td>
+        <td>-àtún<sup class="footnote-ref"><a href="#fn7" id="fnref7">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-en</td>
+        <td>-etin</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-is</td>
+        <td>-iis</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>sóxrdàt</code> - mountain. (Root <em>sóxrd</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>sóxrdàt</td>
+        <td>soxrdàtún</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>sóxrden</td>
+        <td>sóxrdetin</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>sóxrdis</td>
+        <td>sóxrdiis</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="feminine-type-1d-nouns"></a>3.2.2 Feminine type 1d nouns (<code>-àd</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-àd</td>
+        <td>-ánd<sup class="footnote-ref"><a href="#fn7" id="fnref7:1">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-ein</td>
+        <td>-etin</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-is</td>
+        <td>-iis</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>elád</code> - moon. (Root <em>el</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>elád</td>
+        <td>elánd</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>eléin</td>
+        <td>elétin</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>elís</td>
+        <td>elíis</td>
+      </tr>
+      </tbody>
+    </table>
+    <p>Note how the stress of this word is already on the suffix, which doesn’t change in the plural nominative</p><h5>
+    <a id="feminine-type-2-nouns"></a>3.2.3 Feminine type 2 nouns (<code>-à</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-à</td>
+        <td>-áin<sup class="footnote-ref"><a href="#fn7" id="fnref7:2">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-e</td>
+        <td>-ein</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-ir</td>
+        <td>-iir</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>jarsà</code> - ring (jewelry). (Root <em>jars</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>jarsà</td>
+        <td>jarsáin</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>jarse</td>
+        <td>jarséin</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>jarsir</td>
+        <td>jarsíir</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="feminine-type-2i-special-case-nouns"></a>3.2.4 Feminine type 2i special case nouns (<code>-ià</code>)
+    </h5>
+    <p>A noun with the suffix <code>-iá</code>, that is, with the stress on the final <code>à</code> is not a valid word
+      and does not match any class.</p>
+    <p>This special case exists to avoid a triple <code>i</code> in the plural genitive.</p>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-ià</td>
+        <td>-iáin<sup class="footnote-ref"><a href="#fn7" id="fnref7:3">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-ie</td>
+        <td>-iein</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-ir</td>
+        <td>-iir</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>mílià</code> - girl. (Root <em>míl</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>mílià</td>
+        <td>miliáin</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>mílie</td>
+        <td>míliein</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>mílir</td>
+        <td>míliir</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="feminine-type-2x-special-case-nouns"></a>3.2.5 Feminine type 2x special case nouns (<code>-àx</code>)
+    </h5>
+    <p>Nouns in this special case decline similarly to feminine type 2 nouns, despite ending with an additional letter.
+      Note that this letter, representing the phoneme /x/ always elides away word-finally and thus isn’t pronounced.</p>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-àx</td>
+        <td>-áxi<sup class="footnote-ref"><a href="#fn7" id="fnref7:4">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-ox</td>
+        <td>-oxe</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-ir</td>
+        <td>-ixir</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>kiútàx</code> - performer. (Root <em>kiút</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>kiútàx</td>
+        <td>kiutáxi</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>kiútox</td>
+        <td>kiútoxe</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>kiútir</td>
+        <td>kiútixir</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="masculine-type-1-nouns"></a>3.2.6 Masculine type 1 nouns (<code>-en</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-en</td>
+        <td>-enét<sup class="footnote-ref"><a href="#fn7" id="fnref7:5">[7]</a></sup></td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-ean</td>
+        <td>-eant</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-yr</td>
+        <td>-esyr</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>setén</code> - performer. (Root <em>set</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>setén</td>
+        <td>setenét</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>setéan</td>
+        <td>setéant</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>setýr</td>
+        <td>setésyr</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="masculine-type-2-nouns"></a>3.2.7 Masculine type 2 nouns (<code>-m</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-m</td>
+        <td>-mas</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-m</td>
+        <td>-mas</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-mer</td>
+        <td>-ǹir</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>kiúm</code> - sleep. (Root <em>kiú</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>kiúm</td>
+        <td>kiúmas</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>kiúm</td>
+        <td>kiúmas</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>kiúmer</td>
+        <td>kiúǹir</td>
+      </tr>
+      </tbody>
+    </table>
+    <h5><a id="neuter-type-1-nouns"></a>3.2.8 Neuter type 1 nouns (<code>-el</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-el</td>
+        <td>-eek</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-aln</td>
+        <td>-alnek</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-eler</td>
+        <td>-elsar</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>sajel</code> - danger. (Root <em>saj</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>sajel</td>
+        <td>sajéek</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>sájaln</td>
+        <td>sajalnek</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>sajéler</td>
+        <td>sajelsar</td>
+      </tr>
+      </tbody>
+    </table>
+    <p>Note how the first vowel in the singular accusative form becomes /a/ as otherwise all the vowels would be /ə/ and
+      there wouldn’t be anywhere for the word’s stress to go.</p><h5><a id="neuter-type-2-nouns"></a>3.2.9 Neuter type 2
+    nouns (<code>-r</code>)</h5>
+    <table class="linear floated">
+      <thead>
+      <tr>
+        <th><strong>Suffixes</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>-r</td>
+        <td>-àr</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>-rin</td>
+        <td>-rinse</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>-ràr</td>
+        <td>-riser</td>
+      </tr>
+      </tbody>
+    </table>
+    <table class="linear">
+      <thead>
+      <tr>
+        <th colspan="3" class="db">Declension of <code>ixár</code> - pain. (Root <em>ixá</em>)</th>
+      </tr>
+      <tr>
+        <th><strong>Declined</strong></th>
+        <th><strong>Singular</strong></th>
+        <th><strong>Plural</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>nominative</td>
+        <td>ixá-r</td>
+        <td>ixá-àr</td>
+      </tr>
+      <tr>
+        <td>accusative</td>
+        <td>ixá-rin</td>
+        <td>ixá-rinse</td>
+      </tr>
+      <tr>
+        <td>genitive</td>
+        <td>ixá-ràr</td>
+        <td>ixá-riser</td>
+      </tr>
+      </tbody>
+    </table>
+    <h4><a id="possessive-suffixes"></a>3.3 Possessive suffixes</h4>
+    <p>Possessive in Solerian is formed using the genitive cases of nouns, however for pronouns, possessive suffixes can
+      be used instead. They can be attached after any noun declension.</p>
+    <table>
+      <thead>
+      <tr>
+        <th><strong>Person</strong></th>
+        <th><strong>Suffix</strong></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>1sg</td>
+        <td>-elm</td>
+      </tr>
+      <tr>
+        <td>2sg</td>
+        <td>-etr</td>
+      </tr>
+      <tr>
+        <td>3sg M</td>
+        <td>-usd</td>
+      </tr>
+      <tr>
+        <td>3sg F</td>
+        <td>-usan</td>
+      </tr>
+      <tr>
+        <td>3sg N</td>
+        <td>-ys</td>
+      </tr>
+      <tr>
+        <td>1pl</td>
+        <td>-elmes</td>
+      </tr>
+      <tr>
+        <td>2pl</td>
+        <td>-etres</td>
+      </tr>
+      <tr>
+        <td>3pl</td>
+        <td>-usdes</td>
+      </tr>
+      </tbody>
+    </table>
+    <p>For example:</p>
+    <blockquote><p><em>dámelerelm eder elam indités</em><br/><em>dám-eler-elm eder elam ind-ités</em><br/>hand-GEN.SG-1SG
+      from blood flow-3SG.PRS<br/>"Blood is flowing from my hand"</p>
+    </blockquote>
+    <p>Is identical in meaning to:</p>
+    <blockquote><p><em>lemér dámeler eder elam indités</em><br/><em>lem-ér dám-eler eder elam ind-ités</em><br/>1SG-GEN
+      hand-GEN.SG from blood flow-3SG.PRS<br/>"Blood is flowing from my hand"</p>
+    </blockquote>
+    <h4><a id="postpositions"></a>3.4 Postpositions</h4>
+    <p>When adding postpositions to a noun, the affected noun is put in the genitive and the postposition after it. If
+      the postposition can be clustered with the letters <code>r</code> or <code>s</code>, it can be directly attached
+      to the genitive of the noun. In this case, the postposition takes the stress.</p>
+    <p>Note that postposition suffixes and possessive suffixes cannot be stacked, only one may be used at once.</p>
+    <p>For example:</p>
+    <blockquote><p><em>álenàt</em> - forest<br><em>álenis</em> - forest’s<br><em>álenis on</em> - towards the forest<br><em>àlenisón</em>
+      - towards the forest</p></blockquote>
+    <h3><a id="syntax"></a>4 Syntax</h3>
+    <h4><a id="word-order"></a>4.1 Word order</h4>
+    <p>Solerian sentences are usually SOV, but due to the case structure this order does not always have to be followed,
+      as long as ambiguity is not a problem.</p>
+    <blockquote><p><em>némà rajen ásyras</em><br><em>némà raj-en ásy-ras</em>
+    <br>wind house-ACC break-3SG.PST</p></blockquote>
+    <p>Phrases are largely head-final, but not necessarily always. In general:</p>
+    <p>Adverbs directly precede the verb, however for certain cases, such as time adverbs, it may be preferred to put the adverb
+      in the beginning of the sentence.</p>
+    <a class="EXAMPLE"></a>
+    <p>Postpositional phrases such as locatives and dative expressions tend to go after the subject and/or the object, though they can be put anywhere for emphasis or for a contrastive effect</p>
+    <a class="EXAMPLE"></a>
+    <h4><a id="noun-syntax"></a>4.2 Noun syntax</h4>
+    <h5><a id="noun-phrases"></a>4.2.1 Noun phrases</h5>
+    <p>Noun phrases in Solerian follow the head direction and thus have modified noun at the end of the phrase and the corresponding modifiers precede it directly</p>
+    <a class="EXAMPLE"></a>
+    <h5><a id="compound-nouns"></a>4.2.2 Compound nouns</h5>
+    <p>Compound nouns can be formed in Solerian by joining two nominatives together into one word. As an exception to the head-directionality, the primary word comes first and the
+    specifying, secondary noun comes after. The stress on the compound noun goes on the secondary noun.</p>
+        <blockquote>
+      <p><em>elád</em> - moon<br/><em>sólà</em> - light<br/><em>solàelád</em> - moonlight</p>
+    </blockquote>
+    <h5><a id="nominative-and-accusative-cases"></a>4.2.3 Nominative and accusative cases</h5>
+    <p>The nominative and accusative cases are two of just three cases present in Solerian (see: <a href="#nouns">Noun</a>) and function quite simply to mark the subject and direct object</p>
+    <blockquote><p><em>némà rajen ásyras</em><br><em>némà raj-en ásy-ras</em>
+    <br>wind(NOM) house-ACC break-3SG.PST</p></blockquote>
+    <p>Another use for the accusative case is when counting objects. If the amount being counted is not one (zero, two, or more), the counted object is put in the accusative and the counting number is declined instead. When counting one thing, both decline in agreement.</p>
+    <blockquote><p><em>milàtún mukxestanés <strong>jéler rean</strong> eder tojélànà</em><br><em>mil-àtún mukxesta-nés <strong>j-éler r-ean</strong> eder toj-élànà</em>
+    <br>girl-PL differ-3PL.PRS <strong>three-GEN town-ACC</strong> from arrive-3PL.PST<br>"The girls arrived from three different towns"</p></blockquote>
+    <p>Note how the word for "three" took the genitive marking for the postposition "from", despite being in front of the word being counted "town", which was subsequently put in the accusative.</p>
+    <h4><a id="transformations"></a>(4.3 Transformations) WIP</h4>
+    <blockquote><p><em>saneí <strong>úsean</strong> fisýret rudél laxumerón uumésa</em><br/><em>saneí <strong>ús-ean</strong> fisýre-t rudél laxum-er-ón
+      uum-ésa</em>
+      <br/>yesterday <strong>3SG.M-ACC</strong> see-1SG.PST man home-GEN-towards go-3SG.PST<br/>"The man i saw yesterday went home" (resumptive pronoun in bold)</p>
+    </blockquote>
+    <p>Relative clauses go in front of the NP they modify, and resumptive pronouns are preferred to be used, but can be dropped</p>
+    <p>As Solerian lacks adjectives, type IV verbs as a relative clause can be thought of as adjectives, though resumptive pronouns are never used for this</p>
+    <h5><a id="conditionals"></a>4.3.1 Conditionals (<code>des</code>)</h5>
+    <p>The word <code>des</code> is put between the conditional clause and the result clause, in that order, that is, <em>CONDITION des RESULT</em></p>
+    <h4><a id="pronouns"></a>4.4 Pronouns</h4>
+    <p>Solerian is mostly pro-drop and pronouns are dropped when subject is marked on the verb and ambiguity does not arise. When necessary, such as as resumptive pronouns, pronouns still exist in Solerian but their declension is irregular.</p>
+    <table class="linear">
+  <thead>
+  <tr>
+    <th>Pronouns</th>
+    <th>1 singular</th>
+    <th>2 singular</th>
+    <th>3 singular masculine</th>
+    <th>3 singular feminine</th>
+    <th>3 singular neuter</th>
+    <th>1 plural</th>
+    <th>2 plural</th>
+    <th>3 plural</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td>Nominative</td>
+    <td>léme</td>
+    <td>táràn</td>
+    <td>úsen<br></td>
+    <td>úsàd<br></td>
+    <td>ýsel<br></td>
+    <td>télmes</td>
+    <td>métres</td>
+    <td>súdes</td>
+  </tr>
+  <tr>
+    <td>Accusative</td>
+    <td>lemal</td>
+    <td>tánàl<br></td>
+    <td>úsean<br></td>
+    <td>úsein<br></td>
+    <td>ysaln</td>
+    <td>télmail</td>
+    <td>metral</td>
+    <td>sudal</td>
+  </tr>
+  <tr>
+    <td>Genitive</td>
+    <td>lemér</td>
+    <td>tàlér</td>
+    <td>úsyr<br></td>
+    <td>úsis<br></td>
+    <td>ýseler<br></td>
+    <td>terém</td>
+    <td>metár</td>
+    <td>súràd</td>
+  </tr>
+  </tbody>
+</table>
+    <h3><a id="derivational-morphology"></a>5 Derivational morphology</h3>
+    <h3><a id="semantics-and-pragmatics"></a>6 Semantics and pragmatics (?)</h3>
+    <h3><a id="writing-system"></a>7 Writing system</h3>
+    <h3><a id="examples"></a>8 Examples</h3>
+    <hr class="footnotes-sep">
+    <section class="footnotes">
+      <ol class="footnotes-list">
+        <li id="fn1" class="footnote-item"><p>The phoneme /x/ never stays as [x], becoming either [h], [g], or eliding
+          completely. <a href="#fnref1" class="footnote-backref">↩</a></p></li>
+        <li id="fn2" class="footnote-item"><p>In rare cases, the only vowel of a word may be /ə/, in which case the
+          first of these vowels takes the stress and becomes /a/. <a href="noun?s=satel">(Example)</a> <a href="#fnref2" class="footnote-backref">↩</a></p>
+        </li>
+        <li id="fn3" class="footnote-item"><p> Conjugations with stress on the suffix itself that doesn’t appear on the
+          infinitive of that verb’s class take the stress of the verb that was elsewhere in the infinitive. <a
+                  href="#fnref3" class="footnote-backref">↩</a> <a href="#fnref3:1" class="footnote-backref">↩</a> <a
+                  href="#fnref3:2" class="footnote-backref">↩</a> <a href="#fnref3:3" class="footnote-backref">↩</a> <a
+                  href="#fnref3:4" class="footnote-backref">↩</a> <a href="#fnref3:5" class="footnote-backref">↩</a> <a
+                  href="#fnref3:6" class="footnote-backref">↩</a> <a href="#fnref3:7" class="footnote-backref">↩</a> <a
+                  href="#fnref3:8" class="footnote-backref">↩</a> <a href="#fnref3:9" class="footnote-backref">↩</a> <a
+                  href="#fnref3:10" class="footnote-backref">↩</a> <a href="#fnref3:11" class="footnote-backref">↩</a>
+          <a href="#fnref3:12" class="footnote-backref">↩</a> <a href="#fnref3:13" class="footnote-backref">↩</a> <a
+                  href="#fnref3:14" class="footnote-backref">↩</a> <a href="#fnref3:15" class="footnote-backref">↩</a>
+        </p></li>
+        <li id="fn4" class="footnote-item"><p> Conjugations that don’t have stress whereas the infinitive of that verb’s
+          class does, default to having the stress on the first syllable, even if it is /ə/ (Which means it becomes /a/,
+          as per footnote 2) <a href="#fnref4" class="footnote-backref">↩</a> <a href="#fnref4:1"
+                                                                                 class="footnote-backref">↩</a></p></li>
+        <li id="fn5" class="footnote-item"><p> Conjugation in type IV have two possible infinitives, <code>-nú</code> or
+          <code>-mú</code>. In the conjugation chart, capital N signifies the nasal that is in the infinitive being
+          either <code>n</code> or <code>m</code> <a href="#fnref5" class="footnote-backref">↩</a> <a href="#fnref5:1"
+                                                                                                      class="footnote-backref">↩</a>
+          <a href="#fnref5:2" class="footnote-backref">↩</a> <a href="#fnref5:3" class="footnote-backref">↩</a> <a
+                  href="#fnref5:4" class="footnote-backref">↩</a> <a href="#fnref5:5" class="footnote-backref">↩</a> <a
+                  href="#fnref5:6" class="footnote-backref">↩</a> <a href="#fnref5:7" class="footnote-backref">↩</a> <a
+                  href="#fnref5:8" class="footnote-backref">↩</a></p></li>
+        <li id="fn6" class="footnote-item"><p>The 3sg nonpast form of type IV verbs is exceptional in that the stress is
+          placed on the last syllable, instead of the first. <a href="#fnref6" class="footnote-backref">↩</a></p></li>
+        <li id="fn7" class="footnote-item"><p> Declensions with stress on the suffix itself that doesn’t appear on the
+          nominative singular of that noun’s type take the stress of the noun that was elsewhere in the nominative
+          singular. <a href="#fnref7" class="footnote-backref">↩</a> <a href="#fnref7:1" class="footnote-backref">↩</a>
+          <a href="#fnref7:2" class="footnote-backref">↩</a> <a href="#fnref7:3" class="footnote-backref">↩</a> <a
+                  href="#fnref7:4" class="footnote-backref">↩</a> <a href="#fnref7:5" class="footnote-backref">↩</a></p>
+        </li>
+      </ol>
+    </section>
+  </main>

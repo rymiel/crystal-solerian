@@ -40,6 +40,10 @@ module Solerian
     templ "dict"
   end
 
+  get "/docs" do |ctx|
+    templ "doc"
+  end
+
   get "/api/jsemb/v2/dict" do |ctx|
     ctx.response.content_type = "application/json"
     ctx.response.status_code = 500
