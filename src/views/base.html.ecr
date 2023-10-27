@@ -10,7 +10,7 @@
         content="Online automated tools to aid managing and translating into the conlang Solerian, created by rymiel.">
   <link rel="shortcut icon" href="/favicon.ico">
   <link href="/styles/style.css" rel="stylesheet"/>
-  <%- if ctx.user? -%>
+  <%- if Auth.user?(ctx) -%>
     <link href="/styles/user.css" rel="stylesheet"/>
   <%- else -%>
     <link href="/styles/common.css" rel="stylesheet"/>
@@ -20,8 +20,8 @@
 <body>
 <header>
   <h1><a href="/"><%= (yield_content "header") || "Solerian Language" %></a></h1>
-  <%- if ctx.user? -%>
-    <a id="usertext" href="/user">Logged in as <%= ctx.user.username %>.</a>
+  <%- if Auth.user?(ctx) -%>
+    <a id="usertext" href="/user">Logged in as <%= Auth.username(ctx) %>.</a>
   <%- else -%>
     <a id="usertext" href="/login">Not logged in.</a>
   <%- end -%>
@@ -47,14 +47,14 @@
           <hr/>
         </li>
         <%- end -%>
-        <%- if ctx.user? -%>
+        <%- if Auth.user?(ctx) -%>
           <li><a href="/user/entries" title="Manage Entries">Manage Entries</a>
             <hr/>
           </li>
         <%- end -%>
       </ul>
     <footer>
-      <small><a href="//rymiel.space">&copy; rymiel 2019-2021</a><br/></small>
+      <small><a href="//rymiel.space">&copy; rymiel 2019-<%= Time.utc.year %></a><br/></small>
       <div id="footer-message">
         <div><small id="powered">powered by</small> </div>
         <div id="stack">

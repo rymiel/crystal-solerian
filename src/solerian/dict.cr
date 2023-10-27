@@ -1,6 +1,7 @@
-require "granite/adapter/sqlite"
+require "./db"
 require "nanoid"
 require "./script"
+require "./sound_change"
 
 module Solerian
   alias FullDictEntry = {num: Int32, eng: String, sol: String, hash: String, extra: String, script: String, ipa: String, l: Bool, link: String?}
@@ -41,7 +42,7 @@ module Solerian
         sol:    e.sol,
         hash:   e.hash!,
         script: Script.multi(e.sol),
-        ipa:    e.sol,
+        ipa:    SoundChange.sound_change(e.sol),
         l:      e.l,
         extra:  e.extra,
         link:   nil, # temporary

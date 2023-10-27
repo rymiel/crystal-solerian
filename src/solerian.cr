@@ -18,13 +18,17 @@ module Solerian
     templ "login"
   end
 
+  post "/login" do |ctx|
+    next Auth.check_login ctx
+  end
+
   get "/user" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
     templ "user"
   end
 
   get "/logout" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
     ctx.session.destroy
     ctx.redirect "/"
   end
@@ -91,7 +95,7 @@ module Solerian
     error = "Unknown error"
     begin
       index = Entry.raw_nonmodel(num: Int64) { |table| {"select num from ( select row_number () over ( order by extra ASC, eng ASC ) num, hash from #{table} ) where hash = ?;", [ctx.params.url["hash"]]} }.first?
-      raise (ArgumentError.new "Hash not found") unless index
+      raise(ArgumentError.new "Hash not found") unless index
     rescue ex : ArgumentError
       ctx.response.status_code = 400
       error = ex.message
@@ -116,7 +120,7 @@ module Solerian
   end
 
   get "/user/entries" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     include_input = true
     edit = nil
@@ -124,7 +128,7 @@ module Solerian
   end
 
   get "/user/entries/edit" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     include_input = false
     edit = ctx.params.query["s"]
@@ -132,7 +136,7 @@ module Solerian
   end
 
   post "/user/entries" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     lusarian = ctx.params.body.has_key?("lusarian")
     entry = Entry.create! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
@@ -141,7 +145,7 @@ module Solerian
   end
 
   post "/user/entries/edit" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     lusarian = ctx.params.body.has_key?("lusarian")
     edit = ctx.params.query["s"]
@@ -152,13 +156,13 @@ module Solerian
   end
 
   get "/user/entries/import" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     templ "import"
   end
 
   post "/user/entries/import" do |ctx|
-    next unless SolHTTP::Auth.assert_auth ctx
+    next unless Auth.assert_auth ctx
 
     lines = ctx.params.body["s"]
     lines.split("\n").each do |i|

@@ -1,5 +1,5 @@
 name: crystal-solerian
-version: 0.1.5
+version: 0.2.0
 
 authors:
   - rymiel <emilia@rymiel.space>
@@ -15,6 +15,9 @@ dependencies:
     github: mamantoha/nanoid.cr
   micrate:
     github: juanedi/micrate
+  granite:
+    github: amberframework/granite
+    version: 0.23.1
 
 crystal: 0.36.0
 
