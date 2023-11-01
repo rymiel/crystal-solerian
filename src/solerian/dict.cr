@@ -4,9 +4,7 @@ require "./script"
 require "./sound_change"
 
 module Solerian
-  alias FullDictEntry = {num: Int32, eng: String, sol: String, hash: String, extra: String, script: String, ipa: String, l: Bool, link: String?}
-
-  class Entry < Granite::Base
+  class RawEntry < Granite::Base
     connection solhttp
     table dict
 
@@ -19,6 +17,8 @@ module Solerian
     column extra : String = ""
     timestamps
 
+    has_one full_entry : FullEntry
+
     def auto_hash
       if !@hash
         @hash = Nanoid.generate(size: 10)
@@ -26,27 +26,53 @@ module Solerian
     end
   end
 
+  class FullEntry < Granite::Base
+    connection solhttp
+    table fulldict
+
+    column num : Int32, primary: true, auto: false
+
+    belongs_to raw_entry : RawEntry, foreign_key: hash : String
+
+    column eng : String
+    column sol : String
+    column extra : String
+    column script : String
+    column ipa : String
+    column lusarian : Bool
+    column link : String? = nil # temporary
+  end
+
   module Dict
     extend self
 
-    def get(*, lusarian = false)
-      d = Entry.order([:extra, :eng])
-      return d.where(l: lusarian) unless lusarian
-      d
+    def expand_entries
+      full_entries = [] of FullEntry
+      i = 1
+      RawEntry.order([:extra, :eng]).each do |raw|
+        full = FullEntry.new
+        full.num = i
+        full.eng = raw.eng
+        full.sol = raw.sol
+        full.hash = raw.hash!
+        full.script = Script.multi(raw.sol)
+        full.ipa = SoundChange.sound_change(raw.sol)
+        full.lusarian = raw.l
+        full.extra = raw.extra
+        full.link = nil # temporary
+
+        full_entries << full
+        i += 1
+      end
+
+      FullEntry.migrator.drop_and_create
+      FullEntry.import full_entries
     end
 
-    def fill(e : Entry, num : Int32) : FullDictEntry
-      {
-        num:    num,
-        eng:    e.eng,
-        sol:    e.sol,
-        hash:   e.hash!,
-        script: Script.multi(e.sol),
-        ipa:    SoundChange.sound_change(e.sol),
-        l:      e.l,
-        extra:  e.extra,
-        link:   nil, # temporary
-      }
+    def get(*, lusarian = false)
+      d = FullEntry.order(:num)
+      return d.where(lusarian: lusarian) unless lusarian
+      d
     end
   end
 end

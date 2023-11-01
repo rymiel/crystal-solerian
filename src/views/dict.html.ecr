@@ -12,18 +12,18 @@
       <th>Pronunciation</th>
     </tr>
     <%- entries.each do |e| -%>
-      <tr id="<%= e[:hash] %>" <% if e[:l] %>class="lusarian"<% end %>>
-        <td><a href="#<%= e[:hash] %>"><%= e[:num] %></a></td>
-        <td><%= e[:eng] %></td>
-        <% if e[:link] %>
-          <td><a href="<%= e[:link] %>?s=<%= e[:sol] %>"><i><%= e[:sol] %></i></a></td>
-          <td class="sol"><a href="<%= e[:link] %>?s=<%= e[:sol] %>"><%= e[:script] %></a></td>
+      <tr id="<%= e.hash %>" <% if e.lusarian %>class="lusarian"<% end %>>
+        <td><a href="#<%= e.hash %>"><%= e.num %></a></td>
+        <td><%= e.eng %></td>
+        <% if e.link %>
+          <td><a href="<%= e.link %>?s=<%= e.sol %>"><i><%= e.sol %></i></a></td>
+          <td class="sol"><a href="<%= e.link %>?s=<%= e.sol %>"><%= e.script %></a></td>
         <% else %>
-          <td><i><%= e[:sol] %></i></td>
-          <td class="sol"><%= e[:script] %></td>
+          <td><i><%= e.sol %></i></td>
+          <td class="sol"><%= e.script %></td>
         <% end %>
-        <td><%= e[:extra] %></td>
-        <td><%= e[:ipa] %></td>
+        <td><%= e.extra %></td>
+        <td><%= e.ipa %></td>
       </tr>
     <% end %>
     </tbody>

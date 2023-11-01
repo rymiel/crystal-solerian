@@ -34,13 +34,7 @@ module Solerian
   end
 
   get "/dict" do |ctx|
-    entries = [] of FullDictEntry
-    d = Dict.get
-    i = 0
-    d.each do |j|
-      i += 1
-      entries << Dict.fill(j, i)
-    end
+    entries = Dict.get
     templ "dict"
   end
 
@@ -57,14 +51,9 @@ module Solerian
       amount = (ctx.params.query["l"]? || 25).to_i
       raise ArgumentError.new "Parameters can't be negative" if start < 0 || amount < 0
       raise ArgumentError.new "Too many results requested per page" if amount > 100
-      dict = [] of FullDictEntry
-      i = start
       d = Dict.get.offset(start)
       d = d.limit(amount) if amount > 0
-      d.each do |j|
-        i += 1
-        dict << Dict.fill(j, i)
-      end
+      dict = d.select
     rescue ex : ArgumentError
       ctx.response.status_code = 400
       error = ex.message
@@ -94,7 +83,7 @@ module Solerian
     ctx.response.status_code = 500
     error = "Unknown error"
     begin
-      index = Entry.raw_nonmodel(num: Int64) { |table| {"select num from ( select row_number () over ( order by extra ASC, eng ASC ) num, hash from #{table} ) where hash = ?;", [ctx.params.url["hash"]]} }.first?
+      index = FullEntry.find_by(hash: ctx.params.url["hash"]).try &.num
       raise(ArgumentError.new "Hash not found") unless index
     rescue ex : ArgumentError
       ctx.response.status_code = 400
@@ -105,7 +94,7 @@ module Solerian
       ctx.response.status_code = 200
       next {
         "status"   => "ok",
-        "response" => index[:num],
+        "response" => index,
       }.to_json
     end
     {
@@ -139,7 +128,8 @@ module Solerian
     next unless Auth.assert_auth ctx
 
     lusarian = ctx.params.body.has_key?("lusarian")
-    entry = Entry.create! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
+    entry = RawEntry.create! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
+    Dict.expand_entries
 
     ctx.redirect "/user/entries##{entry.hash}", 303
   end
@@ -149,8 +139,9 @@ module Solerian
 
     lusarian = ctx.params.body.has_key?("lusarian")
     edit = ctx.params.query["s"]
-    entry = Entry.find! edit
+    entry = RawEntry.find! edit
     entry.update! eng: ctx.params.body["en"], sol: ctx.params.body["sol"], extra: ctx.params.body["ex"], l: lusarian
+    Dict.expand_entries
 
     ctx.redirect "/user/entries##{entry.hash}", 303
   end
@@ -168,11 +159,13 @@ module Solerian
     lines.split("\n").each do |i|
       next if i.strip.empty?
       fields = i.strip.split("\t")
-      Entry.create! eng: fields[0], sol: fields[1], extra: fields[2], l: false
+      RawEntry.create! eng: fields[0], sol: fields[1], extra: fields[2], l: false
     end
+    Dict.expand_entries
     ctx.redirect "/user/entries", 303
   end
 end
 
 ::Log.setup(:trace)
+Solerian::Dict.expand_entries
 SolHTTP.run
