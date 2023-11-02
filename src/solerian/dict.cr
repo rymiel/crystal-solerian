@@ -31,6 +31,8 @@ module Solerian
     table fulldict
 
     column num : Int32, primary: true, auto: false
+    column eng_num : Int32
+    column sol_num : Int32
 
     belongs_to raw_entry : RawEntry, foreign_key: hash : String
 
@@ -46,10 +48,17 @@ module Solerian
   module Dict
     extend self
 
-    def expand_entries
-      full_entries = [] of FullEntry
-      i = 1
-      RawEntry.order([:extra, :eng]).each do |raw|
+    SOLERIAN_ORDER = "aàbcdefghijklmnǹopqrstuvwxyz"
+    DESTRESS = {'á' => 'à', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ý' => 'y'}
+    def collate_solerian(str : String) : Array(UInt8)
+      str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
+    end
+
+    def expand_entries : Nil
+      existing_mapped = {} of String => FullEntry
+      raw_entries = RawEntry.order([:extra, :eng]).select
+
+      raw_entries.each_with_index do |raw, i|
         full = FullEntry.new
         full.num = i
         full.eng = raw.eng
@@ -61,18 +70,25 @@ module Solerian
         full.extra = raw.extra
         full.link = nil # temporary
 
-        full_entries << full
-        i += 1
+        existing_mapped[raw.hash!] = full
+      end
+
+      raw_entries.sort_by!(&.eng)
+      raw_entries.each_with_index do |raw, i|
+        existing_mapped[raw.hash!].eng_num = i
+      end
+
+      raw_entries.unstable_sort_by!(&.sol).sort_by! { |i| collate_solerian(i.sol) }
+      raw_entries.each_with_index do |raw, i|
+        existing_mapped[raw.hash!].sol_num = i
       end
 
       FullEntry.migrator.drop_and_create
-      FullEntry.import full_entries
+      FullEntry.import existing_mapped.values.to_a
     end
 
-    def get(*, lusarian = false)
-      d = FullEntry.order(:num)
-      return d.where(lusarian: lusarian) unless lusarian
-      d
+    def get(*, order = :num, lusarian = false)
+      return FullEntry.order(order).where(lusarian: lusarian)
     end
   end
 end

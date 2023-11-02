@@ -34,7 +34,12 @@ module Solerian
   end
 
   get "/dict" do |ctx|
-    entries = Dict.get
+    sort = case ctx.params.query["sort"]?
+           when "eng" then :eng_num
+           when "sol" then :sol_num
+           else            :num
+           end
+    entries = Dict.get order: sort
     templ "dict"
   end
 
