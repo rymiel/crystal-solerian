@@ -173,78 +173,55 @@ module Solerian::SoundChange
     'ɔ' => "ɑ",
     'Ɔ' => "ɑ",
     'Æ' => "æ",
-    'x' => "ɣ",
     'ð' => "ð̠",
-
-    'ʦ' => "ts",
-    'ʨ' => "tɕ",
-    'q' => "kʲ",
   }
 
-  def self.syllabify(ortho : String, *, mark_stress = true) : String
-    total_vowels = 0
-    total_schwa = 0
-    flag = false
-    was_vowel = false
-    breaks = [] of Int32
-    stress = 0
-    syll = String::Builder.new
+  MAKE_STRESSED     = {'a' => 'á', 'e' => 'é', 'i' => 'í', 'o' => 'ó', 'u' => 'ú', 'y' => 'ý'}
+  PRESERVE_CLUSTERS = ["ts", "tɕ", "kʲ"]
 
-    ortho.each_char_with_index do |c, i|
-      if VOWEL.includes? c
-        if flag
-          if was_vowel
-            breaks.push(i)
-          else
-            breaks.push(i - 1)
-          end
-        end
+  def self.set_at_index(str : String, index : Int32, char : Char) : String
+    "#{str[...index]}#{char}#{str[(index + 1)..]}"
+  end
 
-        flag = true
-        if STRESS.includes?(c) && breaks.size > 0
-          stress = breaks.last
-        end
+  def self.lax_stress(word : String) : String
+    count_vowels = word.count &.in? VOWEL
+    stress_index = word.chars.index &.in? STRESS
+    word = word.sub(MAKE_STRESSED) if stress_index.nil? && count_vowels > 1
+    word
+  end
 
-        total_vowels += 1
-        total_schwa += 1 if c == 'ə'
-        was_vowel = true
-      else
-        was_vowel = false
-      end
+  def self.syllabify(word : String, *, mark_stress = true) : String
+    word = word.gsub(/([#{VOWEL}][^#{VOWEL}]*?)(?=[^#{VOWEL}]?[#{VOWEL}])/, "\\1.")
+    PRESERVE_CLUSTERS.each do |cluster|
+      word = word.gsub("#{cluster[0]}.#{cluster[1]}", ".#{cluster}")
     end
 
-    if total_vowels == 1
-      stress = -1
-    elsif total_vowels - total_schwa == 1
-      ortho.each_char_with_index do |c, i|
-        if VOWEL.includes?(c) && c != 'ə'
-          if i < breaks[0]
-            stress = 0
-          else
-            stress = breaks[0]
-          end
-        end
-      end
+    count_vowels = word.count &.in? VOWEL
+    stress_index = word.chars.index &.in? STRESS
+    if stress_index
+      stress_boundary = word.rindex('.', stress_index)
     end
 
-    ortho.each_char_with_index do |c, i|
-      syll << '.' if breaks.includes?(i)
-      syll << '\'' if i == stress && mark_stress
-      syll << (POST_UNROMANIZE[c]? || c)
+    if count_vowels <= 1
+      # pass
+    elsif stress_boundary.nil?
+      word = '\u02c8' + word
+    else
+      word = self.set_at_index(word, stress_boundary, '\u02c8')
     end
-
-    return syll.to_s
+    word = word.sub('\u02c8', '.') unless mark_stress
+    word = word.strip('.')
+    return word.gsub POST_UNROMANIZE
   end
 
   def self.single_word_sound_change(word : String, *, mark_stress = true) : String
-    original_word = word
     word = word.gsub(PRE_UNROMANIZE)
+    word = self.lax_stress(word) if mark_stress
     CHANGES.each do |(pattern, replacement)|
       word = word.gsub(pattern, replacement)
     end
-    word = word.gsub("ts", 'ʦ').gsub("tɕ", 'ʨ').gsub("kʲ", "q")
-    word = self.syllabify(word, mark_stress: mark_stress)
-    return word
+
+    return self.syllabify(word, mark_stress: mark_stress)
   end
 
   def self.sound_change(phrase : String, *, mark_stress = true) : String
