@@ -60,7 +60,7 @@ module Solerian
 
       raw_entries.each_with_index do |raw, i|
         full = FullEntry.new
-        full.num = i
+        full.num = i + 1
         full.eng = raw.eng
         full.sol = raw.sol
         full.hash = raw.hash!
@@ -75,12 +75,12 @@ module Solerian
 
       raw_entries.sort_by!(&.eng)
       raw_entries.each_with_index do |raw, i|
-        existing_mapped[raw.hash!].eng_num = i
+        existing_mapped[raw.hash!].eng_num = i + 1
       end
 
       raw_entries.unstable_sort_by!(&.sol).sort_by! { |i| collate_solerian(i.sol) }
       raw_entries.each_with_index do |raw, i|
-        existing_mapped[raw.hash!].sol_num = i
+        existing_mapped[raw.hash!].sol_num = i + 1
       end
 
       FullEntry.migrator.drop_and_create
