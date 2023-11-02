@@ -88,7 +88,9 @@ module Solerian
     end
 
     def get(*, order = :num, lusarian = false)
-      return FullEntry.order(order).where(lusarian: lusarian)
+      d = FullEntry.order(order)
+      return d.where(lusarian: lusarian) unless lusarian
+      d
     end
   end
 end
