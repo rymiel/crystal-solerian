@@ -49,7 +49,8 @@ module Solerian
     extend self
 
     SOLERIAN_ORDER = "aàbcdefghijklmnǹopqrstuvwxyz"
-    DESTRESS = {'á' => 'à', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ý' => 'y'}
+    DESTRESS       = {'á' => 'à', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ý' => 'y'}
+
     def collate_solerian(str : String) : Array(UInt8)
       str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
     end
@@ -65,7 +66,7 @@ module Solerian
         full.sol = raw.sol
         full.hash = raw.hash!
         full.script = Script.multi(raw.sol)
-        full.ipa = SoundChange.sound_change(raw.sol)
+        full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
         full.extra = raw.extra
         full.link = nil # temporary

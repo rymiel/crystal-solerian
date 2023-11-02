@@ -156,8 +156,6 @@ module Solerian::SoundChange
     },
   ]
 
-  CACHE = {} of String => String
-
   PRE_UNROMANIZE = {
     'a' => "ə",
     'à' => "a",
@@ -183,7 +181,7 @@ module Solerian::SoundChange
     'q' => "kʲ",
   }
 
-  def self.syllabify(ortho : String) : String
+  def self.syllabify(ortho : String, *, mark_stress = true) : String
     total_vowels = 0
     total_schwa = 0
     flag = false
@@ -231,33 +229,26 @@ module Solerian::SoundChange
 
     ortho.each_char_with_index do |c, i|
       syll << '.' if breaks.includes?(i)
-      syll << '\'' if i == stress
+      syll << '\'' if i == stress && mark_stress
       syll << (POST_UNROMANIZE[c]? || c)
     end
 
     return syll.to_s
   end
 
-  def self.single_word_sound_change(word : String) : String
-    result = CACHE[word]?
-    if result.nil?
-      original_word = word
-      word = word.gsub(PRE_UNROMANIZE)
-      CHANGES.each do |(pattern, replacement)|
-        word = word.gsub(pattern, replacement)
-      end
-      word = word.gsub("ts", 'ʦ').gsub("tɕ", 'ʨ').gsub("kʲ", "q")
-      word = self.syllabify(word)
-      result = word
-
-      CACHE[original_word] = result
+  def self.single_word_sound_change(word : String, *, mark_stress = true) : String
+    original_word = word
+    word = word.gsub(PRE_UNROMANIZE)
+    CHANGES.each do |(pattern, replacement)|
+      word = word.gsub(pattern, replacement)
     end
-
-    result
+    word = word.gsub("ts", 'ʦ').gsub("tɕ", 'ʨ').gsub("kʲ", "q")
+    word = self.syllabify(word, mark_stress: mark_stress)
+    return word
   end
 
-  def self.sound_change(phrase : String) : String
-    words = phrase.split(" ").map { |i| single_word_sound_change(i) }
+  def self.sound_change(phrase : String, *, mark_stress = true) : String
+    words = phrase.split(" ").map { |i| single_word_sound_change(i, mark_stress: mark_stress) }
 
     return "[#{words.join " "}]"
   end
