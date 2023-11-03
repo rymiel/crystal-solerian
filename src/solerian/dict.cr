@@ -2,6 +2,7 @@ require "./db"
 require "nanoid"
 require "./script"
 require "./sound_change"
+require "./inflection"
 
 module Solerian
   class RawEntry < Granite::Base
@@ -68,7 +69,13 @@ module Solerian
         full.script = Script.multi(raw.sol)
         full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
-        full.extra = raw.extra
+        if raw.extra.starts_with? 'N'
+          full.extra = "#{raw.extra}-#{Noun.determine_class_name(raw.sol)}"
+        elsif raw.extra.starts_with? 'V'
+          full.extra = "#{raw.extra}-#{Verb.determine_class_name(raw.sol)}"
+        else
+          full.extra = raw.extra
+        end
         full.link = nil # temporary
 
         existing_mapped[raw.hash!] = full
