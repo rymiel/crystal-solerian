@@ -171,6 +171,12 @@ module Solerian
   end
 end
 
-::Log.setup(:trace)
+Log.setup do |c|
+  backend = Log::IOBackend.new
+
+  c.bind "*", :trace, backend
+  c.bind "db.*", :info, backend
+  c.bind "granite", :info, backend
+end
 Solerian::Dict.expand_entries
 SolHTTP.run
