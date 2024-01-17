@@ -57,6 +57,8 @@ module Solerian
     end
 
     def expand_entries : Nil
+      timer_start = Time.monotonic
+
       existing_mapped = {} of String => FullEntry
       raw_entries = RawEntry.order([:extra, :eng]).select
 
@@ -93,6 +95,9 @@ module Solerian
 
       FullEntry.migrator.drop_and_create
       FullEntry.import existing_mapped.values.to_a
+
+      timer_end = Time.monotonic
+      Log.notice { "FullEntry expansion took #{timer_end - timer_start}" }
     end
 
     def get(*, order = :num, lusarian = false)
