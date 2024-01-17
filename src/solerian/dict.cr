@@ -70,9 +70,9 @@ module Solerian
         full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
         if raw.extra.starts_with? 'N'
-          full.extra = "#{raw.extra}-#{Noun.determine_class_name(raw.sol)}"
+          full.extra = "#{raw.extra}-#{Inflection::Noun.determine_class(raw.sol).try &.class_name false}"
         elsif raw.extra.starts_with? 'V'
-          full.extra = "#{raw.extra}-#{Verb.determine_class_name(raw.sol)}"
+          full.extra = "#{raw.extra}-#{Inflection::Verb.determine_class(raw.sol).try &.class_name false}"
         else
           full.extra = raw.extra
         end
