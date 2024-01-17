@@ -62,6 +62,8 @@ module Solerian
       existing_mapped = {} of String => FullEntry
       raw_entries = RawEntry.order([:extra, :eng]).select
 
+      timer_logic_start = Time.monotonic
+
       raw_entries.each_with_index do |raw, i|
         full = FullEntry.new
         full.num = i + 1
@@ -93,11 +95,15 @@ module Solerian
         existing_mapped[raw.hash!].sol_num = i + 1
       end
 
+      timer_logic_end = Time.monotonic
+
       FullEntry.migrator.drop_and_create
       FullEntry.import existing_mapped.values.to_a
 
       timer_end = Time.monotonic
-      Log.notice { "FullEntry expansion took #{timer_end - timer_start}" }
+      Log.notice { "FullEntry expansion total took #{timer_end - timer_start}" }
+      Log.notice { "FullEntry expansion logic took #{timer_logic_end - timer_logic_start}" }
+      Log.notice { "FullEntry expansion DB IO took #{(timer_logic_start - timer_start) + (timer_end - timer_logic_end)}" }
     end
 
     def get(*, order = :num, lusarian = false)
