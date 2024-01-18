@@ -31,11 +31,11 @@ module Solerian::Auth
       return
     end
 
-    return "No"
+    "No"
   end
 
   def self.user?(ctx)
-    return !self.username(ctx).nil?
+    !self.username(ctx).nil?
   end
 
   def self.assert_auth(ctx)
@@ -44,10 +44,10 @@ module Solerian::Auth
       ctx.response.close
       return false
     end
-    return true
+    true
   end
 
   def self.username(ctx)
-    return ctx.session.string?("user")
+    ctx.session.string?("user")
   end
 end

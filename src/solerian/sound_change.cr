@@ -100,7 +100,7 @@ module Solerian::SoundChange
     end
     word = word.sub('\u02c8', '.') unless mark_stress
     word = word.strip('.')
-    return word.gsub POST_UNROMANIZE
+    word.gsub POST_UNROMANIZE
   end
 
   def self.single_word_sound_change(word : String, *, mark_stress = true) : String
@@ -110,12 +110,12 @@ module Solerian::SoundChange
       word = word.gsub(pattern, replacement)
     end
 
-    return self.syllabify(word, mark_stress: mark_stress)
+    self.syllabify(word, mark_stress: mark_stress)
   end
 
   def self.sound_change(phrase : String, *, mark_stress = true) : String
     words = phrase.split(" ").map { |i| single_word_sound_change(i, mark_stress: mark_stress) }
 
-    return "[#{words.join " "}]"
+    "[#{words.join " "}]"
   end
 end

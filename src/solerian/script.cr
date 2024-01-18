@@ -38,7 +38,7 @@ module Solerian::Script
     res = [] of LetterContext
     flag = false # "detaching" flag
     text.each_char do |i|
-      first = res.empty? 
+      first = res.empty?
       if i == 'a' && first # Initial 'a' has a special form
         res << LetterContext.new 0x10, 0
       elsif i == 'a' # Attach 'a' diacritic if it doesn't exist
@@ -46,10 +46,10 @@ module Solerian::Script
       elsif i == '\'' && !first && res.last.letter >= 0x10 # Only stress vowels
         res[-1] = res.last.stress
       else
-        next unless LETTERS.has_key?(i) # Skip nonexistent letters
-        res[-1] = res.last.final if i == 'm' && !first # Detach last letter
+        next unless LETTERS.has_key?(i)                    # Skip nonexistent letters
+        res[-1] = res.last.final if i == 'm' && !first     # Detach last letter
         res << LetterContext.new(LETTERS[i], flag ? 2 : 0) # Detach this letter (flag)
-        flag = i == 'à' || i == 'm' # Letters which will detach next letter (flag)
+        flag = i == 'à' || i == 'm'                        # Letters which will detach next letter (flag)
       end
     end
 
