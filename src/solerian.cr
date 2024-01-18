@@ -109,7 +109,7 @@ module Solerian
   end
 
   macro entries_common(render)
-    entries = Dict.get(lusarian: true)
+    entries = Dict.get_raw(lusarian: true)
     templ {{render}}, "entries"
   end
 

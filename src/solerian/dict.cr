@@ -25,6 +25,11 @@ module Solerian
         @hash = Nanoid.generate(size: 10)
       end
     end
+
+    # this is here because i regret naming the field a single character but i also don't want to rename the DB column
+    def lusarian : Bool
+      @l || false
+    end
   end
 
   class FullEntry < Granite::Base
@@ -109,6 +114,12 @@ module Solerian
     def get(*, order = :num, lusarian = false)
       d = FullEntry.order(order)
       return d.where(lusarian: lusarian) unless lusarian
+      d
+    end
+
+    def get_raw(*, lusarian = false)
+      d = RawEntry.order(:eng)
+      return d.where(l: lusarian) unless lusarian
       d
     end
   end
