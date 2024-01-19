@@ -1,0 +1,78 @@
+<% content_for "header" do %>Verb Conjugation<% end %>
+<% content_for "title" do %>Verb conjugation | Solerian<% end %>
+<main>
+  <div class="search-box">
+    <form>
+      <label for="verbInput">Verb to conjugate:</label>
+      <input name="s" type="text" id="verbInput" value="<%= word %>">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <% if table && summary %>
+    <table border="2">
+      <tbody>
+      <tr>
+        <th colspan="4" class="hl db"><%= summary %></th>
+      </tr>
+      <tr>
+        <td>1st inf</td>
+        <%= verb_table_entry(table[:"1_inf"]) %>
+        <td>2sg imp</td>
+        <%= verb_table_entry(table[:"2sg_imp"]) %>
+      </tr>
+      <tr>
+        <td>2nd inf</td>
+        <%= verb_table_entry(table[:"2_inf"]) %>
+        <td></td>
+        <td></td>
+      </tr>
+      </tbody>
+    </table>
+    <table border="2">
+      <tbody>
+      <tr>
+        <th colspan="2" class="rb db"></th>
+        <th class="hl db">present</th>
+        <th class="hl db">past</th>
+      </tr>
+      <tr>
+        <th rowspan="3" class="hl">sg</th>
+        <td class="rb">1</td>
+        <%= verb_table_entry(table[:"1sg_prs"]) %>
+        <%= verb_table_entry(table[:"1sg_pst"]) %>
+      </tr>
+      <tr>
+        <td class="rb">2</td>
+        <%= verb_table_entry(table[:"2sg_prs"]) %>
+        <%= verb_table_entry(table[:"2sg_pst"]) %>
+      </tr>
+      <tr>
+        <td class="rb">3</td>
+        <%= verb_table_entry(table[:"3sg_prs"]) %>
+        <%= verb_table_entry(table[:"3sg_pst"]) %>
+      </tr>
+      <tr>
+        <th rowspan="3" class="hl">pl</th>
+        <td class="rb">1</td>
+        <%= verb_table_entry(table[:"1pl_prs"]) %>
+        <%= verb_table_entry(table[:"1pl_pst"]) %>
+      </tr>
+      <tr>
+        <td class="rb">2</td>
+        <%= verb_table_entry(table[:"2pl_prs"]) %>
+        <%= verb_table_entry(table[:"2pl_pst"]) %>
+      </tr>
+      <tr>
+        <td class="rb">3</td>
+        <%= verb_table_entry(table[:"3pl_prs"]) %>
+        <%= verb_table_entry(table[:"3pl_pst"]) %>
+      </tr>
+      </tbody>
+    </table>
+  <% elsif fail %>
+    <b style="color: red"><br/>Invalid verb.</b>
+    <p>Note that valid Solerian words not present in the dictionary are currently not supported.</p>
+  <% else %>
+    <b><br/>Enter a valid Solerian verb above to get its conjugation patterns.</b>
+  <% end %>
+</main>

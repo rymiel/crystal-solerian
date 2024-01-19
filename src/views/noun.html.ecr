@@ -1,0 +1,47 @@
+<% content_for "header" do %>Noun Declension<% end %>
+<% content_for "title" do %>Noun declension | Solerian<% end %>
+<main>
+  <div class="search-box">
+    <form>
+      <label for="nounInput">Noun to inflect: </label>
+      <input name="s" type="text" id="nounInput" value="<%= word %>">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <% if table && summary %>
+    <table border="2">
+      <tbody>
+      <tr class="hl db">
+        <th colspan="3"><%= summary %></th>
+      </tr>
+      <tr>
+        <th class="rb"></th>
+        <th class="hl db">sg</th>
+        <th class="hl db">pl</th>
+      </tr>
+      <tr>
+        <th class="hl rb">nom</th>
+        <%= noun_table_entry(table[:nom_sg]) %>
+        <%= noun_table_entry(table[:nom_pl]) %>
+      </tr>
+      <tr>
+        <th class="hl rb">acc</th>
+        <%= noun_table_entry(table[:acc_sg]) %>
+        <%= noun_table_entry(table[:acc_pl]) %>
+      </tr>
+      <tr>
+        <th class="hl rb">gen</th>
+        <%= noun_table_entry(table[:gen_sg]) %>
+        <%= noun_table_entry(table[:gen_pl]) %>
+        <!-- TODO -->
+        <!-- <td><a href="{{ url_for('genitive') }}?s={{ n.nom_sg }}">+</a></td> -->
+      </tr>
+      </tbody>
+    </table>
+  <% elsif fail %>
+    <b style="color: red"><br/>Invalid noun.</b>
+    <p>Note that valid Solerian words not present in the dictionary are currently not supported.</p>
+  <% else %>
+    <b><br/>Enter a valid Solerian noun above to get its declension patterns.</b>
+  <% end %>
+</main>

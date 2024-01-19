@@ -10,6 +10,20 @@ module Solerian
   FOX_HREF  = ENV["FOX_HREF"]?
   Log       = ::Log.for self
 
+  INCLUDE_SOL = false # idk
+
+  def self.sol_p(word : InflectedEntry)
+    INCLUDE_SOL ? %(<p class="sol">#{word.script}</p>) : ""
+  end
+
+  def self.noun_table_entry(word : InflectedEntry)
+    return %(<td><a href="/poss/?s=#{word.sol}"><i>#{word.sol}</i></a><p>#{word.ipa}</p>#{sol_p word}</td>)
+  end
+
+  def self.verb_table_entry(word : InflectedEntry)
+    return %(<td><i>#{word.sol}</i><p>#{word.ipa}</p>#{sol_p word}</td>)
+  end
+
   get "/" do |ctx|
     templ "index"
   end
@@ -41,6 +55,44 @@ module Solerian
            end
     entries = Dict.get order: sort
     templ "dict"
+  end
+
+  get "/noun" do |ctx|
+    word = ctx.params.query["s"]?.try { |w| HTML.escape w }
+    fail = false
+    if word
+      forms = InflectedEntry
+        .where(raw: word, part: Inflection::Part::Noun.to_i)
+        .order(:form)
+        .select
+      if forms.size > 0
+        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} noun #{word}"
+        table = Inflection::NOUN_FORMS.zip(forms).to_h
+      else
+        fail = true
+      end
+    end
+
+    templ "noun"
+  end
+
+  get "/verb" do |ctx|
+    word = ctx.params.query["s"]?.try { |w| HTML.escape w }
+    fail = false
+    if word
+      forms = InflectedEntry
+        .where(raw: word, part: Inflection::Part::Verb.to_i)
+        .order(:form)
+        .select
+      if forms.size > 0
+        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} #{word}"
+        table = Inflection::VERB_FORMS.zip(forms).to_h
+      else
+        fail = true
+      end
+    end
+
+    templ "verb"
   end
 
   get "/docs" do |ctx|
