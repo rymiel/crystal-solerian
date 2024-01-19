@@ -8,27 +8,28 @@ module Solerian::Inflection
     Verb
   end
 
+  # This enum should be in the same order as the entries in TABLE
   enum Type
     # Noun types
     F1t
     F1d
-    F2
     F2i
     F2x
+    F2
     M1
     M2
     N1
     N2
 
     # Verb types
-    O
     I
     II
     III
     IV
+    O
 
     def class_name(*, long = false) : String
-      long ? TABLE.find!(&.type.== self).long_name : TABLE.find!(&.type.== self).short_name
+      long ? TABLE[to_i].long_name : TABLE[to_i].short_name
     end
   end
 
@@ -80,9 +81,9 @@ module Solerian::Inflection
       ["lus", "là", "r", "lék", "léts", "lát", "lág", "lás", "ret", "reg", "ras", "làmo", "lànà", "lona", "lí"]),
   ]
 
-  NOUN_FORMS = ["nom_sg", "acc_sg", "gen_sg", "nom_pl", "acc_pl", "gen_pl"]
-  VERB_FORMS = ["_1_inf", "_2_inf", "_1sg_prs", "_2sg_prs", "_3sg_prs", "_1pl_prs", "_2pl_prs", "_3pl_prs",
-                "_1sg_pst", "_2sg_pst", "_3sg_pst", "_1pl_pst", "_2pl_pst", "_3pl_pst", "_2sg_imp"]
+  NOUN_FORMS = [:nom_sg, :acc_sg, :gen_sg, :nom_pl, :acc_pl, :gen_pl]
+  VERB_FORMS = [:"1_inf", :"2_inf", :"1sg_prs", :"2sg_prs", :"3sg_prs", :"1pl_prs", :"2pl_prs", :"3pl_prs",
+                :"1sg_pst", :"2sg_pst", :"3sg_pst", :"1pl_pst", :"2pl_pst", :"3pl_pst", :"2sg_imp"]
 
   def self.determine_prop(word : String, part : Part) : Prop?
     TABLE.find { |i| i.part == part && i.match.matches? word }
