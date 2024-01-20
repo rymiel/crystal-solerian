@@ -144,7 +144,7 @@ module Solerian::Inflection
         end
       else
         if full_vowel_count(word) == 0
-          return stress_first!(word)
+          return normalize!(stress_first!(word))
         elsif full_vowel_count(word) > 1
           return stress_lax!(word)
         end
