@@ -29,11 +29,15 @@ module Solerian::Inflection
     O
 
     def class_name(*, long = false) : String
-      long ? TABLE[to_i].long_name : TABLE[to_i].short_name
+      long ? Prop[self].long_name : Prop[self].short_name
     end
   end
 
-  record Prop, part : Part, type : Type, match : Regex, long_name : String, short_name : String, forms : Array(String)
+  record Prop, part : Part, type : Type, match : Regex, long_name : String, short_name : String, forms : Array(String) do
+    def self.[](type : Type) : Prop
+      TABLE[type.to_i]
+    end
+  end
 
   TABLE = StaticArray[
     # Noun forms
