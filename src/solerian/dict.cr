@@ -82,7 +82,7 @@ module Solerian
     def expand_entries : Nil
       timer_start = Time.monotonic
 
-      # TODO: maybe be worried about the memory usage of these two tables, once word count increases?
+      # TODO: maybe be worried about the memory usage of these three data structures, once word count increases?
       existing_mapped = {} of String => FullEntry
       new_inflected = [] of InflectedEntry
       raw_entries = RawEntry.order([:extra, :eng]).select
@@ -165,6 +165,7 @@ module Solerian
       Log.notice { "           of which FullEntry #{timer_full_entry_logic_end - timer_logic_start}" }
       Log.notice { "      of which InflectedEntry #{timer_logic_end - timer_full_entry_logic_end}" }
       Log.notice { "Database expansion DB IO took #{(timer_logic_start - timer_start) + (timer_end - timer_logic_end)}" }
+      Log.notice { "FullEntry count: #{existing_mapped.size}; InflectedEntry count: #{new_inflected.size}"}
     end
 
     def get(*, order = :num, lusarian = false)

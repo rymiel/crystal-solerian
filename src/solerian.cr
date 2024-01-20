@@ -17,11 +17,11 @@ module Solerian
   end
 
   def self.noun_table_entry(word : InflectedEntry)
-    return %(<td><a href="/poss/?s=#{word.sol}"><i>#{word.sol}</i></a><p>#{word.ipa}</p>#{sol_p word}</td>)
+    %(<td><a href="/poss/?s=#{word.sol}"><i>#{word.sol}</i></a><p>#{word.ipa}</p>#{sol_p word}</td>)
   end
 
   def self.verb_table_entry(word : InflectedEntry)
-    return %(<td><i>#{word.sol}</i><p>#{word.ipa}</p>#{sol_p word}</td>)
+    %(<td><i>#{word.sol}</i><p>#{word.ipa}</p>#{sol_p word}</td>)
   end
 
   get "/" do |ctx|
