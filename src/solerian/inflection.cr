@@ -41,31 +41,31 @@ module Solerian::Inflection
 
   TABLE = StaticArray[
     # Noun forms
-    Prop.new(:noun, :f1t, /^.*([àá]t)$/, "Feminine type 1t", "F1t",
+    Prop.new(:noun, :f1t, /^.*([àá]t)$/, "Feminine type 1t noun", "F1t",
       ["àt", "en", "is", "àtún", "etin", "iis"]),
 
-    Prop.new(:noun, :f1d, /^.*([àá]d)$/, "Feminine type 1d", "F1d",
+    Prop.new(:noun, :f1d, /^.*([àá]d)$/, "Feminine type 1d noun", "F1d",
       ["àd", "ein", "is", "ánd", "etin", "iis"]),
 
-    Prop.new(:noun, :f2i, /^.*[ií](à)$/, "Feminine type 2i", "F2i",
+    Prop.new(:noun, :f2i, /^.*[ií](à)$/, "Feminine type 2i noun", "F2i",
       ["à", "e", "r", "áin", "ein", "ir"]),
 
-    Prop.new(:noun, :f2x, /^.*([àá]x)$/, "Feminine type 2x", "F2x",
+    Prop.new(:noun, :f2x, /^.*([àá]x)$/, "Feminine type 2x noun", "F2x",
       ["àx", "ox", "ir", "áxi", "oxe", "ixir"]),
 
-    Prop.new(:noun, :f2, /^(?!(?:.*[ií])?[àá]$).*([àá])$/, "Feminine type 2", "F2",
+    Prop.new(:noun, :f2, /^(?!(?:.*[ií])?[àá]$).*([àá])$/, "Feminine type 2 noun", "F2",
       ["à", "e", "ir", "áin", "ein", "iir"]),
 
-    Prop.new(:noun, :m1, /^.*([eé]n)$/, "Masculine type 1", "M1",
+    Prop.new(:noun, :m1, /^.*([eé]n)$/, "Masculine type 1 noun", "M1",
       ["en", "ean", "yr", "enét", "eant", "esyr"]),
 
-    Prop.new(:noun, :m2, /^.*(m)$/, "Masculine type 2", "M2",
+    Prop.new(:noun, :m2, /^.*(m)$/, "Masculine type 2 noun", "M2",
       ["m", "m", "mer", "mas", "mas", "ǹir"]),
 
-    Prop.new(:noun, :n1, /^.*([eé]l)$/, "Neuter type 1", "N1",
+    Prop.new(:noun, :n1, /^.*([eé]l)$/, "Neuter type 1 noun", "N1",
       ["el", "aln", "eler", "eek", "alnek", "elsar"]),
 
-    Prop.new(:noun, :n2, /^.*(r)$/, "Neuter type 2", "N2",
+    Prop.new(:noun, :n2, /^.*(r)$/, "Neuter type 2 noun", "N2",
       ["r", "rin", "ràr", "àr", "rinse", "riser"]),
 
     # Verb forms
@@ -88,6 +88,8 @@ module Solerian::Inflection
   NOUN_FORMS = [:nom_sg, :acc_sg, :gen_sg, :nom_pl, :acc_pl, :gen_pl]
   VERB_FORMS = [:"1_inf", :"2_inf", :"1sg_prs", :"2sg_prs", :"3sg_prs", :"1pl_prs", :"2pl_prs", :"3pl_prs",
                 :"1sg_pst", :"2sg_pst", :"3sg_pst", :"1pl_pst", :"2pl_pst", :"3pl_pst", :"2sg_imp"]
+  POSS_FORMS    = [:"1sg", :"2sg", :"3sg_m", :"3sg_f", :"3sg_n", :"1pl", :"2pl", :"3pl"]
+  POSS_SUFFIXES = ["elm", "etr", "usd", "usan", "ys", "elmes", "etres", "usdes"]
 
   def self.determine_prop(word : String, part : Part) : Prop?
     TABLE.find { |i| i.part == part && i.match.matches? word }
@@ -183,6 +185,12 @@ module Solerian::Inflection
         end
 
         mark_stress ? normalize!(root + suffix) : destress!(root + suffix)
+      end
+    end
+
+    def apply_poss(word : String) : Array(String)
+      POSS_SUFFIXES.map do |suffix|
+        normalize!(word + suffix)
       end
     end
 

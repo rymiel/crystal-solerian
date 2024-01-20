@@ -66,7 +66,7 @@ module Solerian
         .order(:form)
         .select
       if forms.size > 0
-        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} noun #{word}"
+        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} #{word}"
         table = Inflection::NOUN_FORMS.zip(forms).to_h
       else
         fail = true
@@ -93,6 +93,63 @@ module Solerian
     end
 
     templ "verb"
+  end
+
+  record Node, value : String, children : Array(Node) = [] of Node
+
+  def self.raw_entry_descriptor(word : String) : Array(Node)
+    words = RawEntry.where(sol: word).select
+    words.map do |raw_sol|
+      Node.new "\"#{raw_sol.sol}\": (#{raw_sol.extra}) \"#{raw_sol.eng}\""
+    end
+  end
+
+  def self.reverse_entry_descriptor(word : String) : Array(Node)
+    entries = InflectedEntry.where(sol: word).select
+    entries.map do |entry|
+      part = Inflection::Part.new(entry.part)
+      form_symbol = (part.noun? ? Inflection::NOUN_FORMS : part.verb? ? Inflection::VERB_FORMS : raise "Invalid part")[entry.form]
+      form_name = form_symbol.to_s.gsub('_', ' ')
+      type_name = Inflection::Type.new(entry.type).class_name
+      part_name = part.to_s.downcase
+      message = "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
+
+      Node.new message, raw_entry_descriptor(entry.raw)
+    end
+  end
+
+  def self.nodes_as_list(nodes : Array(Node), io : IO)
+    io << "<ul>"
+    nodes.each do |node|
+      io << "<li>" << node.value
+      nodes_as_list(node.children, io)
+      io << "</li>"
+    end
+    io << "</ul>"
+  end
+
+  get "/reverse" do |ctx|
+    word = ctx.params.query["s"]?.try { |w| HTML.escape w }
+    fail = false
+    if word
+      entries = [] of Node
+      entries += raw_entry_descriptor(word)
+      entries += reverse_entry_descriptor(word)
+      Inflection::POSS_SUFFIXES.each_with_index do |poss_suffix, poss_idx|
+        if word.ends_with?(poss_suffix)
+          chopped = Inflection::Word.normalize!(word.rchop(poss_suffix))
+          message = "\"#{word}\": #{Inflection::POSS_FORMS[poss_idx].to_s.gsub('_', ' ')} possessive of \"#{chopped}\""
+          entries << Node.new(message, reverse_entry_descriptor(chopped))
+        end
+      end
+      if entries.size > 0
+        results = entries
+      else
+        fail = true
+      end
+    end
+
+    templ "reverse"
   end
 
   get "/docs" do |ctx|

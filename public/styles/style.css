@@ -80,6 +80,16 @@ nav ul {
   padding: 0;
 }
 
+div.listing {
+  width: max-content;
+  margin: auto;
+  text-align: left;
+}
+
+/* div.listing li {
+  margin-left: 40px;
+} */
+
 footer {
   display: flex;
   flex-direction: column;

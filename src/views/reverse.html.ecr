@@ -1,0 +1,21 @@
+<% content_for "header" do %>Reverse Lookup<% end %>
+<% content_for "title" do %>Reverse lookup | Solerian<% end %>
+<main>
+  <div class="search-box">
+    <form>
+      <label for="wordInput">Word to look up: </label>
+      <input name="s" type="text" id="wordInput" value="<%= word %>">
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+  <% if results %>
+    <div class="listing">
+    <%= String.build { |str| nodes_as_list(results, str) } %>
+    </div>
+  <% elsif fail %>
+    <b style="color: red"><br/>Invalid word.</b>
+    <p>Note that valid Solerian words not present in the dictionary are currently not supported.</p>
+  <% else %>
+    <b><br/>Enter any forms of a valid Solerian word above to get its root form.</b>
+  <% end %>
+</main>

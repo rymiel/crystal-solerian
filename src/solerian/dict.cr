@@ -57,8 +57,6 @@ module Solerian
 
     column num : Int32, primary: true, auto: true
 
-    belongs_to raw_entry : RawEntry, foreign_key: hash : String
-
     column raw : String
 
     column part : Int32 # Inflection::Part
@@ -83,10 +81,12 @@ module Solerian
       Log.notice { GC.stats.heap_size.humanize_bytes }
       timer_start = Time.monotonic
 
-      # TODO: maybe be worried about the memory usage of these three data structures, once word count increases?
+      # TODO: maybe be worried about the memory usage of these five(!) data structures, once word count increases?
       existing_mapped = {} of String => FullEntry
       new_inflected = [] of InflectedEntry
+
       raw_entries = RawEntry.order([:extra, :eng]).select
+      unique_entries = RawEntry.where("hash in (select hash from dict group by sol)").select
 
       timer_logic_start = Time.monotonic
 
@@ -122,7 +122,9 @@ module Solerian
       end
 
       timer_full_entry_logic_end = Time.monotonic
-      RawEntry.where("hash in (select hash from dict group by sol)").select.each_with_index do |raw, i|
+      unique_entries.each do |raw|
+        # XXX: this could techincally be wrong if there are 2 nouns written the same but one being marked for stress
+        # and the other one not. I'm not sure if that will ever even happen but it's a possibility.
         mark_stress = !raw.extra.starts_with?("NAME")
         if raw.extra.starts_with? 'N'
           part = Inflection::Part::Noun
@@ -138,7 +140,6 @@ module Solerian
 
         forms.each_with_index do |form, form_idx|
           infl = InflectedEntry.new
-          infl.hash = raw.hash!
           infl.raw = raw.sol
           infl.part = part.to_i
           infl.type = prop.type.to_i
@@ -158,16 +159,20 @@ module Solerian
       InflectedEntry.migrator.drop_and_create
       InflectedEntry.exec "CREATE INDEX infl_part ON infldict(part);"
       InflectedEntry.exec "CREATE INDEX infl_raw ON infldict(raw);"
+      InflectedEntry.exec "CREATE INDEX infl_sol ON infldict(sol);"
       InflectedEntry.import new_inflected, batch_size: 400 # arbitrary value
 
       timer_end = Time.monotonic
+      Log.notice { GC.stats.heap_size.humanize_bytes }
       Log.notice { "Database expansion total took #{timer_end - timer_start}" }
       Log.notice { "Database expansion logic took #{timer_logic_end - timer_logic_start}" }
       Log.notice { "           of which FullEntry #{timer_full_entry_logic_end - timer_logic_start}" }
       Log.notice { "      of which InflectedEntry #{timer_logic_end - timer_full_entry_logic_end}" }
       Log.notice { "Database expansion DB IO took #{(timer_logic_start - timer_start) + (timer_end - timer_logic_end)}" }
-      Log.notice { "FullEntry count: #{existing_mapped.size}; InflectedEntry count: #{new_inflected.size}"}
-      Log.notice { GC.stats.heap_size.humanize_bytes }
+      Log.notice { "FullEntry count     : #{existing_mapped.size}" }
+      Log.notice { "InflectedEntry count: #{new_inflected.size}" }
+      Log.notice { "       of which nouns #{InflectedEntry.where(part: Inflection::Part::Noun.to_i).count}" }
+      Log.notice { "       of which verbs #{InflectedEntry.where(part: Inflection::Part::Verb.to_i).count}" }
     end
 
     def get(*, order = :num, lusarian = false)
