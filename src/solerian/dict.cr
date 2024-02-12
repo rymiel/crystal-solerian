@@ -49,6 +49,7 @@ module Solerian
     column ipa : String
     column lusarian : Bool
     column link : String?
+    column collate : String
   end
 
   class InflectedEntry < Granite::Base
@@ -77,6 +78,11 @@ module Solerian
       str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
     end
 
+    def collate_to_string(str : String) : String
+      arr = collate_solerian(str).map(&.+ 'a'.ord)
+      String.new(arr.to_unsafe, arr.size)
+    end
+
     def expand_entries : Nil
       Log.notice { GC.stats.heap_size.humanize_bytes }
       timer_start = Time.monotonic
@@ -86,7 +92,6 @@ module Solerian
       new_inflected = [] of InflectedEntry
 
       raw_entries = RawEntry.order([:extra, :eng]).select
-      unique_entries = RawEntry.where("hash in (select hash from dict group by sol)").select
 
       timer_logic_start = Time.monotonic
 
@@ -113,6 +118,7 @@ module Solerian
                     else
                       raw.extra
                     end
+        full.collate = collate_to_string(raw.sol)
 
         existing_mapped[raw.hash!] = full
       end
@@ -128,7 +134,7 @@ module Solerian
       end
 
       timer_full_entry_logic_end = Time.monotonic
-      unique_entries.each do |raw|
+      RawEntry.find_each("where hash in (select hash from dict group by sol)") do |raw|
         # XXX: this could techincally be wrong if there are 2 nouns written the same but one being marked for stress
         # and the other one not. I'm not sure if that will ever even happen but it's a possibility.
         mark_stress = !raw.extra.starts_with?("NAME")
