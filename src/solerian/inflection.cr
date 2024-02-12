@@ -136,6 +136,7 @@ module Solerian::Inflection
     :old_1_inf, :old_2_inf, :old_1sg_prs, :old_2sg_prs, :old_3sg_prs, :old_1pl_prs, :old_2pl_prs, :old_3pl_prs,
     :old_1sg_pst, :old_2sg_pst, :old_3sg_pst, :old_1pl_pst, :old_2pl_pst, :old_3pl_pst, :old_2sg_imp,
   ]
+  TRIVIAL_FORMS = [:nom_sg, :old_nom_sg, :"1_inf", :old_1_inf]
 
   def self.determine_prop(word : String, part : Part) : Prop?
     TABLE.find { |i| i.part == part && i.match.matches? word }

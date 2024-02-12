@@ -5,6 +5,8 @@
     <form>
       <label for="wordInput">Word to look up: </label>
       <input name="s" type="text" id="wordInput" value="<%= word %>">
+      <label for="oldCheckbox">Include old forms: </label>
+      <input name="old" type="checkbox" id="oldCheckbox" <%= include_old ? "checked" : "" %>>
       <input type="submit" value="Submit">
     </form>
   </div>

@@ -95,12 +95,20 @@ module Solerian
     templ "verb"
   end
 
-  record Node, value : String, children : Array(Node) = [] of Node
+  record Node, value : String, reason : Symbol, children : Array(Node) = [] of Node do
+    def old? : Bool
+      reason.in?(Inflection::OLD_FORMS_COMBINED) || children.any?(&.old?)
+    end
+
+    def trivial? : Bool
+      reason.in?(Inflection::TRIVIAL_FORMS) || children.any?(&.trivial?)
+    end
+  end
 
   def self.raw_entry_descriptor(word : String) : Array(Node)
     words = RawEntry.where(sol: word).select
     words.map do |raw_sol|
-      Node.new "\"#{raw_sol.sol}\": (#{raw_sol.extra}) \"#{raw_sol.eng}\""
+      Node.new "\"#{raw_sol.sol}\": (#{raw_sol.extra}) \"#{raw_sol.eng}\"", :raw
     end
   end
 
@@ -110,14 +118,15 @@ module Solerian
     form_name = form_symbol.to_s.gsub('_', ' ')
     type_name = Inflection::Type.new(entry.type).class_name
     part_name = part.to_s.downcase
-    
+
     "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
   end
 
   def self.reverse_entry_descriptor(word : String) : Array(Node)
     entries = InflectedEntry.where(sol: word).select
     entries.map do |entry|
-      Node.new inflected_entry_description(entry), raw_entry_descriptor(entry.raw)
+      sym = Inflection::Part.new(entry.part).form(entry.form)
+      Node.new inflected_entry_description(entry), sym, raw_entry_descriptor(entry.raw)
     end
   end
 
@@ -133,6 +142,7 @@ module Solerian
 
   get "/reverse" do |ctx|
     word = ctx.params.query["s"]?.try { |w| HTML.escape w }
+    include_old = ctx.params.query["old"]? != nil
     fail = false
     if word
       entries = [] of Node
@@ -142,9 +152,11 @@ module Solerian
         if word.ends_with?(poss_suffix)
           chopped = Inflection::Word.normalize!(word.rchop(poss_suffix))
           message = "\"#{word}\": #{Inflection::POSS_FORMS[poss_idx].to_s.gsub('_', ' ')} possessive of \"#{chopped}\""
-          entries << Node.new(message, reverse_entry_descriptor(chopped))
+          entries << Node.new(message, Inflection::POSS_FORMS[poss_idx], reverse_entry_descriptor(chopped))
         end
       end
+      entries.reject!(&.old?) unless include_old
+      entries.reject!(&.trivial?)
       if entries.size > 0
         results = entries
       else

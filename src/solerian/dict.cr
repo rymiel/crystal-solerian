@@ -49,7 +49,6 @@ module Solerian
     column ipa : String
     column lusarian : Bool
     column link : String?
-    column collate : String
   end
 
   class InflectedEntry < Granite::Base
@@ -78,26 +77,24 @@ module Solerian
       str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
     end
 
-    def collate_to_string(str : String) : String
-      arr = collate_solerian(str).map(&.+ 'a'.ord)
-      String.new(arr.to_unsafe, arr.size)
-    end
+    alias MinimalEntry = { hash: String, sol: String, eng: String }
 
     def expand_entries : Nil
       Log.notice { GC.stats.heap_size.humanize_bytes }
       timer_start = Time.monotonic
 
-      # TODO: maybe be worried about the memory usage of these five(!) data structures, once word count increases?
+      # TODO: maybe be worried about the memory usage of these three(!) data structures, once word count increases?
       existing_mapped = {} of String => FullEntry
       new_inflected = [] of InflectedEntry
 
-      raw_entries = RawEntry.order([:extra, :eng]).select
+      minimal_entries = [] of MinimalEntry
 
       timer_logic_start = Time.monotonic
 
-      raw_entries.each_with_index do |raw, i|
+      raw_i = 0
+      RawEntry.find_each("ORDER BY extra ASC, eng ASC") do |raw|
         full = FullEntry.new
-        full.num = i + 1
+        full.num = raw_i + 1
         full.hash = raw.hash!
         full.eng = raw.eng
         full.sol = raw.sol
@@ -118,19 +115,20 @@ module Solerian
                     else
                       raw.extra
                     end
-        full.collate = collate_to_string(raw.sol)
 
         existing_mapped[raw.hash!] = full
+        minimal_entries << {hash: raw.hash!, sol: raw.sol, eng: raw.eng}
+        raw_i += 1
       end
 
-      raw_entries.sort_by!(&.eng)
-      raw_entries.each_with_index do |raw, i|
-        existing_mapped[raw.hash!].eng_num = i + 1
+      minimal_entries.sort_by!(&.[:eng])
+      minimal_entries.each_with_index do |raw, i|
+        existing_mapped[raw[:hash]].eng_num = i + 1
       end
 
-      raw_entries.unstable_sort_by!(&.sol).sort_by! { |i| collate_solerian(i.sol) }
-      raw_entries.each_with_index do |raw, i|
-        existing_mapped[raw.hash!].sol_num = i + 1
+      minimal_entries.unstable_sort_by!(&.[:sol]).sort_by! { |i| collate_solerian(i[:sol]) }
+      minimal_entries.each_with_index do |raw, i|
+        existing_mapped[raw[:hash]].sol_num = i + 1
       end
 
       timer_full_entry_logic_end = Time.monotonic
