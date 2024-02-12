@@ -48,7 +48,7 @@ module Solerian
     column script : String
     column ipa : String
     column lusarian : Bool
-    column link : String? = nil # temporary
+    column link : String?
   end
 
   class InflectedEntry < Granite::Base
@@ -99,14 +99,20 @@ module Solerian
         full.script = Script.multi(raw.sol)
         full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
-        if raw.extra.starts_with? 'N'
-          full.extra = "#{raw.extra}-#{Inflection.determine_type(raw.sol, :noun).try &.class_name}"
-        elsif raw.extra.starts_with? 'V'
-          full.extra = "#{raw.extra}-#{Inflection.determine_type(raw.sol, :verb).try &.class_name}"
-        else
-          full.extra = raw.extra
-        end
-        full.link = nil # temporary
+        full.extra = if raw.extra.starts_with? 'N'
+                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :noun).try &.class_name}"
+                     elsif raw.extra.starts_with? 'V'
+                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :verb).try &.class_name}"
+                     else
+                       raw.extra
+                     end
+        full.link = if raw.extra.starts_with? 'N'
+                      "/noun"
+                    elsif raw.extra.starts_with? 'V'
+                      "/verb"
+                    else
+                      raw.extra
+                    end
 
         existing_mapped[raw.hash!] = full
       end
