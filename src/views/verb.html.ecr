@@ -69,6 +69,67 @@
       </tr>
       </tbody>
     </table>
+
+    <details>
+      <summary>Old forms for this verb</summary>
+      <table border="2">
+        <tbody>
+        <tr>
+          <td>1st inf</td>
+          <%= verb_table_entry(table[:old_1_inf]) %>
+          <td>2sg imp</td>
+          <%= verb_table_entry(table[:old_2sg_imp]) %>
+        </tr>
+        <tr>
+          <td>2nd inf</td>
+          <%= verb_table_entry(table[:old_2_inf]) %>
+          <td></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+      <table border="2">
+        <tbody>
+        <tr>
+          <th colspan="2" class="rb db"></th>
+          <th class="hl db">present</th>
+          <th class="hl db">past</th>
+        </tr>
+        <tr>
+          <th rowspan="3" class="hl">sg</th>
+          <td class="rb">1</td>
+          <%= verb_table_entry(table[:old_1sg_prs]) %>
+          <%= verb_table_entry(table[:old_1sg_pst]) %>
+        </tr>
+        <tr>
+          <td class="rb">2</td>
+          <%= verb_table_entry(table[:old_2sg_prs]) %>
+          <%= verb_table_entry(table[:old_2sg_pst]) %>
+        </tr>
+        <tr>
+          <td class="rb">3</td>
+          <%= verb_table_entry(table[:old_3sg_prs]) %>
+          <%= verb_table_entry(table[:old_3sg_pst]) %>
+        </tr>
+        <tr>
+          <th rowspan="3" class="hl">pl</th>
+          <td class="rb">1</td>
+          <%= verb_table_entry(table[:old_1pl_prs]) %>
+          <%= verb_table_entry(table[:old_1pl_pst]) %>
+        </tr>
+        <tr>
+          <td class="rb">2</td>
+          <%= verb_table_entry(table[:old_2pl_prs]) %>
+          <%= verb_table_entry(table[:old_2pl_pst]) %>
+        </tr>
+        <tr>
+          <td class="rb">3</td>
+          <%= verb_table_entry(table[:old_3pl_prs]) %>
+          <%= verb_table_entry(table[:old_3pl_pst]) %>
+        </tr>
+        </tbody>
+      </table>
+    </details>
   <% elsif fail %>
     <b style="color: red"><br/>Invalid verb.</b>
     <p>Note that valid Solerian words not present in the dictionary are currently not supported.</p>

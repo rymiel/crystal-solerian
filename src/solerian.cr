@@ -104,17 +104,20 @@ module Solerian
     end
   end
 
+  def self.inflected_entry_description(entry : InflectedEntry) : String
+    part = Inflection::Part.new(entry.part)
+    form_symbol = part.form entry.form
+    form_name = form_symbol.to_s.gsub('_', ' ')
+    type_name = Inflection::Type.new(entry.type).class_name
+    part_name = part.to_s.downcase
+    
+    "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
+  end
+
   def self.reverse_entry_descriptor(word : String) : Array(Node)
     entries = InflectedEntry.where(sol: word).select
     entries.map do |entry|
-      part = Inflection::Part.new(entry.part)
-      form_symbol = (part.noun? ? Inflection::NOUN_FORMS : part.verb? ? Inflection::VERB_FORMS : raise "Invalid part")[entry.form]
-      form_name = form_symbol.to_s.gsub('_', ' ')
-      type_name = Inflection::Type.new(entry.type).class_name
-      part_name = part.to_s.downcase
-      message = "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
-
-      Node.new message, raw_entry_descriptor(entry.raw)
+      Node.new inflected_entry_description(entry), raw_entry_descriptor(entry.raw)
     end
   end
 

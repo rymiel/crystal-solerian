@@ -38,6 +38,36 @@
       </tr>
       </tbody>
     </table>
+
+    <details>
+      <summary>Old forms for this noun</summary>
+      <table border="2">
+        <tbody>
+        <tr>
+          <th class="rb"></th>
+          <th class="hl db">sg</th>
+          <th class="hl db">pl</th>
+        </tr>
+        <tr>
+          <th class="hl rb">nom</th>
+          <%= noun_table_entry(table[:old_nom_sg]) %>
+          <%= noun_table_entry(table[:old_nom_pl]) %>
+        </tr>
+        <tr>
+          <th class="hl rb">acc</th>
+          <%= noun_table_entry(table[:old_acc_sg]) %>
+          <%= noun_table_entry(table[:old_acc_pl]) %>
+        </tr>
+        <tr>
+          <th class="hl rb">gen</th>
+          <%= noun_table_entry(table[:old_gen_sg]) %>
+          <%= noun_table_entry(table[:old_gen_pl]) %>
+          <!-- TODO -->
+          <!-- <td><a href="{{ url_for('genitive') }}?s={{ n.nom_sg }}">+</a></td> -->
+        </tr>
+        </tbody>
+      </table>
+    </details>
   <% elsif fail %>
     <b style="color: red"><br/>Invalid noun.</b>
     <p>Note that valid Solerian words not present in the dictionary are currently not supported.</p>

@@ -34,17 +34,19 @@ module Solerian::SoundChange
     /á(#{C}*)([iyíý])/    => "é\\1\\2",
     /u(#{C}*)([iyíý])/    => "y\\1\\2",
     /ú(#{C}*)([iyíý])/    => "ý\\1\\2",
-    /g$/                  => "ŋ",
+    /([^l])g$/            => "\\1ŋ",
     /uú/                  => "ujú",
     /(ə|a|á)(ə|a|á)/      => "\\1j\\2",
     /(é|e)(é|e)/          => "\\1j\\2",
     /(í|i)(í|i)/          => "\\1j\\2",
     /(ó|o)(ó|o)/          => "\\1j\\2",
     /(ý|y)(ý|y)/          => "\\1j\\2",
+    /j?i(e|é)/            => "j\\1",
     /ld/                  => "ll",
     /(#{V}?)d(#{V})/      => "\\1ð\\2",
     /[əea]r/              => "ɐr",
     /x/                   => "",
+    /nŋ/                  => "ŋ",
   }
 
   PRE_UNROMANIZE = {
@@ -101,6 +103,10 @@ module Solerian::SoundChange
     word = word.sub('\u02c8', '.') unless mark_stress
     word = word.strip('.')
     word.gsub POST_UNROMANIZE
+  end
+
+  def self.ipa_without_sound_change(word : String)
+    return word.gsub(PRE_UNROMANIZE).gsub(POST_UNROMANIZE)
   end
 
   def self.single_word_sound_change(word : String, *, mark_stress = true) : String
