@@ -90,7 +90,7 @@ module Solerian::Inflection
     #   ["élus", "érà", "<à", "eké", "ités", "amét", "anég", "anés", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"]),
 
     Prop.new(:verb, :I, /^.*(élus)$/, "Type I verb (e-class, IT CONT)", "I",
-      ["élus", "érà", "<à", "eké", "éts", "án", "ág", "áste", "é", "élg", "ésa", "àmó", "ánà", "ánà", "í"] +
+      ["élus", "érà", "<à", "eké", "éts", "án", "áig", "áste", "é", "élg", "ésa", "àmó", "ánà", "ánà", "í"] +
       ["élus", "érà", "<à", "eké", "ités", "amét", "anég", "anés", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"]),
 
     Prop.new(:verb, :II, /^.*[aeiouyàáéíóúý](las)$/, "Type II verb (a-class, TRANS)", "II",
@@ -114,7 +114,7 @@ module Solerian::Inflection
       ["@ú", "@ár", "ǹý", "ǹék", ">n", "ǹám", "ǹág", "ǹán", "@út", "@úek", "@úsa", "@ámo", "@ánà", "@ánà", "@"]),
 
     Prop.new(:verb, :O, /^.*(lus)$/, "Type 0 verb (0-class, T CONT)", "0",
-      ["lus", "là", "r", "lék", "léts", "lán", "lág", "lást", "re", "reg", "ras", "làmo", "lànà", "lànà", "lí"] +
+      ["lus", "là", "r", "lék", "léts", "lán", "láig", "lást", "re", "reg", "ras", "làmo", "lànà", "lànà", "lí"] +
       ["lus", "là", "r", "lék", "léts", "lát", "lág", "lás", "ret", "reg", "ras", "làmo", "lànà", "lona", "lí"]),
   ]
 
