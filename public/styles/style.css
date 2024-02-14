@@ -203,6 +203,14 @@ li:target {
   margin-right: 1em;
 }
 
+.dual {
+  display: flex;
+}
+
+.dual .sol {
+  flex-grow: 1;
+}
+
 /* UNUSED (formerly in script)
 .sol-big {
     font-size: 40px;

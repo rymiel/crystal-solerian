@@ -10,18 +10,12 @@ module Solerian
   FOX_HREF  = ENV["FOX_HREF"]?
   Log       = ::Log.for self
 
-  INCLUDE_SOL = false # idk
-
-  def self.sol_p(word : InflectedEntry)
-    INCLUDE_SOL ? %(<p class="sol">#{word.script}</p>) : ""
-  end
-
   def self.noun_table_entry(word : InflectedEntry)
-    %(<td><a href="/poss/?s=#{word.sol}"><i>#{word.sol}</i></a><p>#{word.ipa}</p>#{sol_p word}</td>)
+    %(<td><span class="dual"><a href="/poss/?s=#{word.sol}"><i>#{word.sol}</i></a>&ensp;<span class="sol">#{word.script}</span></span><p>#{word.ipa}</p></td>)
   end
 
   def self.verb_table_entry(word : InflectedEntry)
-    %(<td><i>#{word.sol}</i><p>#{word.ipa}</p>#{sol_p word}</td>)
+    %(<td><span class="dual"><i>#{word.sol}</i>&ensp;<span class="sol">#{word.script}</span></span><p>#{word.ipa}</p></td>)
   end
 
   get "/" do |ctx|
