@@ -29,10 +29,13 @@ module Solerian::Inflection
     # Ia
     V1  # I
     V2  # II
-    V3n # IIIn
+    V3n # III
+    V3r # III
     V3  # III
-    V4s # IVs
+    V4s # IV
     V4  # IV
+    V5t # O
+    V5r # O
     V5  # O
 
     def long_name : String
@@ -60,7 +63,7 @@ module Solerian::Inflection
 
   OLD_CLASSES = StaticArray[
     :F1t, :F1d, :F2i, :F2x, :F2, :M1, :M2, :N1, :N2,
-    :I, :II, :IIIn, :III, :IVs, :IV, :O,
+    :I, :II, :III, :III, :III, :IV, :IV, :O, :O, :O
   ]
 
   record Prop, part : Part, type : Type, match : Regex, suffix : String?, forms : Array(String)
@@ -116,8 +119,12 @@ module Solerian::Inflection
       ["las", "lar", "lý", "laké", "láts", "lánt", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"] +
       ["las", "lar", "lý", "laké", "lités", "làté", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"]),
 
-    Prop.new(:verb, :V3n, /^.*[rnm](lud)$/, "ONCE",
-      ["lud", "rad", "d", "lék", "l", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
+    Prop.new(:verb, :V3n, /^.*[nm](lud)$/, "ONCE",
+      ["lud", "rad", "d", "lék", "la", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
+      ["lud", "rad", "d", "lék", "ld", "deté", "dég", "dés", "lut", "lek", "lusa", "lomà", "lonà", "lonà", ""]),
+
+    Prop.new(:verb, :V3r, /^.*r(lud)$/, "ONCE",
+      ["lud", "ad", "d", "lék", "la", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
       ["lud", "rad", "d", "lék", "ld", "deté", "dég", "dés", "lut", "lek", "lusa", "lomà", "lonà", "lonà", ""]),
 
     Prop.new(:verb, :V3, /^.*(lud)$/, "ONCE",
@@ -131,6 +138,14 @@ module Solerian::Inflection
     Prop.new(:verb, :V4, /^(?!.*[áéíóúý].*[nm][úu]$)^.*((n|m)[úu])$/, "ADJ",
       ["@ú", "@ár", "ǹý", "ǹék", ">n", "ǹá@", "ǹál", "ǹást", "@í", "@ék", "@úsa", "@ámo", "@ánà", "@ánà", "@"] +
       ["@ú", "@ár", "ǹý", "ǹék", ">n", "ǹám", "ǹág", "ǹán", "@út", "@úek", "@úsa", "@ámo", "@ánà", "@ánà", "@"]),
+
+    Prop.new(:verb, :V5t, /^.*((t|n|m)lus)$/, "T CONT",
+      ["@lus", "@là", "r@", "@lék", "@léts", "@lán", "@láig", "@lást", "@re", "@reg", "@ras", "@làmo", "@lànà", "@lànà", "@lí"] +
+      ["@lus", "@là", "@r", "@lék", "@léts", "@lát", "@lág", "@lás", "@ret", "@reg", "@ras", "@làmo", "@lànà", "@lona", "@lí"]),
+
+    Prop.new(:verb, :V5r, /^.*r(lus)$/, "T CONT",
+      ["lus", "là", "", "lék", "léts", "lán", "láig", "lást", "e", "eg", "as", "làmo", "lànà", "lànà", "lí"] +
+      ["lus", "là", "r", "lék", "léts", "lát", "lág", "lás", "ret", "reg", "ras", "làmo", "lànà", "lona", "lí"]),
 
     Prop.new(:verb, :V5, /^.*(lus)$/, "T CONT",
       ["lus", "là", "r", "lék", "léts", "lán", "láig", "lást", "re", "reg", "ras", "làmo", "lànà", "lànà", "lí"] +
@@ -244,7 +259,8 @@ module Solerian::Inflection
         suffix = suffix.lstrip("<>")
 
         # NOTE: this could be more flexible like it was in the dartc version. Realistically, though, it will be only
-        # used for only type IV verbs.
+        # used for only pattern 4 verbs.
+        # NOTE: now also used for pattern 5t verbs, but using the same system
         if suffix.includes? '@'
           suffix = suffix.gsub("@", match[2])
         end
@@ -295,5 +311,14 @@ module Solerian::Inflection
     part_name = part.to_s.downcase
 
     "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
+  end
+
+  Type.each do |t|
+    if TABLE.size != OLD_CLASSES.size != Type.values.size
+      raise "Table size mismatch: Type #{Type.values.size}, TABLE #{TABLE.size}, OLD_CLASSES #{OLD_CLASSES.size}"
+    end
+    if TABLE[t.to_i].type != t
+      raise "Invalid order: TABLE index #{t.to_i} should be #{t}, but was #{TABLE[t.to_i].type}"
+    end
   end
 end

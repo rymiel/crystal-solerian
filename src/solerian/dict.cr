@@ -250,11 +250,14 @@ module Solerian
       Log.notice { "       of which verbs #{InflectedEntry.where(part: Inflection::Part::Verb.to_i).count}" }
     end
 
-    MONSTER_REGEX = /^((?<onset>sk|(?:[tdkg](?:[lr]|s)|(?:st|[mftdnrslɲjkgx]))?j?)(?<nucleus>[aeiouəɨ])(?<coda>(?:(?:x[lrs])|s[tdkg]|[lr](?:s|[lr]|[tdkg]|[nm])|[tdkg](?:s|[lr])|[nm](?:s|[lr]|[tdkg])|(?:st|[mftdnrslɲjkgx]))?)(?=\g<onset>|$))+/
+    ONSET     = /(?<onset>sk|(?:[tdkg](?:[lr]|s)|(?:st|[mftdnrslɲjkgx]))?j?)/
+    NUCLEUS   = /(?<nucleus>[aeiouəɨ])/
+    CODA      = /(?<coda>(?:(?:x[lrs])|s[tdkg]|[lr](?:s|[tdkg]|[nm])|[tdkg]s|[nm](?:s|[tdkg])|(?:st|[mftdnrslɲjkgx]))?)/
+    SYLLABLES = /^(#{ONSET}#{NUCLEUS}#{CODA}(?=\g<onset>|$))+/
 
     def is_valid?(word : String)
       return true if word.includes?('-') # just allow all suffixes for now
-      !word.includes?("aa") && SoundChange.ipa_without_sound_change(word).matches?(MONSTER_REGEX, options: Regex::MatchOptions::ANCHORED | Regex::MatchOptions::ENDANCHORED)
+      !word.includes?("aa") && !word.includes?("rr") && SoundChange.ipa_without_sound_change(word).matches?(SYLLABLES, options: Regex::MatchOptions::ANCHORED | Regex::MatchOptions::ENDANCHORED)
     end
 
     def validate_all!

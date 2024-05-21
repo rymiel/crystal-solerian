@@ -44,7 +44,6 @@ module Solerian::SoundChange
     /j?i(e|é)/            => "j\\1",
     /(e|é)i/              => "\\1j",
     /ld/                  => "ll",
-    /nl/                  => "nd",
     /(#{V}|\b)d(#{V})/    => "\\1ð\\2",
     /[əea]r/              => "ɐr",
     /x/                   => "",

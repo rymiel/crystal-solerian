@@ -245,4 +245,7 @@ Log.setup do |c|
   c.bind "granite", :info, backend
 end
 Solerian::Dict.expand_entries
-SolHTTP.run
+
+if ENV["CHECK_ONLY"]?.nil?
+  SolHTTP.run
+end
