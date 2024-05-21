@@ -21,7 +21,11 @@
             <td><%= e.hash %></td>
             <td><input name="en" type="text" value="<%= e.eng %>" style="width: auto"></td>
             <td><input name="sol" type="text" value="<%= e.sol %>" style="width: auto"></td>
-            <td><input name="ex" type="text" value="<%= e.extra %>" style="width: auto"></td>
+            <td><select name="ex">
+              <%- Dict::PARTS_OF_SPEECH.keys.each do |part| -%>
+                <option value="<%= part %>" <% if e.extra == part %>selected<% end %>><%= part %></option>
+              <%- end -%>
+            </select></td>
             <td><input name="lusarian" type="checkbox" <% if e.lusarian %>checked<% end %> value="yes"></td>
             <td><input type=submit value="Make change"></td>
           </form>

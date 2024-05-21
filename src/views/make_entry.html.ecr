@@ -9,11 +9,16 @@
       <input name="sol" type="text">
     </label>
     <label>Extra:
-      <input name="ex" type="text">
+      <select name="ex">
+      <%- Dict::PARTS_OF_SPEECH.keys.each do |part| -%>
+        <option value="<%= part %>"><%= part %></option>
+      <%- end -%>
+      </select>
     </label>
     <label>Lusarian:
       <input name="lusarian" value="yes" type="checkbox">
     </label>
     <input type=submit value="Create new">
+    <a href="/user/ex"><input type=button value="Create an exception"></a>
   </form>
 <% end %>
