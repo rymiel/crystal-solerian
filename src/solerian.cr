@@ -61,6 +61,7 @@ module Solerian
         .select
       if forms.size > 0
         summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
+        old_summary = "#{Inflection::Type.new(forms.first.type).old_class_long_name} #{word}"
         table = Inflection::NOUN_FORMS.zip(forms).to_h
       else
         fail = true
@@ -80,6 +81,7 @@ module Solerian
         .select
       if forms.size > 0
         summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
+        old_summary = "#{Inflection::Type.new(forms.first.type).old_class_long_name} #{word}"
         table = Inflection::VERB_FORMS.zip(forms).to_h
       else
         fail = true
@@ -102,7 +104,7 @@ module Solerian
   def self.raw_entry_descriptor(word : String) : Array(Node)
     words = RawEntry.where(sol: word).select
     words.map do |raw_sol|
-      Node.new "\"<a href=\"#{raw_sol.full_entry.full_link}\">#{raw_sol.sol}</a>\": (#{raw_sol.extra}) \"#{raw_sol.eng}\"", :raw
+      Node.new %("<a href="#{raw_sol.full_entry.full_link}">#{raw_sol.sol}</a>": (#{raw_sol.extra}) "#{raw_sol.eng}"), :raw
     end
   end
 
@@ -112,7 +114,7 @@ module Solerian
     form_name = form_symbol.to_s.gsub('_', ' ')
     old = form_symbol.in? Inflection::OLD_FORMS_COMBINED
     type = Inflection::Type.new(entry.type)
-    type_name = old ? type.old_class.to_s : type.pattern_name
+    type_name = old ? type.old_class_name : type.pattern_name
     part_name = part.to_s.downcase
 
     "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""

@@ -48,8 +48,13 @@ module Solerian::Inflection
       "Pattern #{TABLE[to_i].type.to_s[1..]}"
     end
 
-    def old_class : Symbol
-      OLD_CLASSES[to_i]
+    def old_class_name : String
+      "Old class #{OLD_CLASSES[to_i].to_s}"
+    end
+
+    def old_class_long_name : String
+      prop = TABLE[to_i]
+      "Old class #{OLD_CLASSES[to_i].to_s} #{prop.part.to_s.downcase}#{prop.suffix.nil? ? "" : " (#{prop.suffix})"}"
     end
   end
 
