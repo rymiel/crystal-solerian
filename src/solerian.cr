@@ -143,7 +143,9 @@ module Solerian
       entries += raw_entry_descriptor(word)
       entries += reverse_entry_descriptor(word)
       Inflection::POSS_SUFFIXES.each_with_index do |poss_suffix, poss_idx|
+        is_old = Inflection::POSS_FORMS[poss_idx].in? Inflection::OLD_FORMS_COMBINED
         if word.ends_with?(poss_suffix)
+          next if is_old && !include_old
           chopped = Inflection::Word.normalize!(word.rchop(poss_suffix))
           message = "\"#{word}\": #{Inflection::POSS_FORMS[poss_idx].to_s.gsub('_', ' ')} possessive of \"#{chopped}\""
           entries << Node.new(message, Inflection::POSS_FORMS[poss_idx], reverse_entry_descriptor(chopped))

@@ -128,13 +128,16 @@ module Solerian::Inflection
     [:old_1_inf, :old_2_inf, :old_1sg_prs, :old_2sg_prs, :old_3sg_prs, :old_1pl_prs, :old_2pl_prs, :old_3pl_prs,
      :old_1sg_pst, :old_2sg_pst, :old_3sg_pst, :old_1pl_pst, :old_2pl_pst, :old_3pl_pst, :old_2sg_imp]
   )
-  POSS_FORMS    = [:"1sg", :"2sg", :"3sg_m", :"3sg_f", :"3sg_n", :"1pl", :"2pl", :"3pl"]
-  POSS_SUFFIXES = ["elm", "etr", "usd", "usan", "ys", "elmes", "etres", "usdes"]
+  POSS_FORMS = [:"1sg", :"2sg", :"3sg", :"1pl", :"2pl", :"3pl"] +
+               [:old_1sg, :old_2sg, :old_3sg_m, :old_3sg_f, :old_3sg_n, :old_1pl, :old_2pl, :old_3pl]
+  POSS_SUFFIXES = ["àl", "it", "ys", "erd", "itar", "usd"] +
+                  ["elm", "etr", "usd", "usan", "ys", "elmes", "etres", "usdes"]
 
   OLD_FORMS_COMBINED = [
     :old_nom_sg, :old_acc_sg, :old_gen_sg, :old_nom_pl, :old_acc_pl, :old_gen_pl,
     :old_1_inf, :old_2_inf, :old_1sg_prs, :old_2sg_prs, :old_3sg_prs, :old_1pl_prs, :old_2pl_prs, :old_3pl_prs,
     :old_1sg_pst, :old_2sg_pst, :old_3sg_pst, :old_1pl_pst, :old_2pl_pst, :old_3pl_pst, :old_2sg_imp,
+    :old_1sg, :old_2sg, :old_3sg_m, :old_3sg_f, :old_3sg_n, :old_1pl, :old_2pl, :old_3pl,
   ]
   TRIVIAL_FORMS = [:nom_sg, :old_nom_sg, :"1_inf", :old_1_inf]
 
