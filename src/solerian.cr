@@ -228,6 +228,12 @@ module Solerian
     }.to_json
   end
 
+  get "/api/temporary/v0/soundchange" do |ctx|
+    body = ctx.request.body
+    next nil if body.nil?
+    SoundChange.sound_change body.gets_to_end
+  end
+
   macro entries_common(render)
     entries = Dict.get_raw(lusarian: true)
     templ {{render}}, "entries"
