@@ -91,77 +91,13 @@ module Solerian
     templ "verb"
   end
 
-  record Node, value : String, reason : Symbol, children : Array(Node) = [] of Node do
-    def old? : Bool
-      reason.in?(Inflection::OLD_FORMS_COMBINED) || children.any?(&.old?)
-    end
-
-    def trivial? : Bool
-      reason.in?(Inflection::TRIVIAL_FORMS) || children.any?(&.trivial?)
-    end
-  end
-
-  def self.raw_entry_descriptor(word : String) : Array(Node)
-    words = RawEntry.where(sol: word).select
-    words.map do |raw_sol|
-      Node.new %("<a href="#{raw_sol.full_entry.full_link}">#{raw_sol.sol}</a>": (#{raw_sol.extra}) "#{raw_sol.eng}"), :raw
-    end
-  end
-
-  def self.inflected_entry_description(entry : InflectedEntry) : String
-    part = Inflection::Part.new(entry.part)
-    form_symbol = part.form entry.form
-    form_name = form_symbol.to_s.gsub('_', ' ')
-    old = form_symbol.in? Inflection::OLD_FORMS_COMBINED
-    type = Inflection::Type.new(entry.type)
-    type_name = old ? type.old_class_name : type.pattern_name
-    part_name = part.to_s.downcase
-
-    "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
-  end
-
-  def self.reverse_entry_descriptor(word : String) : Array(Node)
-    entries = InflectedEntry.where(sol: word).select
-    entries.map do |entry|
-      sym = Inflection::Part.new(entry.part).form(entry.form)
-      Node.new inflected_entry_description(entry), sym, raw_entry_descriptor(entry.raw)
-    end
-  end
-
-  def self.nodes_as_list(nodes : Array(Node), io : IO)
-    io << "<ul>"
-    nodes.each do |node|
-      io << "<li>" << node.value
-      nodes_as_list(node.children, io)
-      io << "</li>"
-    end
-    io << "</ul>"
-  end
-
   get "/reverse" do |ctx|
     word = ctx.params.query["s"]?.try { |w| HTML.escape w }
     include_old = ctx.params.query["old"]? != nil
     fail = false
     if word
-      entries = [] of Node
-      entries += raw_entry_descriptor(word)
-      entries += reverse_entry_descriptor(word)
-      Inflection::POSS_SUFFIXES.each_with_index do |poss_suffix, poss_idx|
-        is_old = Inflection::POSS_FORMS[poss_idx].in? Inflection::OLD_FORMS_COMBINED
-        if word.ends_with?(poss_suffix)
-          next if is_old && !include_old
-          chopped = Inflection::Word.normalize!(word.rchop(poss_suffix))
-          message = "\"#{word}\": #{Inflection::POSS_FORMS[poss_idx].to_s.gsub('_', ' ')} possessive of \"#{chopped}\""
-          entries << Node.new(message, Inflection::POSS_FORMS[poss_idx], reverse_entry_descriptor(chopped))
-        end
-      end
-      entries.reject!(&.old?) unless include_old
-      entries.reject!(&.trivial?)
-      if entries.size > 0
-        results = entries
-      else
-        fail = true
-      end
+      html = Inflection::Reverse.reverse_html word, include_old
+      fail = html.nil?
     end
 
     templ "reverse"

@@ -284,4 +284,16 @@ module Solerian::Inflection
       apply_from(word, prop, mark_stress: mark_stress)
     end
   end
+
+  def self.inflected_entry_description(entry : InflectedEntry) : String
+    part = Inflection::Part.new(entry.part)
+    form_symbol = part.form entry.form
+    form_name = form_symbol.to_s.gsub('_', ' ')
+    old = form_symbol.in? Inflection::OLD_FORMS_COMBINED
+    type = Inflection::Type.new(entry.type)
+    type_name = old ? type.old_class_name : type.pattern_name
+    part_name = part.to_s.downcase
+
+    "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
+  end
 end

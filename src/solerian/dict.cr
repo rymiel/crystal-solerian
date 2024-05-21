@@ -264,12 +264,12 @@ module Solerian
 
       InflectedEntry.where(part: Inflection::Part::Noun.to_i).each do |entry|
         next if Inflection::Part.new(entry.part).form(entry.form).in? Inflection::OLD_FORMS_COMBINED # ignore old entries
-        Log.error { "#{SoundChange.ipa_without_sound_change(entry.sol)}: #{Solerian.inflected_entry_description entry} is not a valid word" } unless is_valid? entry.sol
+        Log.error { "#{SoundChange.ipa_without_sound_change(entry.sol)}: #{Solerian::Inflection.inflected_entry_description entry} is not a valid word" } unless is_valid? entry.sol
       end
 
       InflectedEntry.where(part: Inflection::Part::Verb.to_i).each do |entry|
         next if Inflection::Part.new(entry.part).form(entry.form).in? Inflection::OLD_FORMS_COMBINED # ignore old entries
-        Log.error { "#{SoundChange.ipa_without_sound_change(entry.sol)}: #{Solerian.inflected_entry_description entry} is not a valid word" } unless is_valid? entry.sol
+        Log.error { "#{SoundChange.ipa_without_sound_change(entry.sol)}: #{Solerian::Inflection.inflected_entry_description entry} is not a valid word" } unless is_valid? entry.sol
       end
     end
 

@@ -10,9 +10,9 @@
       <input type="submit" value="Submit">
     </form>
   </div>
-  <% if results %>
+  <% if html %>
     <div class="listing">
-    <%= String.build { |str| nodes_as_list(results, str) } %>
+    <%= html %>
     </div>
   <% elsif fail %>
     <b style="color: red"><br/>Invalid word.</b>
