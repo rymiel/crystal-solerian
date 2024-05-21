@@ -48,7 +48,7 @@ module Solerian
     column eng : String
     column sol : String
     column extra : String
-    column extra_hover : String?
+    column extra_hover : String
     column script : String
     column ipa : String
     column lusarian : Bool
@@ -105,10 +105,10 @@ module Solerian
     DESTRESS       = {'á' => 'à', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ý' => 'y'}
 
     PARTS_OF_SPEECH = {
-      "N"        => "Noun (type %)",
-      "N+NAME"   => "Name and onomatonym (type %)",
-      "NAME"     => "Onomatonym (type %)",
-      "V"        => "Verb (class %)",
+      "N"        => "Noun (pattern %)",
+      "N+NAME"   => "Name and onomatonym (pattern %)",
+      "NAME"     => "Onomatonym (pattern %)",
+      "V"        => "Verb (pattern %)",
       "adv."     => "Adverb",
       "affix"    => "Affix",
       "conj."    => "Conjunction",
@@ -117,7 +117,7 @@ module Solerian
       "pron."    => "Pronoun",
     }
 
-    def get_extra_hover(extra : String) : String?
+    def get_extra_hover(extra : String) : String
       parts = extra.split('-')
       part_of_speech = parts[0]
       type = parts[1]?
@@ -129,7 +129,7 @@ module Solerian
           "<abbr title=\"#{abbr}\">#{extra}</abbr>"
         end
       else
-        nil
+        extra
       end
     end
 
