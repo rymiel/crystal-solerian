@@ -15,10 +15,12 @@ module Solerian
     column eng : String
     column sol : String
     column l : Bool = false
-    column extra : String = ""
+    column extra : String
     timestamps
 
-    has_one full_entry : FullEntry
+    def full_entry : FullEntry
+      FullEntry.find_by!(hash: self.hash!)
+    end
 
     def auto_hash
       if !@hash
@@ -40,11 +42,12 @@ module Solerian
     column eng_num : Int32
     column sol_num : Int32
 
-    belongs_to raw_entry : RawEntry, foreign_key: hash : String
+    column hash : String
 
     column eng : String
     column sol : String
     column extra : String
+    column extra_hover : String?
     column script : String
     column ipa : String
     column lusarian : Bool
@@ -55,7 +58,7 @@ module Solerian
     connection solhttp
     table infldict
 
-    column num : Int32, primary: true, auto: true
+    column num : Int32, primary: true
 
     column raw : String
 
@@ -73,11 +76,40 @@ module Solerian
     SOLERIAN_ORDER = "aàbcdefghijklmnǹopqrstuvwxyz"
     DESTRESS       = {'á' => 'à', 'é' => 'e', 'í' => 'i', 'ó' => 'o', 'ú' => 'u', 'ý' => 'y'}
 
+    PARTS_OF_SPEECH = {
+      "N"        => "Noun (type %)",
+      "N+NAME"   => "Name and onomatonym (type %)",
+      "NAME"     => "Onomatonym (type %)",
+      "V"        => "Verb (class %)",
+      "adv."     => "Adverb",
+      "affix"    => "Affix",
+      "conj."    => "Conjunction",
+      "phrase"   => "Phrase",
+      "postpos." => "Postposition",
+      "pron."    => "Pronoun",
+    }
+
+    def get_extra_hover(extra : String) : String?
+      parts = extra.split('-')
+      part_of_speech = parts[0]
+      type = parts[1]?
+
+      if abbr = PARTS_OF_SPEECH[part_of_speech]?
+        if type
+          "<abbr title=\"#{abbr.sub('%', type)}\">#{extra}</abbr>"
+        else
+          "<abbr title=\"#{abbr}\">#{extra}</abbr>"
+        end
+      else
+        nil
+      end
+    end
+
     def collate_solerian(str : String) : Array(UInt8)
       str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
     end
 
-    alias MinimalEntry = { hash: String, sol: String, eng: String }
+    alias MinimalEntry = {hash: String, sol: String, eng: String}
 
     def expand_entries : Nil
       Log.notice { GC.stats.heap_size.humanize_bytes }
@@ -113,8 +145,9 @@ module Solerian
                     elsif raw.extra.starts_with? 'V'
                       "/verb"
                     else
-                      raw.extra
+                      nil
                     end
+        full.extra_hover = get_extra_hover full.extra
 
         existing_mapped[raw.hash!] = full
         minimal_entries << {hash: raw.hash!, sol: raw.sol, eng: raw.eng}
