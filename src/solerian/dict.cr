@@ -3,6 +3,7 @@ require "nanoid"
 require "./script"
 require "./sound_change"
 require "./inflection"
+require "uri"
 
 module Solerian
   class RawEntry < Granite::Base
@@ -52,6 +53,12 @@ module Solerian
     column ipa : String
     column lusarian : Bool
     column link : String?
+
+    def full_link : String?
+      link = self.link
+      return nil if link.nil?
+      return "#{link}?s=#{URI.encode_path self.sol}"
+    end
   end
 
   class InflectedEntry < Granite::Base
@@ -68,6 +75,27 @@ module Solerian
     column sol : String
     column script : String
     column ipa : String
+  end
+
+  class ExceptionEntry < Granite::Base
+    connection solhttp
+    table exceptdict
+
+    before_save :auto_hash
+
+    column hash : String, primary: true, auto: false
+    column eng : String
+    column sol : String
+    column lusarian : Bool = false
+    column extra : String
+    column forms : String
+    timestamps
+
+    def auto_hash
+      if !@hash
+        @hash = Nanoid.generate(size: 10)
+      end
+    end
   end
 
   module Dict

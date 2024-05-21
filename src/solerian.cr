@@ -102,7 +102,7 @@ module Solerian
   def self.raw_entry_descriptor(word : String) : Array(Node)
     words = RawEntry.where(sol: word).select
     words.map do |raw_sol|
-      Node.new "\"<a href=\"#{raw_sol.full_entry.link}?s=#{raw_sol.sol}\">#{raw_sol.sol}</a>\": (#{raw_sol.extra}) \"#{raw_sol.eng}\"", :raw
+      Node.new "\"<a href=\"#{raw_sol.full_entry.full_link}\">#{raw_sol.sol}</a>\": (#{raw_sol.extra}) \"#{raw_sol.eng}\"", :raw
     end
   end
 
