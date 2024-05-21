@@ -134,9 +134,9 @@ module Solerian
         full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
         full.extra = if raw.extra.starts_with? 'N'
-                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :noun).try &.class_name}"
+                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :noun).try &.pattern_number}"
                      elsif raw.extra.starts_with? 'V'
-                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :verb).try &.class_name}"
+                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :verb).try &.pattern_number}"
                      else
                        raw.extra
                      end
@@ -178,7 +178,6 @@ module Solerian
         end
 
         prop = Inflection.determine_prop(raw.sol, part)
-        next unless prop
         forms = Solerian::Inflection::Word.apply_from(raw.sol, prop, mark_stress: mark_stress)
 
         forms.each_with_index do |form, form_idx|

@@ -7,7 +7,7 @@ module Solerian::Inflection
     Noun
     Verb
 
-    def form(idx : Int32)
+    def form(idx : Int32) : Symbol
       (noun? ? Inflection::NOUN_FORMS : verb? ? Inflection::VERB_FORMS : raise "Invalid part")[idx]
     end
   end
@@ -15,72 +15,86 @@ module Solerian::Inflection
   # This enum should be in the same order as the entries in TABLE
   enum Type
     # Noun types
-    F1t
-    F1d
-    F2i
-    F2x
-    F2
-    M1
-    M2
-    N1
-    N2
+    N1 # F1t
+    N2 # F1d
+    N3 # F2i
+    N4 # F2x
+    N5 # F2
+    N6 # M1
+    N7 # M2
+    N8 # N1
+    N9 # N2
 
     # Verb types
     # Ia
-    I
-    II
-    IIIn
-    III
-    IVs
-    IV
-    O
+    V1  # I
+    V2  # II
+    V3n # IIIn
+    V3  # III
+    V4s # IVs
+    V4  # IV
+    V5  # O
 
-    def class_name(*, long = false) : String
-      long ? Prop[self].long_name : Prop[self].short_name
+    def long_name : String
+      prop = TABLE[to_i]
+      "Pattern #{prop.type.to_s[1..]} #{prop.part.to_s.downcase}#{prop.suffix.nil? ? "" : " (#{prop.suffix})"}"
+    end
+
+    def pattern_number : String
+      TABLE[to_i].type.to_s[1..]
+    end
+
+    def pattern_name : String
+      "Pattern #{TABLE[to_i].type.to_s[1..]}"
+    end
+
+    def old_class : Symbol
+      OLD_CLASSES[to_i]
     end
   end
 
-  record Prop, part : Part, type : Type, match : Regex, long_name : String, short_name : String, forms : Array(String) do
-    def self.[](type : Type) : Prop
-      TABLE[type.to_i]
-    end
-  end
+  OLD_CLASSES = StaticArray[
+    :F1t, :F1d, :F2i, :F2x, :F2, :M1, :M2, :N1, :N2,
+    :I, :II, :IIIn, :III, :IVs, :IV, :O,
+  ]
+
+  record Prop, part : Part, type : Type, match : Regex, suffix : String?, forms : Array(String)
 
   TABLE = StaticArray[
     # Noun forms
-    Prop.new(:noun, :F1t, /^.*([àá]t)$/, "Feminine type 1t noun", "F1t",
+    Prop.new(:noun, :N1, /^.*([àá]t)$/, nil,
       ["àt", "en", "i", "àtún", "ent", "is"] +
       ["àt", "en", "is", "àtún", "etin", "iis"]),
 
-    Prop.new(:noun, :F1d, /^.*([àá]d)$/, "Feminine type 1d noun", "F1d",
+    Prop.new(:noun, :N2, /^.*([àá]d)$/, nil,
       ["àd", "ein", "i", "ánd", "end", "is"] +
       ["àd", "ein", "is", "ánd", "etin", "iis"]),
 
-    Prop.new(:noun, :F2i, /^.*([ií]à)$/, "Feminine type 2i noun", "F2i",
+    Prop.new(:noun, :N3, /^.*([ií]à)$/, nil,
       ["ià", "ie", "i", "áin", "ein", "ir"] +
       ["ià", "ie", "ir", "iáin", "iein", "iir"]),
 
-    Prop.new(:noun, :F2x, /^.*([àá]x)$/, "Feminine type 2x noun", "F2x",
+    Prop.new(:noun, :N4, /^.*([àá]x)$/, nil,
       ["àx", "ox", "i", "áxi", "oxe", "ixr"] +
       ["àx", "ox", "ir", "áxi", "oxe", "ixir"]),
 
-    Prop.new(:noun, :F2, /^(?!(?:.*[ií])?[àá]$).*([àá])$/, "Feminine type 2 noun", "F2",
+    Prop.new(:noun, :N5, /^(?!(?:.*[ií])?[àá]$).*([àá])$/, nil,
       ["à", "e", "i", "án", "en", "ir"] +
       ["à", "e", "ir", "áin", "ein", "iir"]),
 
-    Prop.new(:noun, :M1, /^.*([eé]n)$/, "Masculine type 1 noun", "M1",
+    Prop.new(:noun, :N6, /^.*([eé]n)$/, nil,
       ["en", "àan", "yr", "etén", "ànt", "yrs"] +
       ["en", "ean", "yr", "enét", "eant", "esyr"]),
 
-    Prop.new(:noun, :M2, /^.*(m)$/, "Masculine type 2 noun", "M2",
+    Prop.new(:noun, :N7, /^.*(m)$/, nil,
       ["m", "m", "mi", "mas", "mas", "ǹir"] +
       ["m", "m", "mer", "mas", "mas", "ǹir"]),
 
-    Prop.new(:noun, :N1, /^.*([eé]l)$/, "Neuter type 1 noun", "N1",
+    Prop.new(:noun, :N8, /^.*([eé]l)$/, nil,
       ["el", "aln", "il", "iEk", "elk", "ilar"] +
       ["el", "aln", "eler", "eek", "alnek", "elsar"]),
 
-    Prop.new(:noun, :N2, /^.*(r)$/, "Neuter type 2 noun", "N2",
+    Prop.new(:noun, :N9, /^.*(r)$/, nil,
       ["r", "ren", "ir", "àr", "rins", "rir"] +
       ["r", "rin", "ràr", "àr", "rinse", "riser"]),
 
@@ -89,31 +103,31 @@ module Solerian::Inflection
     #   ["élus", "érà", "<à", "eké", "éts", "ànt", "àng", "àns", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"] +
     #   ["élus", "érà", "<à", "eké", "ités", "amét", "anég", "anés", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"]),
 
-    Prop.new(:verb, :I, /^.*(élus)$/, "Type I verb (e-class, IT CONT)", "I",
+    Prop.new(:verb, :V1, /^.*(élus)$/, "IT CONT",
       ["élus", "érà", "<à", "eké", "éts", "án", "áig", "áste", "é", "élg", "ésa", "àmó", "ánà", "ánà", "í"] +
       ["élus", "érà", "<à", "eké", "ités", "amét", "anég", "anés", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"]),
 
-    Prop.new(:verb, :II, /^.*[aeiouyàáéíóúý](las)$/, "Type II verb (a-class, TRANS)", "II",
+    Prop.new(:verb, :V2, /^.*[aeiouyàáéíóúý](las)$/, "TRANS",
       ["las", "lar", "lý", "laké", "láts", "lánt", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"] +
       ["las", "lar", "lý", "laké", "lités", "làté", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"]),
 
-    Prop.new(:verb, :IIIn, /^.*[rnm](lud)$/, "Type IIIn verb (dn-class, ONCE n)", "IIIn",
-      ["lud", "rad", "d", "lék", "d", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
+    Prop.new(:verb, :V3n, /^.*[rnm](lud)$/, "ONCE",
+      ["lud", "rad", "d", "lék", "l", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
       ["lud", "rad", "d", "lék", "ld", "deté", "dég", "dés", "lut", "lek", "lusa", "lomà", "lonà", "lonà", ""]),
 
-    Prop.new(:verb, :III, /^.*(lud)$/, "Type III verb (d-class, ONCE)", "III",
+    Prop.new(:verb, :V3, /^.*(lud)$/, "ONCE",
       ["lud", "rad", "d", "lék", "ld", "deté", "dég", "dés", "lut", "lek", "lusa", "lumà", "lonà", "lonà", ""] +
       ["lud", "rad", "d", "lék", "ld", "deté", "dég", "dés", "lut", "lek", "lusa", "lomà", "lonà", "lonà", ""]),
 
-    Prop.new(:verb, :IVs, /^(?!.*[áéíóúý].*[nm][úu]$)^.*(s(n|m)[úu])$/, "Type IVs verb (ns-class, ADJ s)", "IVs",
+    Prop.new(:verb, :V4s, /^(?!.*[áéíóúý].*[nm][úu]$)^.*(s(n|m)[úu])$/, "ADJ",
       ["s@ú", "s@ár", "sǹý", "sǹék", ">ns", "sǹá@", "sǹál", "sǹást", "s@í", "s@ék", "s@úsa", "s@ámo", "s@ánà", "s@ánà", "@s"] +
       ["s@ú", "s@ár", "sǹý", "sǹék", ">sn", "sǹám", "sǹág", "sǹán", "s@út", "s@úek", "s@úsa", "s@ámo", "s@ánà", "s@ánà", "s@"]),
 
-    Prop.new(:verb, :IV, /^(?!.*[áéíóúý].*[nm][úu]$)^.*((n|m)[úu])$/, "Type IV verb (n-class, ADJ)", "IV",
+    Prop.new(:verb, :V4, /^(?!.*[áéíóúý].*[nm][úu]$)^.*((n|m)[úu])$/, "ADJ",
       ["@ú", "@ár", "ǹý", "ǹék", ">n", "ǹá@", "ǹál", "ǹást", "@í", "@ék", "@úsa", "@ámo", "@ánà", "@ánà", "@"] +
       ["@ú", "@ár", "ǹý", "ǹék", ">n", "ǹám", "ǹág", "ǹán", "@út", "@úek", "@úsa", "@ámo", "@ánà", "@ánà", "@"]),
 
-    Prop.new(:verb, :O, /^.*(lus)$/, "Type 0 verb (0-class, T CONT)", "0",
+    Prop.new(:verb, :V5, /^.*(lus)$/, "T CONT",
       ["lus", "là", "r", "lék", "léts", "lán", "láig", "lást", "re", "reg", "ras", "làmo", "lànà", "lànà", "lí"] +
       ["lus", "là", "r", "lék", "léts", "lát", "lág", "lás", "ret", "reg", "ras", "làmo", "lànà", "lona", "lí"]),
   ]
@@ -141,12 +155,12 @@ module Solerian::Inflection
   ]
   TRIVIAL_FORMS = [:nom_sg, :old_nom_sg, :"1_inf", :old_1_inf]
 
-  def self.determine_prop(word : String, part : Part) : Prop?
-    TABLE.find { |i| i.part == part && i.match.matches? word }
+  def self.determine_prop(word : String, part : Part) : Prop
+    TABLE.find! { |i| i.part == part && i.match.matches? word }
   end
 
-  def self.determine_type(word : String, part : Part) : Type?
-    self.determine_prop(word, part).try &.type
+  def self.determine_type(word : String, part : Part) : Type
+    self.determine_prop(word, part).type
   end
 
   module Word

@@ -60,7 +60,7 @@ module Solerian
         .order(:form)
         .select
       if forms.size > 0
-        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} #{word}"
+        summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
         table = Inflection::NOUN_FORMS.zip(forms).to_h
       else
         fail = true
@@ -79,7 +79,7 @@ module Solerian
         .order(:form)
         .select
       if forms.size > 0
-        summary = "#{Inflection::Type.new(forms.first.type).class_name(long: true)} #{word}"
+        summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
         table = Inflection::VERB_FORMS.zip(forms).to_h
       else
         fail = true
@@ -110,7 +110,9 @@ module Solerian
     part = Inflection::Part.new(entry.part)
     form_symbol = part.form entry.form
     form_name = form_symbol.to_s.gsub('_', ' ')
-    type_name = Inflection::Type.new(entry.type).class_name
+    old = form_symbol.in? Inflection::OLD_FORMS_COMBINED
+    type = Inflection::Type.new(entry.type)
+    type_name = old ? type.old_class.to_s : type.pattern_name
     part_name = part.to_s.downcase
 
     "\"#{entry.sol}\": #{form_name} of #{type_name} #{part_name} \"#{entry.raw}\""
