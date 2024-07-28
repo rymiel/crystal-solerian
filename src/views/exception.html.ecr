@@ -1,8 +1,6 @@
 <% content_for "header" do %>Add new <%= pos %> (<%= part %>)<% end %>
 <% content_for "title" do %>Add Exception | Control panel<% end %>
 <main>
-  <p><%= all_forms %></p>
-  <p><%= real_forms %></p>
   <br/>
   <form method="post">
     <label>English:
@@ -20,6 +18,17 @@
       </tr>
     <% end %>
     </table>
+    <details>
+      <summary>Optional forms</summary>
+      <table>
+      <%- optional_forms.each_with_index do |e, i| -%>
+        <tr>
+        <td class="right"><%= e %></td>
+        <td><input name="<%= e %>" type="text" value="<%= i == 0 ? sol : "" %>"></td>
+        </tr>
+      <% end %>
+      </table>
+    </details>
     <input type=submit value="Create">
   </form>
 </main>

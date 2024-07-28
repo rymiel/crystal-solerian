@@ -282,6 +282,7 @@ module Solerian
     pos = Dict::PARTS_OF_SPEECH[ex].sub('%', "exception")
     all_forms = Inflection::PART_FORMS[part.to_i]
     real_forms = all_forms.reject(&.in? Inflection::OLD_FORMS_COMBINED)
+    optional_forms = all_forms.select(&.in? Inflection::OLD_FORMS_COMBINED)
 
     templ "exception"
   end
@@ -304,19 +305,21 @@ module Solerian
     end
     all_forms = Inflection::PART_FORMS[part.to_i]
     real_forms = all_forms.reject(&.in? Inflection::OLD_FORMS_COMBINED)
-    real_values = real_forms.map { |k| ctx.params.body[k.to_s]? }
+    optional_forms = all_forms.select(&.in? Inflection::OLD_FORMS_COMBINED)
+    real_values = real_forms.to_h { |k| {k, ctx.params.body[k.to_s]?} }
+    optional_values = optional_forms.to_h { |k| {k, ctx.params.body[k.to_s]?} }
 
     p! real_forms
     p! real_values
 
-    if real_values.any?(&.nil?)
+    if real_values.values.any?(&.nil?)
       ctx.flash "A form wasn't provided", "error"
       ctx.redirect "/user/entries/ex", 303
       next
     end
 
-    real_values = real_values.reject(Nil)
-    sol = real_values[0]
+    values = all_forms.map { |k| real_values[k]? || optional_values[k]? || "-" }
+    sol = values[0]
 
     entry = ExceptionEntry.find_by(sol: sol)
     if entry.nil?
@@ -326,7 +329,7 @@ module Solerian
     entry.sol = sol
     entry.lusarian = lusarian
     entry.extra = ex
-    entry.forms = real_values.join(",")
+    entry.forms = values.join(",")
     entry.save!
     p! entry
     Dict.expand_entries
