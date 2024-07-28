@@ -142,7 +142,7 @@ module Solerian
       str.gsub(DESTRESS).delete { |i| !i.in? SOLERIAN_ORDER }.chars.map { |i| SOLERIAN_ORDER.index!(i).to_u8! }
     end
 
-    alias MinimalEntry = {hash: String, sol: String, eng: String}
+    alias MinimalEntry = {hash: String, sol: String, eng: String, extra: String}
 
     def expand_entries : Nil
       Log.notice { GC.stats.heap_size.humanize_bytes }
@@ -156,10 +156,8 @@ module Solerian
 
       timer_logic_start = Time.monotonic
 
-      raw_i = 0
       build_full = ->(r : CommonEntry) {
         full = FullEntry.new
-        full.num = raw_i + 1
         full.hash = r.hash!
         full.eng = r.eng
         full.sol = r.sol
@@ -184,11 +182,15 @@ module Solerian
         full.extra_hover = get_extra_hover full.extra
 
         existing_mapped[r.hash!] = full
-        minimal_entries << {hash: r.hash!, sol: r.sol, eng: r.eng}
-        raw_i += 1
+        minimal_entries << {hash: r.hash!, sol: r.sol, eng: r.eng, extra: r.extra}
       }
-      RawEntry.find_each("ORDER BY extra ASC, eng ASC", &build_full)
-      ExceptionEntry.find_each("ORDER BY extra ASC, eng ASC", &build_full)
+      RawEntry.find_each("", &build_full)
+      ExceptionEntry.find_each("", &build_full)
+
+      minimal_entries.sort_by! { |i| {i[:extra], i[:eng]} }
+      minimal_entries.each_with_index do |raw, i|
+        existing_mapped[raw[:hash]].num = i + 1
+      end
 
       minimal_entries.sort_by!(&.[:eng])
       minimal_entries.each_with_index do |raw, i|
