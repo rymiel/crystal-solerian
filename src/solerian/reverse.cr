@@ -12,15 +12,15 @@ module Solerian::Inflection::Reverse
   end
 
   def self.raw_entry_descriptor(word : String, lusarian : Bool = false) : Array(Node)
-    words = RawEntry.where(sol: word, l: lusarian).select
-    words.map do |raw|
-      meaning = raw.eng
+    words = FullEntry.where(sol: word, lusarian: lusarian).select
+    words.map do |w|
+      meaning = w.eng
       meaning_parts = meaning.split(";")
       compact_meaning = meaning_parts[0]
       compact_meaning += "; ..." if meaning_parts.size > 1
-      sol_link = %(<a href="#{raw.full_entry.full_link}">#{raw.sol}</a>)
-      dict_link = %(<a href="/dict##{raw.hash}">#{compact_meaning}</a>)
-      text = %("#{sol_link}": (#{raw.extra}) "#{dict_link}")
+      sol_link = %(<a href="#{w.full_link}">#{w.sol}</a>)
+      dict_link = %(<a href="/dict##{w.hash}">#{compact_meaning}</a>)
+      text = %("#{sol_link}": (#{w.extra}) "#{dict_link}")
       Node.new text, :raw
     end
   end
