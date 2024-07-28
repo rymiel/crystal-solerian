@@ -53,7 +53,10 @@ module Solerian::Inflection::Reverse
         next if is_old && !include_old
         chopped = Word.normalize!(word.rchop(poss_suffix))
         message = "\"#{word}\": #{POSS_FORMS[poss_idx].to_s.gsub('_', ' ')} possessive of \"#{chopped}\""
-        entries << Node.new(message, POSS_FORMS[poss_idx], reverse_entry_descriptor(chopped, lusarian))
+        reverse_children = reverse_entry_descriptor(chopped, lusarian)
+        entries << Node.new(message, POSS_FORMS[poss_idx], reverse_children) unless reverse_children.empty?
+        raw_children = raw_entry_descriptor(chopped, lusarian)
+        entries << Node.new(message, POSS_FORMS[poss_idx], raw_children) unless raw_children.empty?
       end
     end
 
