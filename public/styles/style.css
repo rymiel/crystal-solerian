@@ -187,6 +187,14 @@ li:target {
   font-size: 22px;
 }
 
+.right {
+  text-align: right;
+}
+
+.no-display {
+  display: none;
+}
+
 #footer-message {
   align-self: center;
   flex: 1;
@@ -311,8 +319,7 @@ li:target {
   display: block;
   width: 32px;
   height: 0;
-  box-shadow: 6px 30px 0 2px #eeeeee, 6px 44px 0 2px #eeeeee,
-    6px 58px 0 2px #eeeeee;
+  box-shadow: 6px 30px 0 2px #eeeeee, 6px 44px 0 2px #eeeeee, 6px 58px 0 2px #eeeeee;
 }
 
 #toc {
@@ -486,8 +493,7 @@ a.visible {
 }
 
 #jsdict tr {
-  transition: background-color 500ms cubic-bezier(0.19, 1, 0.22, 1),
-    filter 500ms cubic-bezier(0.19, 1, 0.22, 1);
+  transition: background-color 500ms cubic-bezier(0.19, 1, 0.22, 1), filter 500ms cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 #jsdict button,

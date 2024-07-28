@@ -1,0 +1,25 @@
+<% content_for "header" do %>Add new <%= pos %> (<%= part %>)<% end %>
+<% content_for "title" do %>Add Exception | Control panel<% end %>
+<main>
+  <p><%= all_forms %></p>
+  <p><%= real_forms %></p>
+  <br/>
+  <form method="post">
+    <label>English:
+      <input name="en" type="text" value="<%= en %>">
+    </label>
+    <input class="no-display" name="ex" type="text" value="<%= ex %>">
+    <label>Lusarian:
+      <input name="lusarian" value="yes" type="checkbox">
+    </label>
+    <table>
+    <%- real_forms.each_with_index do |e, i| -%>
+      <tr>
+      <td class="right"><%= e %></td>
+      <td><input name="<%= e %>" type="text" value="<%= i == 0 ? sol : "" %>"></td>
+      </tr>
+    <% end %>
+    </table>
+    <input type=submit value="Create">
+  </form>
+</main>

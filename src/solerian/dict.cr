@@ -6,7 +6,11 @@ require "./inflection"
 require "uri"
 
 module Solerian
+  module CommonEntry
+  end
+
   class RawEntry < Granite::Base
+    include CommonEntry
     connection solhttp
     table dict
 
@@ -78,6 +82,7 @@ module Solerian
   end
 
   class ExceptionEntry < Granite::Base
+    include CommonEntry
     connection solhttp
     table exceptdict
 
@@ -114,7 +119,7 @@ module Solerian
       "conj."    => "Conjunction",
       "phrase"   => "Phrase",
       "postpos." => "Postposition",
-      "pron."    => "Pronoun",
+      "pron."    => "Pronoun (pattern %)",
     }
 
     def get_extra_hover(extra : String) : String
@@ -152,31 +157,38 @@ module Solerian
       timer_logic_start = Time.monotonic
 
       raw_i = 0
-      RawEntry.find_each("ORDER BY extra ASC, eng ASC") do |raw|
+      build_full = ->(r : CommonEntry) {
         full = FullEntry.new
         full.num = raw_i + 1
-        full.hash = raw.hash!
-        full.eng = raw.eng
-        full.sol = raw.sol
-        full.script = Script.multi(raw.sol)
-        full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
-        full.lusarian = raw.l
-        full.extra = if part = Inflection::Part.from_extra raw.extra
-                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, part).try &.pattern_number}"
+        full.hash = r.hash!
+        full.eng = r.eng
+        full.sol = r.sol
+        full.script = Script.multi(r.sol)
+        full.ipa = SoundChange.sound_change(r.sol, mark_stress: !r.extra.starts_with?("NAME"))
+        full.lusarian = r.lusarian
+        full.extra = if part = Inflection::Part.from_extra r.extra
+                       if r.is_a? ExceptionEntry
+                         "#{r.extra}-X"
+                       else
+                         "#{r.extra}-#{Inflection.determine_type(r.sol, part).try &.pattern_number}"
+                       end
                      else
-                       raw.extra
+                       r.extra
                      end
-        full.link = case Inflection::Part.from_extra raw.extra
-                    in nil    then nil
-                    in .noun? then "/noun"
-                    in .verb? then "/verb"
+        full.link = case Inflection::Part.from_extra r.extra
+                    in nil       then nil
+                    in .noun?    then "/noun"
+                    in .verb?    then "/verb"
+                    in .pronoun? then "/pronoun"
                     end
         full.extra_hover = get_extra_hover full.extra
 
-        existing_mapped[raw.hash!] = full
-        minimal_entries << {hash: raw.hash!, sol: raw.sol, eng: raw.eng}
+        existing_mapped[r.hash!] = full
+        minimal_entries << {hash: r.hash!, sol: r.sol, eng: r.eng}
         raw_i += 1
-      end
+      }
+      RawEntry.find_each("ORDER BY extra ASC, eng ASC", &build_full)
+      ExceptionEntry.find_each("ORDER BY extra ASC, eng ASC", &build_full)
 
       minimal_entries.sort_by!(&.[:eng])
       minimal_entries.each_with_index do |raw, i|
@@ -193,13 +205,8 @@ module Solerian
         # XXX: this could techincally be wrong if there are 2 nouns written the same but one being marked for stress
         # and the other one not. I'm not sure if that will ever even happen but it's a possibility.
         mark_stress = !raw.extra.starts_with?("NAME")
-        if raw.extra.starts_with? 'N'
-          part = Inflection::Part::Noun
-        elsif raw.extra.starts_with? 'V'
-          part = Inflection::Part::Verb
-        else
-          next
-        end
+        part = Inflection::Part.from_extra raw.extra
+        next if part.nil?
 
         prop = Inflection.determine_prop(raw.sol, part)
         forms = Solerian::Inflection::Word.apply_from(raw.sol, prop, mark_stress: mark_stress)
@@ -213,6 +220,25 @@ module Solerian
           infl.sol = form
           infl.script = Script.multi(form)
           infl.ipa = SoundChange.sound_change(form, mark_stress: mark_stress)
+          new_inflected << infl
+        end
+      end
+
+      ExceptionEntry.find_each do |ex|
+        part = Inflection::Part.from_extra ex.extra
+        next if part.nil?
+
+        forms = ex.forms.split(",")
+
+        forms.each_with_index do |form, form_idx|
+          infl = InflectedEntry.new
+          infl.raw = ex.sol
+          infl.part = part.to_i
+          infl.type = Inflection::Type::EX.to_i
+          infl.form = form_idx
+          infl.sol = form
+          infl.script = Script.multi(form)
+          infl.ipa = SoundChange.sound_change(form)
           new_inflected << infl
         end
       end

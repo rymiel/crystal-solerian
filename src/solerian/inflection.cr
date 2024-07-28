@@ -6,16 +6,19 @@ module Solerian::Inflection
   enum Part
     Noun
     Verb
+    Pronoun
 
     def form(idx : Int32) : Symbol
       PART_FORMS[to_i][idx]
     end
 
     def self.from_extra(extra : String) : Part?
-      if extra.starts_with?('N') || extra == "pron."
+      if extra.starts_with?('N')
         Inflection::Part::Noun
       elsif extra.starts_with?('V')
         Inflection::Part::Verb
+      elsif extra == "pron."
+        Inflection::Part::Pronoun
       else
         nil
       end
@@ -48,9 +51,17 @@ module Solerian::Inflection
     V5r # O
     V5  # O
 
+    EX
+
+    @[Deprecated]
     def long_name : String
       prop = TABLE[to_i]
       "Pattern #{prop.type.to_s[1..]} #{prop.part.to_s.downcase}#{prop.suffix.nil? ? "" : " (#{prop.suffix})"}"
+    end
+
+    def long_name(part : Part) : String
+      prop = TABLE[to_i]
+      "Pattern #{prop.type.to_s[1..]} #{part.to_s.downcase}#{prop.suffix.nil? ? "" : " (#{prop.suffix})"}"
     end
 
     def pattern_number : String
@@ -73,7 +84,8 @@ module Solerian::Inflection
 
   OLD_CLASSES = StaticArray[
     :F1t, :F1d, :F2i, :F2x, :F2, :M1, :M2, :N1, :N2,
-    :I, :II, :III, :III, :III, :IV, :IV, :O, :O, :O
+    :I, :II, :III, :III, :III, :IV, :IV, :O, :O, :O,
+    :EX
   ]
 
   record Prop, part : Part, type : Type, match : Regex, suffix : String?, forms : Array(String)
@@ -160,6 +172,8 @@ module Solerian::Inflection
     Prop.new(:verb, :V5, /^.*(lus)$/, "T CONT",
       ["lus", "là", "r", "lék", "léts", "lán", "láig", "lást", "re", "reg", "ras", "làmo", "lànà", "lànà", "lí"] +
       ["lus", "là", "r", "lék", "léts", "lát", "lág", "lás", "ret", "reg", "ras", "làmo", "lànà", "lona", "lí"]),
+
+    Prop.new(:noun, :EX, /^$/, "Exception", [] of String),
   ]
 
   NOUN_FORMS = (
@@ -172,7 +186,8 @@ module Solerian::Inflection
     [:old_1_inf, :old_2_inf, :old_1sg_prs, :old_2sg_prs, :old_3sg_prs, :old_1pl_prs, :old_2pl_prs, :old_3pl_prs,
      :old_1sg_pst, :old_2sg_pst, :old_3sg_pst, :old_1pl_pst, :old_2pl_pst, :old_3pl_pst, :old_2sg_imp]
   )
-  PART_FORMS = [NOUN_FORMS, VERB_FORMS]
+  PRONOUN_FORMS = [:nom, :acc, :gen]
+  PART_FORMS = [NOUN_FORMS, VERB_FORMS, PRONOUN_FORMS] # in order with Part
 
   POSS_FORMS = [:"1sg", :"2sg", :"3sg", :"1pl", :"2pl", :"3pl"] +
                [:old_1sg, :old_2sg, :old_3sg_m, :old_3sg_f, :old_3sg_n, :old_1pl, :old_2pl, :old_3pl]
@@ -185,10 +200,14 @@ module Solerian::Inflection
     :old_1sg_pst, :old_2sg_pst, :old_3sg_pst, :old_1pl_pst, :old_2pl_pst, :old_3pl_pst, :old_2sg_imp,
     :old_1sg, :old_2sg, :old_3sg_m, :old_3sg_f, :old_3sg_n, :old_1pl, :old_2pl, :old_3pl,
   }
-  TRIVIAL_FORMS = Set{:nom_sg, :old_nom_sg, :"1_inf", :old_1_inf}
+  TRIVIAL_FORMS = Set{:nom_sg, :old_nom_sg, :"1_inf", :old_1_inf, :nom}
+
+  def self.part_matches(in_table : Part, have : Part) : Bool
+    in_table == have || (in_table.noun? && have.pronoun?)
+  end
 
   def self.determine_prop(word : String, part : Part) : Prop
-    TABLE.find! { |i| i.part == part && i.match.matches? word }
+    TABLE.find! { |i| part_matches(i.part, part) && i.match.matches? word }
   end
 
   def self.determine_type(word : String, part : Part) : Type

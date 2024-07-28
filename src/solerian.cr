@@ -18,6 +18,10 @@ module Solerian
     %(<td><span class="dual"><i>#{word.sol}</i>&ensp;<span class="sol">#{word.script}</span></span><p>#{word.ipa}</p></td>)
   end
 
+  def self.pronoun_table_entry(word : InflectedEntry)
+    %(<td><span class="dual"><i>#{word.sol}</i>&ensp;<span class="sol">#{word.script}</span></span><p>#{word.ipa}</p></td>)
+  end
+
   get "/" do |ctx|
     templ "index"
   end
@@ -60,7 +64,7 @@ module Solerian
         .order(:form)
         .select
       if forms.size > 0
-        summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
+        summary = "#{Inflection::Type.new(forms.first.type).long_name(:noun)} #{word}"
         old_summary = "#{Inflection::Type.new(forms.first.type).old_class_long_name} #{word}"
         table = Inflection::NOUN_FORMS.zip(forms).to_h
       else
@@ -80,7 +84,7 @@ module Solerian
         .order(:form)
         .select
       if forms.size > 0
-        summary = "#{Inflection::Type.new(forms.first.type).long_name} #{word}"
+        summary = "#{Inflection::Type.new(forms.first.type).long_name(:verb)} #{word}"
         old_summary = "#{Inflection::Type.new(forms.first.type).old_class_long_name} #{word}"
         table = Inflection::VERB_FORMS.zip(forms).to_h
       else
@@ -89,6 +93,26 @@ module Solerian
     end
 
     templ "verb"
+  end
+
+  get "/pronoun" do |ctx|
+    word = ctx.params.query["s"]?.try { |w| HTML.escape w }
+    fail = false
+    if word
+      forms = InflectedEntry
+        .where(raw: word, part: Inflection::Part::Pronoun.to_i)
+        .order(:form)
+        .select
+      if forms.size > 0
+        summary = "#{Inflection::Type.new(forms.first.type).long_name(:pronoun)} #{word}"
+        old_summary = "#{Inflection::Type.new(forms.first.type).old_class_long_name} #{word}"
+        table = Inflection::PRONOUN_FORMS.zip(forms).to_h
+      else
+        fail = true
+      end
+    end
+
+    templ "pronoun"
   end
 
   get "/reverse" do |ctx|
@@ -233,6 +257,80 @@ module Solerian
       RawEntry.create! eng: fields[0], sol: fields[1], extra: fields[2], l: false
     end
     Dict.expand_entries
+    ctx.redirect "/user/entries", 303
+  end
+
+  get "/user/entries/ex" do |ctx|
+    next unless Auth.assert_auth ctx
+
+    en = ctx.params.query["en"]?
+    sol = ctx.params.query["sol"]?
+    ex = ctx.params.query["ex"]?
+
+    if ex.nil? || !Dict::PARTS_OF_SPEECH.has_key?(ex)
+      ctx.flash "Invalid extra", "error"
+      ctx.redirect "/user/entries", 303
+      next
+    end
+    part = Inflection::Part.from_extra ex
+    if part.nil?
+      ctx.flash "This part of speech lacks inflection", "error"
+      ctx.redirect "/user/entries", 303
+      next
+    end
+
+    pos = Dict::PARTS_OF_SPEECH[ex].sub('%', "exception")
+    all_forms = Inflection::PART_FORMS[part.to_i]
+    real_forms = all_forms.reject(&.in? Inflection::OLD_FORMS_COMBINED)
+
+    templ "exception"
+  end
+
+  post "/user/entries/ex" do |ctx|
+    en = ctx.params.body["en"]?
+    ex = ctx.params.body["ex"]?
+    lusarian = ctx.params.body.has_key?("lusarian")
+
+    if ex.nil? || en.nil? || !Dict::PARTS_OF_SPEECH.has_key?(ex)
+      ctx.flash "Invalid", "error"
+      ctx.redirect "/user/entries/ex", 303
+      next
+    end
+    part = Inflection::Part.from_extra ex
+    if part.nil?
+      ctx.flash "This part of speech lacks inflection", "error"
+      ctx.redirect "/user/entries/ex", 303
+      next
+    end
+    all_forms = Inflection::PART_FORMS[part.to_i]
+    real_forms = all_forms.reject(&.in? Inflection::OLD_FORMS_COMBINED)
+    real_values = real_forms.map { |k| ctx.params.body[k.to_s]? }
+
+    p! real_forms
+    p! real_values
+
+    if real_values.any?(&.nil?)
+      ctx.flash "A form wasn't provided", "error"
+      ctx.redirect "/user/entries/ex", 303
+      next
+    end
+
+    real_values = real_values.reject(Nil)
+    sol = real_values[0]
+
+    entry = ExceptionEntry.find_by(sol: sol)
+    if entry.nil?
+      entry = ExceptionEntry.new
+    end
+    entry.eng = en
+    entry.sol = sol
+    entry.lusarian = lusarian
+    entry.extra = ex
+    entry.forms = real_values.join(",")
+    entry.save!
+    p! entry
+    Dict.expand_entries
+
     ctx.redirect "/user/entries", 303
   end
 end
