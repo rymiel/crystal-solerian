@@ -115,7 +115,7 @@ module Solerian::Inflection
       ["élus", "érà", "<à", "eké", "éts", "án", "áig", "áste", "é", "élg", "ésa", "àmó", "ánà", "ánà", "í"] +
       ["élus", "érà", "<à", "eké", "ités", "amét", "anég", "anés", "ét", "ég", "ésa", "ámo", "ánà", "ánà", "í"]),
 
-    Prop.new(:verb, :V2, /^.*[aeiouyàáéíóúý](las)$/, "TRANS",
+    Prop.new(:verb, :V2, /^.*[aeiouyàáéíóúý](las)$/, "CHANGE",
       ["las", "lar", "lý", "laké", "láts", "lánt", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"] +
       ["las", "lar", "lý", "laké", "lités", "làté", "lànég", "láns", "ld", "leg", "lsa", "làmo", "lànà", "lànà", "li"]),
 
@@ -251,7 +251,7 @@ module Solerian::Inflection
       base_root = word[...-cutoff]
       ending = word[-cutoff..]
 
-      stress_suffix = stressed?(ending)
+      stress_suffix = stressed?(ending) || full_vowel_count(base_root) == 0
 
       prop.forms.map do |suffix|
         stress_first = suffix.starts_with?('<')
