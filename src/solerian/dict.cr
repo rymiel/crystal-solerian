@@ -161,19 +161,15 @@ module Solerian
         full.script = Script.multi(raw.sol)
         full.ipa = SoundChange.sound_change(raw.sol, mark_stress: !raw.extra.starts_with?("NAME"))
         full.lusarian = raw.l
-        full.extra = if raw.extra.starts_with? 'N'
-                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :noun).try &.pattern_number}"
-                     elsif raw.extra.starts_with? 'V'
-                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, :verb).try &.pattern_number}"
+        full.extra = if part = Inflection::Part.from_extra raw.extra
+                       "#{raw.extra}-#{Inflection.determine_type(raw.sol, part).try &.pattern_number}"
                      else
                        raw.extra
                      end
-        full.link = if raw.extra.starts_with? 'N'
-                      "/noun"
-                    elsif raw.extra.starts_with? 'V'
-                      "/verb"
-                    else
-                      nil
+        full.link = case Inflection::Part.from_extra raw.extra
+                    in nil    then nil
+                    in .noun? then "/noun"
+                    in .verb? then "/verb"
                     end
         full.extra_hover = get_extra_hover full.extra
 
