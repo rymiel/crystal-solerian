@@ -274,9 +274,10 @@ module Solerian
       Log.notice { "       of which verbs #{InflectedEntry.where(part: Inflection::Part::Verb.to_i).count}" }
     end
 
-    ONSET     = /(?<onset>sk|(?:[tdkg](?:[lr]|s)|(?:st|[mftdnrslɲjkgx]))?j?)/
+    ONSET     = /(?<onset>sk|(?:[tdkg](?:[lr]|s)|(?:st|[mftdnrslɲjkgx]))?)/
     NUCLEUS   = /(?<nucleus>[aeiouəɨ])/
-    CODA      = /(?<coda>(?:(?:x[lrs])|s[tdkg]|[lr](?:s|[tdkg]|[nm])|[tdkg]s|[nm](?:s|[tdkg])|(?:st|[mftdnrslɲjkgx]))?)/
+    CODA_BODY = /(?:(?:x[lrs])|s[tdkg]|[lr](?:s|[tdkg]|[nm])|[tdkg]s|[nm](?:s|[tdkg])|(?:st|[mftdnrslɲjkgx]))?/
+    CODA      = "(?<coda>(?=\\g<onset>\\g<nucleus>|$)|(?:st|[mftdnrslɲjkgx])(?=\\g<onset>\\g<nucleus>|$)|#{CODA_BODY})"
     SYLLABLES = /^(#{ONSET}#{NUCLEUS}#{CODA}(?=\g<onset>|$))+/
 
     def is_valid?(word : String)
@@ -285,6 +286,14 @@ module Solerian
     end
 
     def validate_all!
+      RawEntry.all.each do |entry|
+        next if entry.extra.includes? "NAME"
+        next if entry.sol.includes? '-'
+        norm = Inflection::Word.normalize! entry.sol
+        next if entry.extra.in?("conj.", "postpos.") && norm.gsub('à', 'a') == entry.sol
+        Log.error { "\"#{entry.sol}\" is not normalized (\"#{norm}\")" } unless entry.sol == norm
+      end
+
       FullEntry.all.each do |entry|
         Log.error { "#{SoundChange.ipa_without_sound_change(entry.sol)}: \"#{entry.sol}\" is not a valid word" } unless is_valid? entry.sol
       end
