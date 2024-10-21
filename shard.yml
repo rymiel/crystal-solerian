@@ -1,0 +1,17 @@
+name: crystal-solerian-redirect
+version: 0.1.0
+
+authors:
+  - rymiel <emilia@rymiel.space>
+
+targets:
+  solerian:
+    main: src/solerian.cr
+
+dependencies:
+  kemal:
+    github: kemalcr/kemal
+
+crystal: 0.36.0
+
+license: MIT
